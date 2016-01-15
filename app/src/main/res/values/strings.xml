@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluecon</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="ble_not_supported">Oh! BLE is not supported!</string>
+    <string name="ble_is_supported">Greetings! BLE is supported!</string>
+    <string name="ble_is_enabled">Greetings! Bluetooth is opened!</string>
+    <string name="bluetooth_is_supported">Greetings! Bluetooth is supported!</string>
+    <string name="start_service">begin scanning</string>
+    <string name="stop_service">stop scanning</string>
+    <string name="enableTTS">enableTTS</string>
+    <string name="disableTTS">disable TTS</string>
+    <string name="button_pressed">test button is pressed!</string>
+    <string name="pref_audio">audio</string>
+    <string name="pref_approaching">Audio notice</string>
+    <string name="pref_audio_summary">when you get approach a beacon it will send the notice \"your text\" + beaconsName</string>
+    <string name="pref_scan">Scan</string>
+    <string name="pref_approaching_default"></string>
+    <string name="pref_guide_switch_summary">using audio guide to indicate the nearest beacon</string>
+    <string name="pref_guide_switch">Audio guide swtich</string>
+    <string name="pref_threshold">RSSI threshold</string>
+    <string name="pref_threshold_summary">75 means \"-75db\", and so on</string>
+    <string name="pref_frequency_summary">Scanning Frequency</string>
+    <string name="pref_frequency">Scanning frequency</string>
+    <string name="pref_network">NETWORK</string>
+    <string name="pref_link">Download Source</string>
+    <string name="pref_link_summary">Beacons database source url</string>
+    <string name="pref_link_default">http://meschup.hcilab.org/map/</string>
+    <string name="network_not_avaliable">Sorry, please check the network settings, database may not be loaded</string>
+    <string name="update_button">update database now</string>
+    <string name="update_button_summary">Click the button to download the beacons information from the source url</string>
+    <string name="url_not_avaliable">The url address is not correct, please check again</string>
+    <string name="url_avaliable">download completed</string>
+    <string name="pref_vibration_switch_summary">Use vibration when beacon is found nearby</string>
+    <string name="pref_vibration_switch">Vibration Switch</string>
+    <string name="search_mode"><![CDATA[=>]]></string>
+    <string name="search_button">Search</string>
+    <string name="description">description</string>
+
+<!--=================== Settings ===================-->
+<string name="Settings_Activity_Name">Settings</string>
+</resources>

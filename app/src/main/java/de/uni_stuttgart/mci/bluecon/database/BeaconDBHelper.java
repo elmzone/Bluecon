@@ -1,0 +1,97 @@
+package de.uni_stuttgart.mci.bluecon.database;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import de.uni_stuttgart.mci.bluecon.network.DownloadUrlTable;
+import de.uni_stuttgart.mci.bluecon.database.BeaconLocationTable.LocationEntry;
+
+/**
+ * Created by florian on 01.12.15.
+ */
+public class BeaconDBHelper extends SQLiteOpenHelper {
+
+    public static final int DATABASE_VERSION = 4;
+    public static final String DATABASE_NAME = "BeaconsLocation.db";
+
+    private static final String TAG = "Beacon DB open helper";
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String INT_TYPE = " INTEGER";
+    private static final String IS_PRIMARY = " PRIMARY KEY";
+    private static final String AUTO_INCREMENT = " AUTOINCREMENT";
+    private static final String COMMA_SEP = ",";
+
+    private static BeaconDBHelper instance = null;
+
+    // Static String for creating location entries in SQLite
+    private static final String SQL_CREATE_ENTRIES = "CREATE TABLE "
+            + LocationEntry.TABLE_NAME
+            + " ("  + LocationEntry.COLUMN_NAME_MACADDRESS + TEXT_TYPE + IS_PRIMARY +  COMMA_SEP
+            + LocationEntry.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP
+            + LocationEntry.COLUMN_NAME_SUBCATEGORY + TEXT_TYPE + COMMA_SEP
+            + LocationEntry.COLUNM_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP
+            + LocationEntry.COLUMN_NAME_LABEL + TEXT_TYPE
+            + " )";
+    // Static String for creating url entries in SQLite
+    private static final String SQL_CREATE_URL = "CREATE TABLE "
+            + DownloadUrlTable.URLEntry.TABLE_NAME
+            + " (" + DownloadUrlTable.URLEntry.COLUNM_NAME_URL + TEXT_TYPE + COMMA_SEP
+            + DownloadUrlTable.URLEntry._ID + INT_TYPE + IS_PRIMARY + AUTO_INCREMENT
+            +" )";
+
+    private BeaconDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static BeaconDBHelper getInstance(Context mainActivity) {
+        if (instance == null) {
+            instance = new BeaconDBHelper(mainActivity);
+        }
+        return instance;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        //drop the database table if the one existed.
+        db.execSQL("DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DownloadUrlTable.URLEntry.TABLE_NAME);
+
+        //create table.
+        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_URL);
+
+        //init test value
+        db.execSQL("INSERT INTO " + LocationEntry.TABLE_NAME
+                + " ( " + LocationEntry.COLUMN_NAME_MACADDRESS + COMMA_SEP
+                + LocationEntry.COLUMN_NAME_CATEGORY + COMMA_SEP
+                + LocationEntry.COLUMN_NAME_SUBCATEGORY + COMMA_SEP
+                +LocationEntry.COLUMN_NAME_LABEL + COMMA_SEP
+                + LocationEntry.COLUNM_NAME_DESCRIPTION  + ") "
+                + " VALUES ( 'E7D38F1CF82E', 'indoor','desk','hanwen''s desk','my beautiful desk!')");
+    }
+
+    // reinitiate on upgrade
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onCreate(db);
+        Log.w(TAG, "data base upgraded, table is cleared");
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onDowngrade(db, oldVersion, newVersion);
+    }
+
+    // on Open it writes the number of rows into the log
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        String count  = "select count(*) from " + LocationEntry.TABLE_NAME;
+        Cursor mcursor = db.rawQuery(count, null);
+        mcursor.moveToFirst();
+        int icount = mcursor.getCount();
+        Log.d(TAG, "total row number in database is" + icount);
+    }
+}
