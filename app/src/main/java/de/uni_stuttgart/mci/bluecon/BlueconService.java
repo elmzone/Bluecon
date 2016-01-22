@@ -1,6 +1,5 @@
 package de.uni_stuttgart.mci.bluecon;
 
-import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -12,17 +11,19 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.ParcelUuid;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -30,14 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by florian on 23.10.15.
- */
+import de.uni_stuttgart.mci.bluecon.Util.BrdcstStop;
+
 public class BlueconService extends Service {
 
     protected static final long LONG_SCAN_PERIOD = 8000;
     protected static final long SHORT_SCAN_PERIOD = 2000;
     protected static final long MIDDLE_SCAN_PERIOD = 5000;
+
+    public static boolean isRunning = false;
 
     public static String SERVICE_IS_RUNNING = "BlueconService.blueconScanService";
     protected boolean mScanning = false;
@@ -45,55 +47,64 @@ public class BlueconService extends Service {
 
     private Handler scanHandler;
     private Map<String, BeaconsInfo> resultsMap;
-    private List<BeaconsInfo> resultList;
     private int count;
 
     //config variable
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mBluetoothLeScanner;
     private ScanSettings scanSettings;
-    private Object scanCallback;
+    private ScanListener scanCallback;
     private NotificationManager mNotificationManager;
 
     private SharedPreferences preferences;
     private long scanPeriod;
 
-    private final IBeacon.Stub mBinder = new IBeacon.Stub() {
+    private BrdcstRcvr brdcst;
 
-        public int getCount(){
-            return count;
-        }
-
-
-        public String getName() {
-            return null;
-        }
-
-        @Override
-        public List<BeaconsInfo> getList() throws RemoteException {
-            return resultList;
-        }
-
-
-        public void setPeriod() {
-            setScanPeriod();
-        }
-    };
+//    private final IBeacon.Stub mBinder = new IBeacon.Stub() {
+//
+//        public int getCount() {
+//            return count;
+//        }
+//
+//
+//        public String getName() {
+//            return null;
+//        }
+//
+//        @Override
+//        public List<BeaconsInfo> getList() throws RemoteException {
+//            return resultList;
+//        }
+//
+//
+//        public void setPeriod() {
+//            setScanPeriod();
+//        }
+//    };
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "a client is bound to service");
-        return mBinder;
+        return null;
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Log.d(TAG, "a client is unbound");
-        return super.onUnbind(intent);
-    }
+//    @Override
+//    public boolean onUnbind(Intent intent) {
+//        Log.d(TAG, "a client is unbound");
+//        return super.onUnbind(intent);
+//    }
 
     @Override
     public void onCreate() {
+        isRunning = true;
+
+        brdcst = new BrdcstRcvr();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("period");
+        LocalBroadcastManager.getInstance(this).registerReceiver(brdcst, filter);
+
         scanHandler = new Handler();
         count = 0;
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
@@ -102,8 +113,11 @@ public class BlueconService extends Service {
 
         final BluetoothManager bluetoothManager = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
+        if (mBluetoothAdapter == null) {
+            Log.i(TAG, "Bluetooth not enabled");
+        }
         resultsMap = new HashMap<>();
-        resultList = new ArrayList<>();
+        BeaconHolder.inst().setCurrentBeacons(new ArrayList<BeaconsInfo>());
         initScanCallback();
         scanRunnable.run();
         super.onCreate();
@@ -111,17 +125,22 @@ public class BlueconService extends Service {
         createNotification();
     }
 
-    public void setScanPeriod(){
-        String scanFrequecy = preferences.getString("prefFrequency","1");
+    public void setScanPeriod() {
+        String scanFrequecy = preferences.getString(getString(R.string.cnst_period), "1");
+        assert scanFrequecy != null;
         int frequency = Integer.parseInt(scanFrequecy);
-        switch (frequency){
-            case 0: scanPeriod = LONG_SCAN_PERIOD;
+        switch (frequency) {
+            case 0:
+                scanPeriod = LONG_SCAN_PERIOD;
                 break;
-            case 1: scanPeriod = MIDDLE_SCAN_PERIOD;
+            case 1:
+                scanPeriod = MIDDLE_SCAN_PERIOD;
                 break;
-            case 2: scanPeriod = SHORT_SCAN_PERIOD;
+            case 2:
+                scanPeriod = SHORT_SCAN_PERIOD;
                 break;
-            default: scanPeriod = SHORT_SCAN_PERIOD;
+            default:
+                scanPeriod = SHORT_SCAN_PERIOD;
         }
     }
 
@@ -134,7 +153,10 @@ public class BlueconService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isRunning = false;
         scanHandler.removeCallbacks(scanRunnable);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(brdcst);
+
         setRunning(false);
         Log.d(TAG, "service is destroyed");
 
@@ -169,8 +191,8 @@ public class BlueconService extends Service {
                     mScanning = false;
                     Log.d(TAG, "now scan will stop");
                     stopScan();
-                    mapToList(resultsMap, resultList);
-                    Log.d(TAG, "now the list is" + resultList);
+                    mapToList(resultsMap, BeaconHolder.beacons());
+                    Log.d(TAG, "now the list is" + BeaconHolder.beacons());
                 }
             }, scanPeriod);
         } else {
@@ -193,6 +215,18 @@ public class BlueconService extends Service {
         }
     }
 
+    protected List<BeaconsInfo> mapToList(Map<String, BeaconsInfo> map) {
+        ArrayList<BeaconsInfo> list = new ArrayList<>();
+
+        for (BeaconsInfo beaconsInfo : map.values()) {
+            list.add(beaconsInfo);
+        }
+        if (!list.isEmpty()) {
+            updateNotification();
+        }
+        return list;
+    }
+
     private void setRunning(boolean running) {
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -208,13 +242,13 @@ public class BlueconService extends Service {
         if (Build.VERSION.SDK_INT < 21) {
             mBluetoothAdapter.startLeScan((BluetoothAdapter.LeScanCallback) scanCallback);
         } else {
-            mBluetoothLeScanner.startScan(null,scanSettings,(ScanCallback) scanCallback);
+            mBluetoothLeScanner.startScan(null, scanSettings, (ScanCallback) scanCallback);
             mBluetoothLeScanner.flushPendingScanResults((ScanCallback) scanCallback);
         }
     }
 
     @SuppressWarnings("deprecation")
-    private void stopScan(){
+    private void stopScan() {
         if (Build.VERSION.SDK_INT < 21) {
             mBluetoothAdapter.stopLeScan((BluetoothAdapter.LeScanCallback) scanCallback);
         } else {
@@ -224,43 +258,15 @@ public class BlueconService extends Service {
     }
 
 
-    private void initScanCallback(){
+    private void initScanCallback() {
         // Device scan callback in API 21.
         if (Build.VERSION.SDK_INT >= 21) {
-            scanCallback = new ScanCallback() {
-                public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
-                    addBeaconToMap(result, resultsMap);
-                }
+            scanCallback = new ScanListener();
 
-                public void onScanFailed(int errorCode) {
-                    Log.d(TAG, "scan error code is:" + errorCode);
-                }
-
-                public void onBatchScanResults(java.util.List<android.bluetooth.le.ScanResult> results) {
-                    Log.d(TAG, "event listener is called!!!!");
-                    Log.d(TAG, "batch result are:" + results);
-                    //mAdapter.notifyDataSetChanged();
-                    for (int i = 0; i < results.size(); i++) {
-                        ScanResult result = results.get(i);
-                        Log.d(TAG, "add item" + result + "to list");
-                        addBeaconToMap(result, resultsMap);
-                    }
-                }
-            };
-        }else{
-            scanCallback =
-                    new BluetoothAdapter.LeScanCallback() {
-                        @Override
-                        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-                            addBeaconToMap(device, rssi, scanRecord, resultsMap);
-                        }
-                    };
         }
-
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void addBeaconToMap (ScanResult result, Map<String, BeaconsInfo> map) {
+    private void addBeaconToMap(ScanResult result, Map<String, BeaconsInfo> map) {
         int receiveRSSI = result.getRssi();
         BluetoothDevice receiveBeacon = result.getDevice();
 
@@ -275,7 +281,7 @@ public class BlueconService extends Service {
         }
         List<ParcelUuid> mServiceUUID = receiveRecord.getServiceUuids();
         String bleUUID = "NULL UUID";
-        if  (mServiceUUID != null) {
+        if (mServiceUUID != null) {
             bleUUID = receiveRecord.getServiceUuids().toString();
         }
         Log.d("recordInfo", receiveRecord.toString());
@@ -289,14 +295,14 @@ public class BlueconService extends Service {
         map.put(deviceMAC, beaconsInfo);
     }
 
-    private void addBeaconToMap(BluetoothDevice device, int rssi, byte[] scanRecord, Map<String,BeaconsInfo> map ){
+    private void addBeaconToMap(BluetoothDevice device, int rssi, byte[] scanRecord, Map<String, BeaconsInfo> map) {
         BeaconsInfo beaconInfo = new BeaconsInfo();
         beaconInfo.RSSI = rssi;
         beaconInfo.macAddress = device.getAddress();
 
         String recordInfo = new String(scanRecord);
-        String recordUUID ="NULL UUID";
-        if(!recordInfo.equals("")){
+        String recordUUID = "NULL UUID";
+        if (!recordInfo.equals("")) {
             Log.d(TAG, "the scan record string is" + recordInfo);
             recordUUID = recordInfo;
         }
@@ -304,7 +310,7 @@ public class BlueconService extends Service {
 
         String deviceName = "NULL NAME";
         String mServiceName = device.getName();
-        if(mServiceName != null){
+        if (mServiceName != null) {
             deviceName = mServiceName;
         }
         beaconInfo.name = deviceName;
@@ -316,9 +322,9 @@ public class BlueconService extends Service {
     public void createNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Bluecon")
-                .setContentText("Service Created");
-        Intent resultIntent = new Intent(this,MainActivity.class);
+                        .setContentTitle("Bluecon")
+                        .setContentText("Service Created");
+        Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -330,21 +336,67 @@ public class BlueconService extends Service {
 
         int mId = 0;
 
+        Intent brdcstIntent = new Intent(this, BrdcstStop.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, brdcstIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mBuilder.addAction(R.drawable.ic_launcher, "Stop Bluetooth", pendingIntent);
+
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(mId, mBuilder.build());
     }
 
-    private void destroyNotification() { mNotificationManager.cancel(0);}
+    private void destroyNotification() {
+        mNotificationManager.cancel(0);
+    }
 
     private void updateNotification() {
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         int notifyID = 0;
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this)
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+
+        builder
                 .setContentTitle("Bluecon")
                 .setContentText("Continue moving")
-                .setSmallIcon(R.drawable.ic_launcher);
+                .setSmallIcon(R.drawable.ic_launcher)
+        ;
 
-        mNotificationManager.notify(notifyID,mNotifyBuilder.build());
+        mNotificationManager.notify(notifyID, builder.build());
+    }
+
+    private class ScanListener extends ScanCallback {
+
+        public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
+            if (resultsMap.containsKey(result.getDevice().getAddress())){
+
+            }
+            addBeaconToMap(result, resultsMap);
+            BeaconHolder.inst().addBeacons(mapToList(resultsMap));
+        }
+
+        public void onScanFailed(int errorCode) {
+            Log.d(TAG, "scan error code is:" + errorCode);
+        }
+
+        public void onBatchScanResults(java.util.List<android.bluetooth.le.ScanResult> results) {
+            Log.d(TAG, "event listener is called!!!!");
+            Log.d(TAG, "batch result are:" + results);
+            //mAdapter.notifyDataSetChanged();
+            for (int i = 0; i < results.size(); i++) {
+                ScanResult result = results.get(i);
+                Log.d(TAG, "add item" + result + "to list");
+                addBeaconToMap(result, resultsMap);
+                BeaconHolder.inst().addBeacons(mapToList(resultsMap));
+            }
+        }
+    }
+
+    private class BrdcstRcvr extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            setScanPeriod();
+        }
     }
 }

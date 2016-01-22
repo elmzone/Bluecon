@@ -1,19 +1,25 @@
 package de.uni_stuttgart.mci.bluecon;
 
+import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.nearby.Nearby;
 
 import de.uni_stuttgart.mci.bluecon.Util.BlueconPageAdapter;
 
 // API-OAuth:  739731480344-8nq2u5s9psn47gqn7u4f8e2eer1gi9on.apps.googleusercontent.com
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static String TAG = "main Activity";
     FragmentManager fragmentManager;
     BlueconPageAdapter pageAdapter;
@@ -36,6 +42,41 @@ public class MainActivity extends FragmentActivity {
 
         //Keeps Screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Nearby.MESSAGES_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "Connected to Nearby-API");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+        Log.d(TAG, "Connection suspended to Nearby-API");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "Connection failed to Nearby-API");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (RESULT_OK == resultCode) {
+
+                }
+                break;
+        }
     }
 
     @Override
@@ -58,5 +99,16 @@ public class MainActivity extends FragmentActivity {
 //        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static interface IBluetoothCallback {
+
+        void onBluetoothStarted();
+
+        void onAdapterReady();
+    }
+
+    private class BrdcstRcvr {
+
     }
 }

@@ -2,24 +2,20 @@ package de.uni_stuttgart.mci.bluecon.scan;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,10 +39,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.BeaconsViewHolder;
 import de.uni_stuttgart.mci.bluecon.BlueconService;
-import de.uni_stuttgart.mci.bluecon.IBeacon;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.SettingsActivity;
 import de.uni_stuttgart.mci.bluecon.Util.RecyclerItemClickListener;
@@ -56,8 +52,7 @@ import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 
 public class ScanListFragment
-        extends Fragment  implements SharedPreferences.OnSharedPreferenceChangeListener, BeaconsAdapter.OnListHeadChange
-{
+        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, BeaconsAdapter.OnListHeadChange, BeaconHolder.BeaconListener {
 
     //private static String TAG = "ScanListFragment";
 
@@ -66,7 +61,6 @@ public class ScanListFragment
     private List<BeaconsInfo> resultList;
     private SwipeRefreshLayout swipeLayout;
     private Button startServiceButton;
-    private Button stopServiceButton;
     private boolean startButtonToggle = true;
 
     private List<BeaconsInfo> savedListInstance;
@@ -87,12 +81,11 @@ public class ScanListFragment
     private VibratorBuilder vibrator;
 
     private Handler mHandler;
-    private IBeacon beaconInterface;
+    //   private IBeacon beaconInterface;
     private SharedPreferences sharedPreferences;
     private CalcList calcList;
 
     private final static double EXPAND_RATIO = 2.8;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,7 +99,6 @@ public class ScanListFragment
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.scan_recycler_view);
         registerForContextMenu(mRecyclerView);
         startServiceButton = (Button) rootView.findViewById(R.id.service_start);
-        stopServiceButton = (Button) rootView.findViewById(R.id.service_stop);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         calcList = CalcList.getInstance();
 
@@ -196,29 +188,16 @@ public class ScanListFragment
                     speakOut("begin scanning");
                     vibrator.vibrate(VibratorBuilder.LONG_LONG);
                     startServiceButton.setText(R.string.stop_service);
-                    Intent intent = new Intent(getActivity(), BlueconService.class);
-                    getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
+                    startBlService();
                     startButtonToggle = false;
-                } else
-                {
+                } else {
                     Log.i(TAG, "stop button clicked");
                     vibrator.vibrate(VibratorBuilder.SHORT_SHORT);
                     speakOut("stop scanning");
-                    doUnbindService();
-                    getActivity().unbindService(mServiceConnection);
+                    startServiceButton.setText(R.string.start_service);
+                    stopBlService();
                     startButtonToggle = true;
                 }
-            }
-        });
-
-        stopServiceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "stop button clicked");
-                vibrator.vibrate(VibratorBuilder.SHORT_SHORT);
-                speakOut("stop scanning");
-                doUnbindService();
-                getActivity().unbindService(mServiceConnection);
             }
         });
 
@@ -242,7 +221,7 @@ public class ScanListFragment
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.settings, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -281,7 +260,7 @@ public class ScanListFragment
         return super.onContextItemSelected(item);
     }
 
-    private void initRecyclerView (RecyclerView recyclerView) {
+    private void initRecyclerView(RecyclerView recyclerView) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
@@ -290,14 +269,13 @@ public class ScanListFragment
         ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.VERTICAL);
     }
 
-//============================= Helper Functions =======================================
-    private void readTheViewGroup (ViewGroup viewGroup) {
-        for (int i=0; i < viewGroup.getChildCount(); i++) {
+    //============================= Helper Functions =======================================
+    private void readTheViewGroup(ViewGroup viewGroup) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
             if (child instanceof ViewGroup) {
                 readTheViewGroup((ViewGroup) child);
-            }
-            else if (child instanceof TextView) {
+            } else if (child instanceof TextView) {
                 TextView textView = (TextView) child;
                 speakOut(textView.getText().toString());
             }
@@ -309,7 +287,7 @@ public class ScanListFragment
     // ========================================================
 
     private void checkBLE(Context context) {
-        if(!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+        if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(context, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
             getActivity().finish();
         } else {
@@ -354,50 +332,47 @@ public class ScanListFragment
     private void speakOut(String words) {
         if (Build.VERSION.SDK_INT < 21) {
             mSpeech.speak(words, TextToSpeech.QUEUE_ADD, null);
-        }
-        else {
+        } else {
             mSpeech.speak(words, TextToSpeech.QUEUE_ADD, null, SPEAK_NAME);
         }
     }
 
     private void setStartButtonEnable(boolean isEnable) {
-        startServiceButton.setEnabled(isEnable);
-        stopServiceButton.setEnabled(!isEnable);
+        // startServiceButton.setEnabled(isEnable);
+        //stopServiceButton.setEnabled(!isEnable);
     }
 
     private void updateList() {
-        try {
-            Log.i(TAG, "get List" + beaconInterface.getList());
-            @SuppressWarnings("unchecked")
-            List<BeaconsInfo> beaconsInfo = beaconInterface.getList();
-            List<BeaconsInfo> newList = calcList.calcList(beaconsInfo);
-            savedListInstance = newList;
+        Log.i(TAG, "get List" + BeaconHolder.beacons());
+        @SuppressWarnings("unchecked")
+        List<BeaconsInfo> beaconsInfo = BeaconHolder.beacons();
+        List<BeaconsInfo> newList = calcList.calcList(beaconsInfo);
+        savedListInstance = newList;
 
-            Collections.sort(newList);
-            resultList.clear();
-            if (!newList.isEmpty()) {
-                if (sharedPreferences.getBoolean("prefGuideSwitch", true)) {
+        Collections.sort(newList);
+        resultList.clear();
+        if (!newList.isEmpty()) {
+            if (sharedPreferences.getBoolean("prefGuideSwitch", true)) {
 
-                }
-                if (sharedPreferences.getBoolean("prefVibrationSwitch", true)) {
-
-                }
             }
-            resultList.addAll(newList);
+            if (sharedPreferences.getBoolean("prefVibrationSwitch", true)) {
 
-            mAdapter.notifyDataSetChanged();
-        }catch (RemoteException e) { e.printStackTrace(); }
+            }
+        }
+        resultList.addAll(newList);
+
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLabelNameChange (String labelName, int position) {
+    public void onLabelNameChange(String labelName, int position) {
         Log.i(TAG, "label name changed to" + labelName);
         String audioHint = sharedPreferences.getString("prefAudio", "");
         if (position == 0 && labelName != null) {
             if (currentLocation == null || !currentLocation.equals(labelName)) {
                 currentLocation = labelName;
 
-                if (audioHint.equals("")) {
+                if ("".equals(audioHint)) {
                     speakOut(currentLocation);
                 } else {
                     speakOut(audioHint + currentLocation);
@@ -423,47 +398,42 @@ public class ScanListFragment
     private String getPreference() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("\n Send report:" + sharedPreferences.getBoolean("prefGuideSwitch", false));
-        builder.append("\n Sync Threshold:" + sharedPreferences.getString("prefThreshold", "default"));
-        builder.append("\n Sync Frequency:" + sharedPreferences.getString("prefFrequency", "default"));
-        builder.append("\n Sync Link:" + sharedPreferences.getString("prefLink", "http://meschup.hcilab.org/map"));
+        builder.append("\n Send report:").append(sharedPreferences.getBoolean("prefGuideSwitch", false));
+        builder.append("\n Sync Threshold:").append(sharedPreferences.getString("prefThreshold", "default"));
+        builder.append("\n Sync Frequency:").append(sharedPreferences.getString(getString(R.string.cnst_period), "default"));
+        builder.append("\n Sync Link:").append(sharedPreferences.getString("prefLink", "http://meschup.hcilab.org/map"));
         return builder.toString();
     }
 
     //=======================Service Function=======================
     //==============================================================
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(TAG, "Service has connected");
-            beaconInterface = IBeacon.Stub.asInterface(service);
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doBindService();
-                }
-            }, 500);
-        }
+//    private ServiceConnection mServiceConnection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            Log.d(TAG, "Service has connected");
+//            beaconInterface = IBeacon.Stub.asInterface(service);
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    doBindService();
+//                }
+//            }, 500);
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            Log.e(TAG, "Service has disconnected");
+//            doUnbindService();
+//        }
+//    };
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.e(TAG, "Service has disconnected");
-            doUnbindService();
-        }
-    };
-
-    private void doBindService() {
-        // setStartButtonEnable(false);
-        updateUI.run();
-    }
-
-    private void doUnbindService() {
-        // setStartButtonEnable(true);
-        beaconInterface = null;
-        mHandler.removeCallbacks(updateUI);
-        getActivity().unbindService(mServiceConnection);
-    }
+//    private void doUnbindService() {
+//        // setStartButtonEnable(true);
+//        beaconInterface = null;
+//        mHandler.removeCallbacks(updateUI);
+//        getActivity().unbindService(mServiceConnection);
+//    }
 
     public static boolean isRunning(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
@@ -477,7 +447,7 @@ public class ScanListFragment
     @Override
     public void onStart() {
         if (mSpeech == null) {
-            if (!sharedPreferences.getBoolean(IS_TTS_ENABLED,false)) {
+            if (!sharedPreferences.getBoolean(IS_TTS_ENABLED, false)) {
                 enableTTS();
             }
         }
@@ -492,22 +462,34 @@ public class ScanListFragment
             setStartButtonEnable(true);
         } else {
             setStartButtonEnable(false);
-            if (beaconInterface != null) {
+            if (BlueconService.isRunning) {
                 updateUI.run();
             } else {
-                Intent intent = new Intent(getActivity(), BlueconService.class);
-                getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
-                Toast.makeText(getActivity(), "service is still running, bind again", Toast.LENGTH_SHORT).show();
+                startBlService();
+                //  Toast.makeText(getActivity(), "service is still running, bind again", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void startBlService() {
+        Intent intent = new Intent(getActivity(), BlueconService.class);
+        //   getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
+        getActivity().startService(intent);
+        BeaconHolder.inst().registerBeaconListener(this);
+    }
+
+    private void stopBlService() {
+        getActivity().stopService(new Intent(getActivity(), BlueconService.class));
+        BeaconHolder.inst().deregisterBeaconListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (beaconInterface != null) {
+        if (BlueconService.isRunning) {
             mHandler.removeCallbacks(updateUI);
         }
+        BeaconHolder.inst().deregisterBeaconListener(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
@@ -522,13 +504,13 @@ public class ScanListFragment
         super.onDestroy();
     }
 
-// ====================Intent Callback ======================
+    // ====================Intent Callback ======================
 // ==========================================================
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(getActivity(), R.string.ble_is_enabled, Toast.LENGTH_SHORT).show();
-            } else  {
+            } else {
                 Toast.makeText(getActivity(), R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
@@ -563,8 +545,7 @@ public class ScanListFragment
                         Log.d(SPEAK_NAME, "speech error");
                     }
                 });
-            }
-            else {
+            } else {
                 Intent installTTSIntent = new Intent();
                 Log.d(TAG, "speech engine install");
                 installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
@@ -574,21 +555,15 @@ public class ScanListFragment
     }
 
 
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("prefThreshold")) {
             Log.i(TAG, "preference threshold changed!");
         }
-        if (key.equals("prefFrequency")) {
+        if (key.equals(getString(R.string.cnst_period))) {
             Log.i(TAG, "preference frequency changed!");
-            if (beaconInterface != null) {
-                try {
-                    beaconInterface.setPeriod();
-                } catch (RemoteException e) {
-                    Log.e(TAG, "error in set scanning period");
-                    e.printStackTrace();
-                }
+            if (BlueconService.isRunning) {
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent("period"));
             }
         }
         if (key.equals("prefAudio")) {
@@ -596,4 +571,18 @@ public class ScanListFragment
         }
     }
 
+    @Override
+    public void onBeaconsChanged(List<BeaconsInfo> changedBeacons) {
+        updateList();
+    }
+
+    @Override
+    public void onBeaconsAdded() {
+        updateList();
+    }
+
+    @Override
+    public void onBeaconsRemoved(List<BeaconsInfo> removedBeacons) {
+        updateList();
+    }
 }

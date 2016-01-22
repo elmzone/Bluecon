@@ -49,7 +49,7 @@ public class SettingsActivity extends PreferenceActivity {
             PreferenceManager.setDefaultValues(getActivity(), R.xml.settings, false);
             addPreferencesFromResource(R.xml.settings);
 
-            frequencyPref = (ListPreference) findPreference("prefFrequency");
+            frequencyPref = (ListPreference) findPreference(getString(R.string.cnst_period));
             frequencyPref.setDefaultValue(1);
             frequencyPref.setTitle(R.string.pref_frequency_summary + " : " + frequencyPref.getEntry());
 
@@ -81,7 +81,7 @@ public class SettingsActivity extends PreferenceActivity {
 
             }
 
-            if (key.equals("prefFrequency")) {
+            if (key.equals(getString(R.string.cnst_period))) {
                 Log.i(TAG, "preference Frequency!");
                 frequencyPref.setTitle(R.string.pref_frequency_summary + " : " + frequencyPref.getEntry());
             }

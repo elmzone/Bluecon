@@ -12,6 +12,7 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
 
     public TextView vName;
     public TextView vRSSI;
+    public TextView vRSSI_details;
     public TextView vCategory;
     public TextView vDescription;
     public TextView vSubcategory;
@@ -24,6 +25,7 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
 
         vName = (TextView) view.findViewById(R.id.beacon_item_name);
         vRSSI = (TextView) view.findViewById(R.id.beacon_item_RSSI);
+        vRSSI_details = (TextView) view.findViewById(R.id.beacon_item_RSSI_details);
         vCategory = (TextView) view.findViewById(R.id.beacon_item_category);
         vDescription = (TextView) view.findViewById(R.id.beacon_item_description);
         vSubcategory = (TextView) view.findViewById(R.id.beacon_item_subcategory);

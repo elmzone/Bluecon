@@ -48,6 +48,7 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
     public interface OnListHeadChange {
         void onLabelNameChange(String labelname, int position);
     }
+
     OnListHeadChange mCallback;
 
     public BeaconsAdapter(List<BeaconsInfo> beaconsMap, Fragment fragment, de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper beaconDBHelper) {
@@ -68,6 +69,7 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
         beaconsViewHolder.vName.setText(beaconsInfo.name);
         String rangeHint = readRssi(beaconsInfo.RSSI);
         beaconsViewHolder.vRSSI.setText(rangeHint);
+        beaconsViewHolder.vRSSI_details.setText(String.valueOf(beaconsInfo.RSSI));
 
         Bundle bundle = new Bundle();
         bundle.putString("mac", beaconsInfo.macAddress);
@@ -141,7 +143,9 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contextFragment.getActivity());
                     testURL = new URL(sharedPreferences.getString("prefLink", "http://meschup.hcilab.org/map"));
                     Log.i(TAG, "Database comes from " + testURL);
-                } catch (MalformedURLException e) {e.printStackTrace();}
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
 
                 jsonLoader.download(testURL, true, contextFragment.getActivity());
             }

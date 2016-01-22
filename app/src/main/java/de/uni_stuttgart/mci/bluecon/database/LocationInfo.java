@@ -1,8 +1,5 @@
 package de.uni_stuttgart.mci.bluecon.database;
 
-/**
- * Created by florian on 02.12.15.
- */
 public class LocationInfo {
     public String macAddress = "macaddress";
     public String category = "category";
