@@ -38,7 +38,10 @@
     <string name="search_mode"><![CDATA[=>]]></string>
     <string name="search_button">Search</string>
     <string name="description">description</string>
+    <string name="beep_button">Beep !</string>
+    <string name="sonar_button">Sonar</string>
 
 <!--=================== Settings ===================-->
 <string name="Settings_Activity_Name">Settings</string>
+    <string name="cnst_period">prefFrequency</string>
 </resources>

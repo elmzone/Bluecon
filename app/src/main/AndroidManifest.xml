@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.uni_stuttgart.mci.bluecon" >
+    package="de.uni_stuttgart.mci.bluecon">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- keep the screen from dimming or the processor from sleeping-->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <service android:name=".BlueconService"/>
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="739731480344-8nq2u5s9psn47gqn7u4f8e2eer1gi9on.apps.googleusercontent.com" />
+
+        <service android:name=".BlueconService" />
 
         <activity
             android:name=".MainActivity"
@@ -29,11 +36,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" >
+        <activity android:name=".SettingsActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".Util.BrdcstStop" />
     </application>
 
 </manifest>

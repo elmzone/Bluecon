@@ -338,6 +338,7 @@ public class ScanListFragment
     }
 
     private void setStartButtonEnable(boolean isEnable) {
+        //TODO remove from code
         // startServiceButton.setEnabled(isEnable);
         //stopServiceButton.setEnabled(!isEnable);
     }
