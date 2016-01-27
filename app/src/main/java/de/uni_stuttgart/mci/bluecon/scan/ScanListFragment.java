@@ -43,16 +43,20 @@ import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.BeaconsViewHolder;
 import de.uni_stuttgart.mci.bluecon.BlueconService;
+import de.uni_stuttgart.mci.bluecon.IBluetoothCallback;
+import de.uni_stuttgart.mci.bluecon.MainActivity;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.SettingsActivity;
+import de.uni_stuttgart.mci.bluecon.Util.ITtsProvider;
 import de.uni_stuttgart.mci.bluecon.Util.RecyclerItemClickListener;
 import de.uni_stuttgart.mci.bluecon.Util.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.Util.TtsWrapper;
 import de.uni_stuttgart.mci.bluecon.Util.VibratorBuilder;
 import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 
 public class ScanListFragment
-        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, BeaconsAdapter.OnListHeadChange, BeaconHolder.BeaconListener {
+        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconsAdapter.OnListHeadChange, BeaconHolder.BeaconListener, TtsWrapper.ITtsUser {
 
     //private static String TAG = "ScanListFragment";
 
@@ -71,7 +75,6 @@ public class ScanListFragment
     private final static int DATA_CHECK_CODE = 2;
     private final static int REQUEST_SETTINGS = 3;
 
-    private TextToSpeech mSpeech;
     private final static long UPDATE_PERIOD = 3000;
     private final static String SPEAK_NAME = "name";
     private final static String TAG = "Bluecon";
@@ -86,6 +89,15 @@ public class ScanListFragment
     private CalcList calcList;
 
     private final static double EXPAND_RATIO = 2.8;
+    private ITtsProvider tts;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)getActivity()).registerBlCallback(this);
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -185,7 +197,7 @@ public class ScanListFragment
             public void onClick(View v) {
                 if (startButtonToggle) {
                     Log.i(TAG, "Start Button clicked");
-                    speakOut("begin scanning");
+                    tts.queueRead("begin scanning");
                     vibrator.vibrate(VibratorBuilder.LONG_LONG);
                     startServiceButton.setText(R.string.stop_service);
                     startBlService();
@@ -193,7 +205,7 @@ public class ScanListFragment
                 } else {
                     Log.i(TAG, "stop button clicked");
                     vibrator.vibrate(VibratorBuilder.SHORT_SHORT);
-                    speakOut("stop scanning");
+                    tts.queueRead("stop scanning");
                     startServiceButton.setText(R.string.start_service);
                     stopBlService();
                     startButtonToggle = true;
@@ -231,10 +243,10 @@ public class ScanListFragment
         switch (item.getItemId()) {
             case R.id.action_enableTTS:
                 if (item.isChecked()) {
-                    disableTTS();
+//                    disableTTS();
                     item.setChecked(false);
                 } else {
-                    enableTTS();
+//                    enableTTS();
                     item.setChecked(true);
                 }
                 sharedPreferences.edit().putBoolean(IS_TTS_ENABLED, item.isChecked()).apply();
@@ -277,7 +289,7 @@ public class ScanListFragment
                 readTheViewGroup((ViewGroup) child);
             } else if (child instanceof TextView) {
                 TextView textView = (TextView) child;
-                speakOut(textView.getText().toString());
+                tts.queueRead(textView.getText().toString());
             }
         }
 
@@ -307,35 +319,6 @@ public class ScanListFragment
         }
     }
 
-
-    // ==================== TextToSpeech ======================
-    // ========================================================
-
-    // TODO extract TTS to seperat class
-    private void enableTTS() {
-        if (mSpeech == null) {
-            Intent checkTTSIntent = new Intent();
-            checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-            startActivityForResult(checkTTSIntent, DATA_CHECK_CODE);
-        }
-    }
-
-    private void disableTTS() {
-        if (mSpeech != null) {
-            mSpeech.stop();
-            mSpeech.shutdown();
-            mSpeech = null;
-            Log.i(TAG, "TTS disabled");
-        }
-    }
-
-    private void speakOut(String words) {
-        if (Build.VERSION.SDK_INT < 21) {
-            mSpeech.speak(words, TextToSpeech.QUEUE_ADD, null);
-        } else {
-            mSpeech.speak(words, TextToSpeech.QUEUE_ADD, null, SPEAK_NAME);
-        }
-    }
 
     private void setStartButtonEnable(boolean isEnable) {
         //TODO remove from code
@@ -374,9 +357,9 @@ public class ScanListFragment
                 currentLocation = labelName;
 
                 if ("".equals(audioHint)) {
-                    speakOut(currentLocation);
+                    tts.queueRead(currentLocation);
                 } else {
-                    speakOut(audioHint + currentLocation);
+                    tts.queueRead(audioHint, currentLocation);
                 }
                 if (sharedPreferences.getBoolean("prefGuideSwitch", true)) {
                     player.play(R.raw.new_direction);
@@ -406,59 +389,28 @@ public class ScanListFragment
         return builder.toString();
     }
 
-    //=======================Service Function=======================
-    //==============================================================
-
-//    private ServiceConnection mServiceConnection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            Log.d(TAG, "Service has connected");
-//            beaconInterface = IBeacon.Stub.asInterface(service);
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    doBindService();
-//                }
-//            }, 500);
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//            Log.e(TAG, "Service has disconnected");
-//            doUnbindService();
-//        }
-//    };
-
-//    private void doUnbindService() {
-//        // setStartButtonEnable(true);
-//        beaconInterface = null;
-//        mHandler.removeCallbacks(updateUI);
-//        getActivity().unbindService(mServiceConnection);
-//    }
 
     public static boolean isRunning(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         return pref.getBoolean(BlueconService.SERVICE_IS_RUNNING, false);
     }
 
-    //===================== LifeCycle ===================
-    //===================================================
-    //LifeCycle: onCreate -> onStart -> onResume -> onPause -> onStop -> onDestroy
 
     @Override
     public void onStart() {
-        if (mSpeech == null) {
-            if (!sharedPreferences.getBoolean(IS_TTS_ENABLED, false)) {
-                enableTTS();
-            }
-        }
         super.onStart();
+//        if (mSpeech == null) {
+//            if (!sharedPreferences.getBoolean(IS_TTS_ENABLED, false)) {
+//                enableTTS();
+//            }
+//        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        tts = TtsWrapper.inst().registerUser(this);
         if (!isRunning(getActivity())) {
             setStartButtonEnable(true);
         } else {
@@ -470,6 +422,7 @@ public class ScanListFragment
                 //  Toast.makeText(getActivity(), "service is still running, bind again", Toast.LENGTH_SHORT).show();
             }
         }
+        Log.e(TAG, "onResume: ");
     }
 
     private void startBlService() {
@@ -490,13 +443,14 @@ public class ScanListFragment
         if (BlueconService.isRunning) {
             mHandler.removeCallbacks(updateUI);
         }
+        TtsWrapper.inst().deregisterUser(this);
         BeaconHolder.inst().deregisterBeaconListener(this);
+        ((MainActivity)getActivity()).deregisterBlCallback(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onStop() {
-        disableTTS();
         super.onStop();
     }
 
@@ -504,57 +458,6 @@ public class ScanListFragment
     public void onDestroy() {
         super.onDestroy();
     }
-
-    // ====================Intent Callback ======================
-// ==========================================================
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_ENABLE_BT) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(getActivity(), R.string.ble_is_enabled, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-            }
-        }
-        if (requestCode == REQUEST_SETTINGS) {
-            Toast.makeText(getActivity(), "change settings" + getPreference(), Toast.LENGTH_SHORT).show();
-            if (resultCode == Activity.RESULT_OK) {
-                Log.d(TAG, "change finished with settings: " + getPreference());
-            }
-        }
-        if (requestCode == DATA_CHECK_CODE) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                mSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        Log.d(TAG, "speech engine init");
-                    }
-                });
-                mSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                    @Override
-                    public void onStart(String utteranceId) {
-                        Log.d(SPEAK_NAME, "speech start");
-                    }
-
-                    @Override
-                    public void onDone(String utteranceId) {
-                        Log.d(SPEAK_NAME, "speech done");
-                    }
-
-                    @Override
-                    public void onError(String utteranceId) {
-                        Log.d(SPEAK_NAME, "speech error");
-                    }
-                });
-            } else {
-                Intent installTTSIntent = new Intent();
-                Log.d(TAG, "speech engine install");
-                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installTTSIntent);
-            }
-        }
-    }
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -585,5 +488,15 @@ public class ScanListFragment
     @Override
     public void onBeaconsRemoved(List<BeaconsInfo> removedBeacons) {
         updateList();
+    }
+
+    @Override
+    public void onBluetoothStarted() {
+
+    }
+
+    @Override
+    public void onAdapterReady() {
+
     }
 }

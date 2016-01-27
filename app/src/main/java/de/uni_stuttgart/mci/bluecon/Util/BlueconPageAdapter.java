@@ -17,6 +17,7 @@ public class BlueconPageAdapter extends FragmentPagerAdapter {
 
     public BlueconPageAdapter (FragmentManager fm) {
         super(fm);
+//        scanFrag = new ScanListFragment();
         scanFrag = new ScanListFragment();
         searchFrag = new SearchListFragment();
     }

@@ -146,7 +146,7 @@ public class BlueconService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "service started");
+        Log.e(TAG, "service started");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -158,7 +158,7 @@ public class BlueconService extends Service {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(brdcst);
 
         setRunning(false);
-        Log.d(TAG, "service is destroyed");
+        Log.e(TAG, "service is destroyed");
 
         destroyNotification();
     }
@@ -331,28 +331,27 @@ public class BlueconService extends Service {
 
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(R.id.nid_bl_conn, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 
-        int mId = 0;
 
         Intent brdcstIntent = new Intent(this, BrdcstStop.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, brdcstIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, R.id.nid_bl_conn, brdcstIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.addAction(R.drawable.ic_launcher, "Stop Bluetooth", pendingIntent);
 
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(mId, mBuilder.build());
+        mNotificationManager.notify(R.id.nid_bl_conn, mBuilder.build());
     }
 
     private void destroyNotification() {
-        mNotificationManager.cancel(0);
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(R.id.nid_bl_conn);
     }
 
     private void updateNotification() {
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        int notifyID = 0;
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
@@ -363,21 +362,23 @@ public class BlueconService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher)
         ;
 
-        mNotificationManager.notify(notifyID, builder.build());
+        Intent brdcstIntent = new Intent(this, BrdcstStop.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, R.id.nid_bl_conn, brdcstIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        builder.addAction(R.drawable.ic_launcher, "Stop Bluetooth", pendingIntent);
+
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(R.id.nid_bl_conn, builder.build());
     }
 
     private class ScanListener extends ScanCallback {
 
         public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
-            if (resultsMap.containsKey(result.getDevice().getAddress())){
+            if (resultsMap.containsKey(result.getDevice().getAddress())) {
 
             }
             addBeaconToMap(result, resultsMap);
             BeaconHolder.inst().addBeacons(mapToList(resultsMap));
-        }
-
-        public void onScanFailed(int errorCode) {
-            Log.d(TAG, "scan error code is:" + errorCode);
         }
 
         public void onBatchScanResults(java.util.List<android.bluetooth.le.ScanResult> results) {
@@ -390,6 +391,10 @@ public class BlueconService extends Service {
                 addBeaconToMap(result, resultsMap);
                 BeaconHolder.inst().addBeacons(mapToList(resultsMap));
             }
+        }
+
+        public void onScanFailed(int errorCode) {
+            Log.d(TAG, "scan error code is:" + errorCode);
         }
     }
 
