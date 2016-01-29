@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
 import de.uni_stuttgart.mci.bluecon.Util.BlueconPageAdapter;
 import de.uni_stuttgart.mci.bluecon.Util.TtsWrapper;
 
-// API-OAuth:  739731480344-8nq2u5s9psn47gqn7u4f8e2eer1gi9on.apps.googleusercontent.com
+// API-OAuth:  739731480344-19rs3rqn9ncp4ebk035vph1fm9utgard.apps.googleusercontent.com
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static String TAG = "main Activity";
@@ -234,34 +234,34 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 });
 
 
-//            PublishOptions options = new PublishOptions.Builder()
-//                    .setStrategy(PUB_SUB_STRATEGY)
-//                    .setCallback(new PublishCallback() {
-//                        @Override
-//                        public void onExpired() {
-//                            super.onExpired();
-//                            Log.i(TAG, "no longer publishing");
-////                            updateSharedPreference(Constants.KEY_PUBLICATION_TASK,
-////                                    Constants.TASK_NONE);
-//                        }
-//                    }).build();
-//
-//            String id = InstanceID.getInstance(getApplicationContext()).getId();
-//            Message msg = new Message(new byte[]{0, 1, 2, 3, 4, 5, 6});
-//
-//            Nearby.Messages.publish(gApiClient, msg, options)
-//                    .setResultCallback(new ResultCallback<Status>() {
-//
-//                        @Override
-//                        public void onResult(Status status) {
-//                            if (status.isSuccess()) {
-//                                Log.i(TAG, "published successfully");
-//                            } else {
-//                                Log.i(TAG, "could not publish");
-////                                handleUnsuccessfulNearbyResult(status);
-//                            }
-//                        }
-//                    });
+        PublishOptions optionsP = new PublishOptions.Builder()
+                .setStrategy(PUB_SUB_STRATEGY)
+                .setCallback(new PublishCallback() {
+                    @Override
+                    public void onExpired() {
+                        super.onExpired();
+                        Log.i(TAG, "no longer publishing");
+//                            updateSharedPreference(Constants.KEY_PUBLICATION_TASK,
+//                                    Constants.TASK_NONE);
+                    }
+                }).build();
+
+        String id = InstanceID.getInstance(getApplicationContext()).getId();
+        Message msg = new Message(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
+
+        Nearby.Messages.publish(gApiClient, msg, optionsP)
+                .setResultCallback(new ResultCallback<Status>() {
+
+                    @Override
+                    public void onResult(Status status) {
+                        if (status.isSuccess()) {
+                            Log.i(TAG, "published successfully");
+                        } else {
+                            Log.i(TAG, "could not publish");
+//                                handleUnsuccessfulNearbyResult(status);
+                        }
+                    }
+                });
     }
 
     @Override

@@ -5,7 +5,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanRecord;
@@ -30,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import de.uni_stuttgart.mci.bluecon.Util.BrdcstStop;
 
@@ -103,6 +109,7 @@ public class BlueconService extends Service {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("period");
+        filter.addAction(getString(R.string.intent_gatt_open));
         LocalBroadcastManager.getInstance(this).registerReceiver(brdcst, filter);
 
         scanHandler = new Handler();
@@ -401,7 +408,88 @@ public class BlueconService extends Service {
     private class BrdcstRcvr extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(getString(R.string.intent_gatt_open))) {
+                String mac = intent.getStringExtra(getString(R.string.bndl_mac));
+                mBluetoothAdapter.getRemoteDevice(mac).connectGatt(context, false, new BlGattCallback());
+            }
             setScanPeriod();
+        }
+    }
+    private class BlGattCallback extends BluetoothGattCallback {
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                gatt.discoverServices();
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+            }
+        }
+
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                for (BluetoothGattService s : gatt.getServices()) {
+                    Log.i(TAG, "onServicesDiscovered: "+ s.getUuid().toString());
+                }
+                BluetoothGattService s = gatt.getService(UUID.fromString("31300000-5347-4233-3074-656764696c42"));
+                if (s != null) {
+                    for (BluetoothGattCharacteristic c : s.getCharacteristics()) {
+                        Log.i(TAG, "onServicesDiscovered: Characteristics: " + c.getUuid().toString());
+                        if (c.getUuid().equals(UUID.fromString("31300101-5347-4233-3074-656764696c42"))) {
+                            byte[] pinChara = c.getValue();
+//                            Log.i(TAG, "onServicesDiscovered: PIN Chara" + pinChara.toString());
+                            pinChara[3] = 0x20;
+                            c.setValue(pinChara);
+                        }
+                        if (c.getUuid().equals(UUID.fromString("31300102-5347-4233-3074-656764696c42"))){
+                            Log.i(TAG, "onServicesDiscovered: Command Chara");
+                            c.setValue(new byte[]{0x21,01,04, (byte) 0xE8,03,(byte) 0xF4,01,00,00,00,00});
+                            gatt.writeCharacteristic(c);
+                        }
+                    }
+//                    BluetoothGattCharacteristic weatherC = s.getCharacteristic(UUID.fromString(Constants.GATT_WEATHER_TODAY));
+//                    gatt.readCharacteristic(weatherC);21-01-04-E803-0000-0000-0000
+//                } else {
+//                    s = gatt.getService(UUID.fromString(Constants.GATT_SERVICE_PUB_TRANSP));
+//                    BluetoothGattCharacteristic transpC = s.getCharacteristic(UUID.fromString(Constants.GATT_PUB_TRANSP_BUS));
+//                    gatt.readCharacteristic(transpC);
+                }
+            } else {
+            }
+        }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+//                if (characteristic.getValue() != null) {
+                    if (UUID.fromString("31300102-5347-4233-3074-656764696c42").equals(characteristic.getUuid())) {
+                        Log.i(TAG, "onCharacteristicRead: " + characteristic.getValue());
+//
+//                    } else if (UUID.fromString(Constants.GATT_WEATHER_TODAY).equals(characteristic.getUuid())) {
+//                        byte[] weather = characteristic.getValue();
+//                        Intent weatherIntent = new Intent(getString(R.string.intent_gatt_weather));
+//                        weatherIntent.putExtra(getString(R.string.bndl_gatt_weather_today), weather);
+//                        LocalBroadcastManager.getInstance(ServiceScan.this).sendBroadcast(weatherIntent);
+//                        BluetoothGattCharacteristic weatherC = characteristic.getService().getCharacteristic(UUID.fromString(
+//                                Constants.GATT_WEATHER_TOMORROW));
+//                        gatt.readCharacteristic(weatherC);
+                    }
+//                }
+            }
+        }
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            super.onCharacteristicWrite(gatt, characteristic, status);
+        }
+
+        @Override
+        public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
+            super.onReliableWriteCompleted(gatt, status);
+        }
+
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            Log.i(TAG, "onCharacteristicChanged: ");
         }
     }
 }

@@ -1,19 +1,14 @@
 package de.uni_stuttgart.mci.bluecon.scan;
 
-import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,10 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -48,7 +40,6 @@ import de.uni_stuttgart.mci.bluecon.MainActivity;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.SettingsActivity;
 import de.uni_stuttgart.mci.bluecon.Util.ITtsProvider;
-import de.uni_stuttgart.mci.bluecon.Util.RecyclerItemClickListener;
 import de.uni_stuttgart.mci.bluecon.Util.SoundPoolPlayer;
 import de.uni_stuttgart.mci.bluecon.Util.TtsWrapper;
 import de.uni_stuttgart.mci.bluecon.Util.VibratorBuilder;
@@ -67,7 +58,6 @@ public class ScanListFragment
     private Button startServiceButton;
     private boolean startButtonToggle = true;
 
-    private List<BeaconsInfo> savedListInstance;
     private String currentLocation = null;
 
     //Code Constants
@@ -88,7 +78,7 @@ public class ScanListFragment
     private SharedPreferences sharedPreferences;
     private CalcList calcList;
 
-    private final static double EXPAND_RATIO = 2.8;
+
     private ITtsProvider tts;
 
     @Override
@@ -151,46 +141,6 @@ public class ScanListFragment
             }
         });
 
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                    private int mOriginalHeight = 0;
-                    private int mExpandHeight = 0;
-                    private boolean isInited = false;
-
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Log.d(TAG, "now touched in View");
-                        player.play(R.raw.expand);
-                        LinearLayout expandArea = (LinearLayout) view.findViewById(R.id.expandArea);
-                        if (!isInited) {
-                            mOriginalHeight = view.getHeight();
-                            mExpandHeight = (int) (mOriginalHeight * EXPAND_RATIO);
-                            isInited = true;
-                        }
-                        ValueAnimator valueAnimator;
-                        if (view.getHeight() == mOriginalHeight) {
-                            readTheViewGroup(expandArea);
-                            valueAnimator = ValueAnimator.ofInt(mOriginalHeight, mExpandHeight);
-                            expandArea.setVisibility(View.VISIBLE);
-                        } else {
-                            valueAnimator = ValueAnimator.ofInt(mExpandHeight, mOriginalHeight);
-                            expandArea.setVisibility(View.GONE);
-                        }
-                        valueAnimator.setDuration(200);
-                        valueAnimator.setInterpolator(new LinearInterpolator());
-                        final View theView = view;
-                        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                theView.getLayoutParams().height = (int) animation.getAnimatedValue();
-                                theView.requestLayout();
-                            }
-                        });
-                        valueAnimator.start();
-                    }
-
-                })
-        );
 
         startServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,19 +231,6 @@ public class ScanListFragment
         ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.VERTICAL);
     }
 
-    //============================= Helper Functions =======================================
-    private void readTheViewGroup(ViewGroup viewGroup) {
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                readTheViewGroup((ViewGroup) child);
-            } else if (child instanceof TextView) {
-                TextView textView = (TextView) child;
-                tts.queueRead(textView.getText().toString());
-            }
-        }
-
-    }
 
     // ===================== Bluetooth ========================
     // ========================================================
@@ -331,7 +268,6 @@ public class ScanListFragment
         @SuppressWarnings("unchecked")
         List<BeaconsInfo> beaconsInfo = BeaconHolder.beacons();
         List<BeaconsInfo> newList = calcList.calcList(beaconsInfo);
-        savedListInstance = newList;
 
         Collections.sort(newList);
         resultList.clear();
@@ -375,7 +311,7 @@ public class ScanListFragment
         @Override
         public void run() {
             updateList();
-            mHandler.postDelayed(updateUI, UPDATE_PERIOD);
+//            mHandler.postDelayed(updateUI, UPDATE_PERIOD);
         }
     };
 

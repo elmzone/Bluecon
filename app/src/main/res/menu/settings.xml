@@ -5,7 +5,7 @@
         android:title="more settings"/>
     <item
         android:id="@+id/action_enableTTS"
-        android:title="enableTTS"
+        android:title="enable TTS"
         android:checkable="true"
         android:checked="true"/>
 </menu>

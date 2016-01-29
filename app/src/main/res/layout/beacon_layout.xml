@@ -93,19 +93,21 @@
             android:layout_marginTop="0dp">
 
             <Button
+                android:id="@+id/beacon_sonar"
                 style="@style/button"
-                android:background="@drawable/button"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
-                android:text="@string/sonar_button"
-                android:id="@+id/beacon_sonar"/>
+                android:background="@drawable/button"
+                android:text="@string/sonar_button" />
+
             <Button
+                android:id="@+id/beacon_beep"
                 style="@style/button"
-                android:background="@drawable/button"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
-                android:text="@string/beep_button"
-                android:id="@+id/beacon_beep"/>
+                android:background="@drawable/button"
+                android:focusable="true"
+                android:text="@string/beep_button" />
 
         </TableRow>
 

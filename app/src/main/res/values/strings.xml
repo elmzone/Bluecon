@@ -44,4 +44,6 @@
 <!--=================== Settings ===================-->
 <string name="Settings_Activity_Name">Settings</string>
     <string name="cnst_period">prefFrequency</string>
+    <string name="intent_gatt_open">OpenGatt</string>
+    <string name="bndl_mac">mac</string>
 </resources>

@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release_bluecon {
+            keyAlias 'blueconrelease'
+            keyPassword 'noceulb'
+            storeFile file('C:/Users/flori_000/keystore/elmzoneks.jks')
+            storePassword 'nukeem'
+        }
+    }
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 23
     buildToolsVersion '22.0.1'
@@ -10,16 +18,24 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.release_bluecon
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release_bluecon
+        }
+        debug {
+            signingConfig signingConfigs.release_bluecon
         }
     }
     productFlavors {
     }
 }
+
+
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
