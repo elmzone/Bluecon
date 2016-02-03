@@ -29,10 +29,10 @@ public class TtsWrapper implements TextToSpeech.OnInitListener, ITtsProvider {
 
     private TtsWrapper(Context context) {
         inst = this;
-//        if (checkAccessibility(context)) {
-        tts = new TextToSpeech(context, inst);
-        access = true;
-//        }
+        if (checkAccessibility(context)) {
+            tts = new TextToSpeech(context, inst);
+            access = true;
+        }
     }
 
     public static void init(Context c) {

@@ -74,6 +74,54 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
     public void onBindViewHolder(BeaconsViewHolder beaconsViewHolder, int position) {
         final BeaconsInfo beaconsInfo = beaconsList.get(position);
         Log.d(TAG, "0: beaconsInfo is " + beaconsInfo);
+
+        beaconsViewHolder.vName.setText(beaconsInfo.name);
+        String rangeHint = readRssi(beaconsInfo.RSSI);
+        beaconsViewHolder.vRSSI.setText(rangeHint);
+        beaconsViewHolder.vRSSI_details.setText(String.valueOf(beaconsInfo.RSSI));
+
+        beaconsViewHolder.btnBeep.setOnClickListener(new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+                                                             LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(new Intent(v.getContext().getString(R.string.intent_gatt_open)).putExtra(v.getContext().getString(R.string.bndl_mac), beaconsInfo.macAddress));
+
+                                                         }
+                                                     }
+        );
+
+        Bundle bundle = new Bundle();
+        bundle.putString("mac", beaconsInfo.macAddress);
+        bundle.putInt("position", position);
+        viewMap.put(beaconsInfo.macAddress, beaconsViewHolder);
+        contextFragment.getLoaderManager().initLoader(loaderID, bundle, new BeaconDataLoaderCallbacks());
+        loaderID++;
+
+        if (position == expandedPosition) {
+            beaconsViewHolder.vExpandArea.setVisibility(View.VISIBLE);
+        } else {
+            beaconsViewHolder.vExpandArea.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return beaconsList.size();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(BeaconsViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        long itemId = holder.getItemId();
+        int itemPosition = holder.getPosition();
+
+        Log.d("log", "id is " + itemId + "; position is " + itemPosition);
+    }
+
+    @Override
+    public BeaconsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        View v = LayoutInflater.from(context).inflate(R.layout.beacon_layout, parent, false);
+        BeaconsViewHolder beaconsViewHolder = new BeaconsViewHolder(v);
         beaconsViewHolder.parent.setOnClickListener(new View.OnClickListener() {
             private final static double EXPAND_RATIO = 3.2;
             private int mOriginalHeight = 0;
@@ -133,53 +181,7 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
 
             }
         });
-        beaconsViewHolder.vName.setText(beaconsInfo.name);
-        String rangeHint = readRssi(beaconsInfo.RSSI);
-        beaconsViewHolder.vRSSI.setText(rangeHint);
-        beaconsViewHolder.vRSSI_details.setText(String.valueOf(beaconsInfo.RSSI));
-
-        beaconsViewHolder.btnBeep.setOnClickListener(new View.OnClickListener() {
-                                                         @Override
-                                                         public void onClick(View v) {
-                                                             LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(new Intent(v.getContext().getString(R.string.intent_gatt_open)).putExtra(v.getContext().getString(R.string.bndl_mac), beaconsInfo.macAddress));
-
-                                                         }
-                                                     }
-        );
-
-        Bundle bundle = new Bundle();
-        bundle.putString("mac", beaconsInfo.macAddress);
-        bundle.putInt("position", position);
-        viewMap.put(beaconsInfo.macAddress, beaconsViewHolder);
-        contextFragment.getLoaderManager().initLoader(loaderID, bundle, new BeaconDataLoaderCallbacks());
-        loaderID++;
-
-        if (position == expandedPosition) {
-            beaconsViewHolder.vExpandArea.setVisibility(View.VISIBLE);
-        } else {
-            beaconsViewHolder.vExpandArea.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return beaconsList.size();
-    }
-
-    @Override
-    public void onViewAttachedToWindow(BeaconsViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        long itemId = holder.getItemId();
-        int itemPosition = holder.getPosition();
-
-        Log.d("log", "id is " + itemId + "; position is " + itemPosition);
-    }
-
-    @Override
-    public BeaconsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        View v = LayoutInflater.from(context).inflate(R.layout.beacon_layout, parent, false);
-        return new BeaconsViewHolder(v);
+        return beaconsViewHolder;
     }
 
     private class BeaconDataLoaderCallbacks implements LoaderManager.LoaderCallbacks<LocationInfo> {

@@ -56,7 +56,7 @@ public class SettingsActivity extends PreferenceActivity {
             thresholdPref = (EditTextPreference) findPreference("prefThreshold");
             thresholdPref.setTitle(R.string.pref_frequency_summary + " : " + thresholdPref.getText());
 
-            linkPref = (EditTextPreference) findPreference("prefLink");
+            linkPref = (EditTextPreference) findPreference(getString(R.string.prefs_link_url));
             createButton();
         }
 
@@ -95,6 +95,7 @@ public class SettingsActivity extends PreferenceActivity {
                 public boolean onPreferenceClick(Preference arg0) {
                     try {
                         URL sourceUrl = new URL(linkPref.getText());
+
                         JSONLoader.getInstance(null).download(sourceUrl, false, getActivity());
                     } catch (MalformedURLException e) {
                         Toast.makeText(getActivity(), R.string.url_not_avaliable, Toast.LENGTH_SHORT).show();

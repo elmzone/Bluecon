@@ -324,7 +324,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         builder.append("\n Send report:").append(sharedPreferences.getBoolean("prefGuideSwitch", false));
         builder.append("\n Sync Threshold:").append(sharedPreferences.getString("prefThreshold", "default"));
         builder.append("\n Sync Frequency:").append(sharedPreferences.getString(getString(R.string.cnst_period), "default"));
-        builder.append("\n Sync Link:").append(sharedPreferences.getString("prefLink", "http://meschup.hcilab.org/map"));
+        builder.append("\n Sync Link:").append(sharedPreferences.getString(getString(R.string.prefs_link_url), "http://meschup.hcilab.org/map"));
         return builder.toString();
     }
 

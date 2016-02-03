@@ -46,4 +46,5 @@
     <string name="cnst_period">prefFrequency</string>
     <string name="intent_gatt_open">OpenGatt</string>
     <string name="bndl_mac">mac</string>
+    <string name="prefs_link_url">prefLink</string>
 </resources>
