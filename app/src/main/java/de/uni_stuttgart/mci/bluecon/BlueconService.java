@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
@@ -30,9 +31,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-import de.uni_stuttgart.mci.bluecon.Util.BlGattBeeper;
-import de.uni_stuttgart.mci.bluecon.Util.BrdcstStop;
+import de.uni_stuttgart.mci.bluecon.util.BlGattBeeper;
+import de.uni_stuttgart.mci.bluecon.util.BrdcstStop;
 
 public class BlueconService extends Service {
 
@@ -241,11 +244,19 @@ public class BlueconService extends Service {
 
     @SuppressWarnings("deprecation")
     private void startScan() {
+        final UUID[] uuids = new UUID[]{UUID.fromString("31300000-5347-4233-3074-656764696C42")};
+
         if (Build.VERSION.SDK_INT < 21) {
+//            mBluetoothAdapter.startLeScan(uuids, (BluetoothAdapter.LeScanCallback) scanCallback);
             mBluetoothAdapter.startLeScan((BluetoothAdapter.LeScanCallback) scanCallback);
         } else {
-            mBluetoothLeScanner.startScan(null, scanSettings, (ScanCallback) scanCallback);
-            mBluetoothLeScanner.flushPendingScanResults((ScanCallback) scanCallback);
+//            mBluetoothLeScanner.startScan(new ArrayList<ScanFilter>() {
+//                {
+//                    add(new ScanFilter.Builder().setServiceUuid(new ParcelUuid(uuids[0])).build());
+//                }
+//            }, scanSettings, (ScanCallback) scanCallback);
+            mBluetoothLeScanner.startScan(null, scanSettings, scanCallback);
+//            mBluetoothLeScanner.flushPendingScanResults((ScanCallback) scanCallback);
         }
     }
 
@@ -392,9 +403,12 @@ public class BlueconService extends Service {
             //mAdapter.notifyDataSetChanged();
             for (int i = 0; i < results.size(); i++) {
                 ScanResult result = results.get(i);
-                Log.d(TAG, "add item" + result + "to list");
-                addBeaconToMap(result, resultsMap);
-                BeaconHolder.inst().addBeacons(mapToList(resultsMap));
+
+                if (!resultsMap.containsKey(result.getDevice().getAddress())) {
+                    Log.d(TAG, "add item" + result + "to list");
+                    addBeaconToMap(result, resultsMap);
+                    BeaconHolder.inst().addBeacons(mapToList(resultsMap));
+                }
             }
         }
 
@@ -408,7 +422,9 @@ public class BlueconService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(getString(R.string.intent_gatt_open))) {
                 String mac = intent.getStringExtra(getString(R.string.bndl_mac));
-                mBluetoothAdapter.getRemoteDevice(mac).connectGatt(context, false, new BlGattBeeper());
+                BlGattBeeper beeper = new BlGattBeeper();
+                mBluetoothAdapter.getRemoteDevice(mac).connectGatt(context, false, beeper);
+//                beeper.beepFor(2, TimeUnit.SECONDS);
             }
             setScanPeriod();
         }

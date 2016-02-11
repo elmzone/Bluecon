@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Bluecon.iml" filepath="$PROJECT_DIR$/Bluecon.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libproximitybeacon/libproximitybeacon.iml" filepath="$PROJECT_DIR$/libproximitybeacon/libproximitybeacon.iml" />
     </modules>
   </component>
 </project>

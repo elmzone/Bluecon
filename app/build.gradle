@@ -38,11 +38,15 @@ android {
 
 
 
+
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    //    compile 'com.google.android.gms:play-services:8.4.0'
+    compile project(':libproximitybeacon')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-//    compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.android.gms:play-services-nearby:8.4.0'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.apis:google-api-services-proximitybeacon:v1beta1-rev2-1.21.0'

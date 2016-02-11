@@ -10,8 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -36,17 +34,16 @@ import com.google.android.gms.nearby.messages.PublishOptions;
 import com.google.android.gms.nearby.messages.Strategy;
 import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
-import com.google.gson.Gson;
+import com.google.api.services.proximitybeacon.v1beta1.Proximitybeacon;
+import com.google.api.services.proximitybeacon.v1beta1.ProximitybeaconRequestInitializer;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import de.uni_stuttgart.mci.bluecon.Util.BlueconPageAdapter;
-import de.uni_stuttgart.mci.bluecon.Util.TtsWrapper;
+import de.uni_stuttgart.mci.bluecon.util.BlueconPageAdapter;
+import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
 
 // API-OAuth:  739731480344-19rs3rqn9ncp4ebk035vph1fm9utgard.apps.googleusercontent.com
 
@@ -336,7 +333,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         }
     }
 
-    private class BrdcstRcvr {
 
-    }
+
+
 }

@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Util.BrdcstStop" />
+        <receiver android:name=".util.BrdcstStop" />
     </application>
 
 </manifest>

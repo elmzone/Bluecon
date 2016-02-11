@@ -31,7 +31,7 @@ import java.util.Map;
 import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.BeaconsViewHolder;
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.Util.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
 import de.uni_stuttgart.mci.bluecon.algorithm.RangeThreshold;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.database.LocationInfo;

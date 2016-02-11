@@ -39,10 +39,10 @@ import de.uni_stuttgart.mci.bluecon.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.MainActivity;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.SettingsActivity;
-import de.uni_stuttgart.mci.bluecon.Util.ITtsProvider;
-import de.uni_stuttgart.mci.bluecon.Util.SoundPoolPlayer;
-import de.uni_stuttgart.mci.bluecon.Util.TtsWrapper;
-import de.uni_stuttgart.mci.bluecon.Util.VibratorBuilder;
+import de.uni_stuttgart.mci.bluecon.util.ITtsProvider;
+import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
+import de.uni_stuttgart.mci.bluecon.util.VibratorBuilder;
 import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 
