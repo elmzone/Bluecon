@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.scan;
+package de.uni_stuttgart.mci.bluecon.fragments;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -39,6 +39,7 @@ import de.uni_stuttgart.mci.bluecon.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.MainActivity;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.SettingsActivity;
+import de.uni_stuttgart.mci.bluecon.scan.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.util.ITtsProvider;
 import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
 import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;

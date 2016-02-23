@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.search;
+package de.uni_stuttgart.mci.bluecon.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +21,8 @@ import java.util.List;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
 import de.uni_stuttgart.mci.bluecon.R;
+import de.uni_stuttgart.mci.bluecon.search.BeaconSearchLoader;
+import de.uni_stuttgart.mci.bluecon.search.SearchListAdapter;
 
 public class SearchListFragment extends Fragment {
 

@@ -41,10 +41,13 @@
     <string name="beep_button">Beep !</string>
     <string name="sonar_button">Sonar</string>
 
-<!--=================== Settings ===================-->
-<string name="Settings_Activity_Name">Settings</string>
+    <!--=================== Settings ===================-->
+    <string name="Settings_Activity_Name">Settings</string>
     <string name="cnst_period">prefFrequency</string>
     <string name="intent_gatt_open">OpenGatt</string>
     <string name="bndl_mac">mac</string>
     <string name="prefs_link_url">prefLink</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

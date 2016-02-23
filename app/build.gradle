@@ -41,6 +41,7 @@ android {
 
 
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //    compile 'com.google.android.gms:play-services:8.4.0'
@@ -51,4 +52,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.google.apis:google-api-services-proximitybeacon:v1beta1-rev2-1.21.0'
     compile 'com.google.code.gson:gson:2.4'
+    compile 'com.android.support:support-v4:23.1.1'
 }
