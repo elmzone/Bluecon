@@ -65,6 +65,7 @@ public class ScanListFragment
     private final static int REQUEST_ENABLE_BT = 1;
     private final static int DATA_CHECK_CODE = 2;
     private final static int REQUEST_SETTINGS = 3;
+    private final static int BEACON_ADDED = 4;
 
     private final static long UPDATE_PERIOD = 3000;
     private final static String SPEAK_NAME = "name";
@@ -185,7 +186,7 @@ public class ScanListFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.settings, menu);
+//        inflater.inflate(R.menu.settings, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -203,8 +204,13 @@ public class ScanListFragment
                 sharedPreferences.edit().putBoolean(IS_TTS_ENABLED, item.isChecked()).apply();
                 return true;
             case R.id.action_setting_activity:
-                Intent i = new Intent(getActivity(), SettingsActivity.class);
-                startActivityForResult(i, REQUEST_SETTINGS);
+                Intent si = new Intent(getActivity(), SettingsActivity.class);
+                startActivityForResult(si, REQUEST_SETTINGS);
+                return true;
+            case R.id.action_register_beacon:
+                Intent ri = new Intent(getActivity(), RegisterBeacons.class);
+                startActivityForResult(ri, BEACON_ADDED);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

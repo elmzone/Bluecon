@@ -38,7 +38,7 @@ public class SearchListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);//TODO
 
-        setHasOptionsMenu(true);//default is false;
+//        setHasOptionsMenu(true);//default is false;
 
         //assign DOM element
         View rootView = inflater.inflate(R.layout.search_fragment_main, container,

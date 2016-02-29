@@ -8,4 +8,7 @@
         android:title="enable TTS"
         android:checkable="true"
         android:checked="true"/>
+    <item
+        android:id="@+id/action_register_beacon"
+        android:title="@string/settings_menu_register_new_beacon"/>
 </menu>

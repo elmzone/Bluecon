@@ -1,4 +1,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/start_scan_service"
+        android:icon="@drawable/ic_scan_button"
+        android:title="@string/action_scan"
+        app:showAsAction="ifRoom" />
+
+    <!-- Settings, should always be in the overflow -->
+    <!--<item android:id="@+id/action_settings"-->
+    <!--android:title="@string/action_settings"-->
+
+
+    <item
+        android:id="@+id/action_setting_activity"
+        android:title="more settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_enableTTS"
+        android:checkable="true"
+        android:checked="true"
+        android:title="enable TTS"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_register_beacon"
+        android:title="@string/settings_menu_register_new_beacon"
+        app:showAsAction="never" />
 </menu>

@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.Util;
+package de.uni_stuttgart.mci.bluecon.util;
 
 import android.content.Context;
 import android.media.AudioAttributes;
@@ -13,7 +13,8 @@ import de.uni_stuttgart.mci.bluecon.R;
 /**
  * Created by florian on 23.10.15.
  */
-public class SoundPoolPlayer {private static SoundPoolPlayer instance = null;
+public class SoundPoolPlayer {
+    private static SoundPoolPlayer instance = null;
     private SoundPool mShortPlayer= null;
     private HashMap mSoundsMap = new HashMap();
     private Context context;

@@ -13,12 +13,12 @@ import de.uni_stuttgart.mci.bluecon.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RegisterBeaconFragment.OnFragmentInteractionListener} interface
+ * {@link NavigationListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RegisterBeaconFragment#newInstance} factory method to
+ * Use the {@link NavigationListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterBeaconFragment extends Fragment {
+public class NavigationListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class RegisterBeaconFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public RegisterBeaconFragment() {
+    public NavigationListFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class RegisterBeaconFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterBeaconFragment.
+     * @return A new instance of fragment NavigationListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RegisterBeaconFragment newInstance(String param1, String param2) {
-        RegisterBeaconFragment fragment = new RegisterBeaconFragment();
+    public static NavigationListFragment newInstance(String param1, String param2) {
+        NavigationListFragment fragment = new NavigationListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +65,7 @@ public class RegisterBeaconFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.register_beacon_fragment, container, false);
+        return inflater.inflate(R.layout.navigation_list_fragment, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,12 +78,12 @@ public class RegisterBeaconFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override

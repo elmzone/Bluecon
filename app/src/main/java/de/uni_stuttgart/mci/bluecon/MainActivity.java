@@ -1,5 +1,6 @@
 package de.uni_stuttgart.mci.bluecon;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -8,11 +9,19 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioTrack;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +30,8 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -42,12 +53,13 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import de.uni_stuttgart.mci.bluecon.fragments.NavigationListFragment;
 import de.uni_stuttgart.mci.bluecon.util.BlueconPageAdapter;
 import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
 
 // API-OAuth:  739731480344-19rs3rqn9ncp4ebk035vph1fm9utgard.apps.googleusercontent.com
 
-public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, BeaconHolder.BeaconListener {
     private static String TAG = "main Activity";
 
     //Code Constants
@@ -69,6 +81,21 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     private List<IBluetoothCallback> blCallbacks = new ArrayList<>();
     private GoogleApiClient gApiClient;
 
+
+    private Handler handler;
+    private final int duration = 3; // seconds
+    private final int sampleRate = 8000;
+    private final int numSamples = duration * sampleRate;
+    private final double sample[] = new double[numSamples];
+    private final double freqOfTone = 440; // hz
+
+    private final byte generatedSnd[] = new byte[2 * numSamples];
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     public void registerBlCallback(IBluetoothCallback bluetoothCallback) {
         blCallbacks.add(bluetoothCallback);
     }
@@ -79,7 +106,10 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final ActionBar actionBar = getActionBar();
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         if (!TtsWrapper.exists()) {
@@ -91,25 +121,49 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
         //the ViewPager puts the Fragments in the activity
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(pageAdapter);
         viewPager.setCurrentItem(0);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setupWithViewPager(viewPager);
 
         //sets which lever controls the Audio Output
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         //Keeps Screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         gApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
         gApiClient.connect();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://de.uni_stuttgart.mci.bluecon/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
@@ -124,7 +178,46 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             }
         };
         Executors.newSingleThreadScheduledExecutor().schedule(focus, 1, TimeUnit.SECONDS);
+
+
     }
+
+    private void playExampleBeep(@NonNull final double freqOfTone, @NonNull final int duration) {
+        handler = new Handler();
+        final Thread thread = new Thread(new Runnable() {
+            public void run() {
+                for (int i = 0; i < numSamples; ++i) {
+                    sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / freqOfTone));
+                }
+
+                // convert to 16 bit pcm sound array
+                // assumes the sample buffer is normalised.
+                int idx = 0;
+                for (final double dVal : sample) {
+                    // scale to maximum amplitude
+                    final short val = (short) ((dVal * 32767));
+                    // in 16 bit wav PCM, first byte is the low order byte
+                    generatedSnd[idx++] = (byte) (val & 0x00ff);
+                    generatedSnd[idx++] = (byte) ((val & 0xff00) >>> 8);
+
+                }
+                handler.post(new Runnable() {
+
+                    public void run() {
+                        final AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+                                AudioFormat.ENCODING_PCM_16BIT, generatedSnd.length,
+                                AudioTrack.MODE_STATIC);
+                        audioTrack.write(generatedSnd, 0, generatedSnd.length);
+                        audioTrack.play();
+                    }
+                });
+            }
+        });
+        thread.start();
+
+
+}
 
     private void checkBLE(Context context) {
         if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -168,16 +261,27 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 //        if (requestCode == DATA_CHECK_CODE) {
 //        }
 //    }
-
     private void startBlService() {
         Intent intent = new Intent(this, BlueconService.class);
         //   getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
         startService(intent);
+        BeaconHolder.inst().registerBeaconListener(this);
     }
 
     private void stopBlService() {
         stopService(new Intent(this, BlueconService.class));
+        BeaconHolder.inst().deregisterBeaconListener(this);
     }
+
+//    private void startBlService() {
+//        Intent intent = new Intent(this, BlueconService.class);
+//        //   getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
+//        startService(intent);
+//    }
+//
+//    private void stopBlService() {
+//        stopService(new Intent(this, BlueconService.class));
+//    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -297,6 +401,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
 
@@ -328,12 +433,44 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     protected void onStop() {
         super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://de.uni_stuttgart.mci.bluecon/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
         if (gApiClient.isConnected() && !isChangingConfigurations()) {
             gApiClient.disconnect();
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
 
 
+    @Override
+    public void onBeaconsChanged(List<BeaconsInfo> changedBeacons) {
+//        updateList();
+    }
+
+    @Override
+    public void onBeaconsAdded() {
+
+//        updateList();
+    }
+
+    @Override
+    public void onBeaconsRemoved(List<BeaconsInfo> removedBeacons) {
+
+//        updateList();
+    }
 
 
 }

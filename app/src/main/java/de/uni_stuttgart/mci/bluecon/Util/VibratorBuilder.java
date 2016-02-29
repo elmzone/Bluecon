@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.Util;
+package de.uni_stuttgart.mci.bluecon.util;
 
 import android.content.Context;
 import android.media.AudioAttributes;
@@ -10,7 +10,6 @@ import android.widget.Toast;
  * Created by florian on 23.10.15.
  */
 public class VibratorBuilder {
-
     private static VibratorBuilder instance = null;
     private Vibrator vibrator;
     private AudioAttributes audioAttributes;

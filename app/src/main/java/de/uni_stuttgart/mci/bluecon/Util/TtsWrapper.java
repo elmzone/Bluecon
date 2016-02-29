@@ -1,11 +1,9 @@
-package de.uni_stuttgart.mci.bluecon.Util;
+package de.uni_stuttgart.mci.bluecon.util;
 
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.View;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 
 import java.util.ArrayList;
@@ -13,10 +11,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import de.uni_stuttgart.mci.bluecon.R;
-
 public class TtsWrapper implements TextToSpeech.OnInitListener, ITtsProvider {
-
     private static final String TAG = "TTS";
     private static TtsWrapper inst;
 
