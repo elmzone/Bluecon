@@ -192,28 +192,29 @@ public class ScanListFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_enableTTS:
-                if (item.isChecked()) {
-//                    disableTTS();
-                    item.setChecked(false);
-                } else {
-//                    enableTTS();
-                    item.setChecked(true);
-                }
-                sharedPreferences.edit().putBoolean(IS_TTS_ENABLED, item.isChecked()).apply();
-                return true;
-            case R.id.action_setting_activity:
-                Intent si = new Intent(getActivity(), SettingsActivity.class);
-                startActivityForResult(si, REQUEST_SETTINGS);
-                return true;
-            case R.id.action_register_beacon:
-                Intent ri = new Intent(getActivity(), RegisterBeacons.class);
-                startActivityForResult(ri, BEACON_ADDED);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+//        switch (item.getItemId()) {
+//            case R.id.action_enableTTS:
+//                if (item.isChecked()) {
+////                    disableTTS();
+//                    item.setChecked(false);
+//                } else {
+////                    enableTTS();
+//                    item.setChecked(true);
+//                }
+//                sharedPreferences.edit().putBoolean(IS_TTS_ENABLED, item.isChecked()).apply();
+//                return true;
+//            case R.id.action_setting_activity:
+//                Intent si = new Intent(getActivity(), SettingsActivity.class);
+//                startActivityForResult(si, REQUEST_SETTINGS);
+//                return true;
+//            case R.id.action_register_beacon:
+//                Intent ri = new Intent(getActivity(), RegisterBeacons.class);
+//                startActivityForResult(ri, BEACON_ADDED);
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

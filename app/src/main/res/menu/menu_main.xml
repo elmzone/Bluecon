@@ -7,7 +7,14 @@
         android:id="@+id/start_scan_service"
         android:icon="@drawable/ic_scan_button"
         android:title="@string/action_scan"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:visible="true" />
+    <item
+        android:id="@+id/stop_scan_service"
+        android:icon="@drawable/ic_signal_wifi_off_black_24dp"
+        android:title="Stop scanning"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
 
     <!-- Settings, should always be in the overflow -->
     <!--<item android:id="@+id/action_settings"-->

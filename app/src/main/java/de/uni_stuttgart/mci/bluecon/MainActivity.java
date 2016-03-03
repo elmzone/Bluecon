@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -53,19 +54,22 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import de.uni_stuttgart.mci.bluecon.fragments.ActBasePerms;
 import de.uni_stuttgart.mci.bluecon.fragments.NavigationListFragment;
+import de.uni_stuttgart.mci.bluecon.fragments.RegisterBeacons;
 import de.uni_stuttgart.mci.bluecon.util.BlueconPageAdapter;
 import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
 
 // API-OAuth:  739731480344-19rs3rqn9ncp4ebk035vph1fm9utgard.apps.googleusercontent.com
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, BeaconHolder.BeaconListener {
+public class MainActivity extends ActBasePerms implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, BeaconHolder.BeaconListener {
     private static String TAG = "main Activity";
 
     //Code Constants
     private final static int REQUEST_ENABLE_BT = 1;
     private final static int DATA_CHECK_CODE = 2;
     private final static int REQUEST_SETTINGS = 3;
+    private final static int BEACON_ADDED = 4;
 
 
     static final int TTL_IN_SECONDS = 3 * 60;
@@ -81,15 +85,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private List<IBluetoothCallback> blCallbacks = new ArrayList<>();
     private GoogleApiClient gApiClient;
 
+    private Menu menu;
 
     private Handler handler;
-    private final int duration = 3; // seconds
-    private final int sampleRate = 8000;
-    private final int numSamples = duration * sampleRate;
-    private final double sample[] = new double[numSamples];
-    private final double freqOfTone = 440; // hz
 
-    private final byte generatedSnd[] = new byte[2 * numSamples];
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -137,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        if (savedInstanceState == null) {
+            blAdapt = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
+        }
     }
 
     @Override
@@ -167,6 +170,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+    @Override
+    protected void onBlAdaptStarted() {
+        checkPermLocation();
+    }
+
+    @Override
+    protected void startBlServiceConn() {
+
+    }
+    @Override
     protected void onPostResume() {
         super.onPostResume();
         Runnable focus = new Runnable() {
@@ -178,16 +195,33 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         };
         Executors.newSingleThreadScheduledExecutor().schedule(focus, 1, TimeUnit.SECONDS);
-
-
+        if (menu != null) {
+            if (BlueconService.isRunning) {
+                menu.findItem(R.id.start_scan_service).setVisible(false);
+                menu.findItem(R.id.stop_scan_service).setVisible(true);
+            } else {
+                menu.findItem(R.id.stop_scan_service).setVisible(false);
+                menu.findItem(R.id.start_scan_service).setVisible(true);
+            }
+        }
     }
 
-    private void playExampleBeep(@NonNull final double freqOfTone, @NonNull final int duration) {
+    private void playExampleBeep(@NonNull final double freqOfTone, @NonNull final int duration, final int hard) {
         handler = new Handler();
+
+        final int sampleRate = 8000;
+        final int numSamples = duration * sampleRate;
+        final double sample[] = new double[numSamples];
+        final byte generatedSnd[] = new byte[2 * numSamples];
+
         final Thread thread = new Thread(new Runnable() {
             public void run() {
                 for (int i = 0; i < numSamples; ++i) {
-                    sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / freqOfTone));
+                    if (hard == 0) sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / freqOfTone));
+                    else {
+                        if ((i/(sampleRate/freqOfTone)%2)==1) sample[i] = 1;
+                        else sample[i] = -1;
+                    }
                 }
 
                 // convert to 16 bit pcm sound array
@@ -385,6 +419,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
+
+
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -401,6 +437,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
 
         return true;
     }
@@ -411,13 +448,46 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        switch (id) {
+            case R.id.start_scan_service:
+                startBlService();
+                item.setVisible(false);
+                menu.findItem(R.id.stop_scan_service).setVisible(true);
+//                onPostResume();
+                return true;
+            case R.id.stop_scan_service:
+                stopBlService();
+                item.setVisible(false);
+                menu.findItem(R.id.start_scan_service).setVisible(true);
+//                onPostResume();
+                return true;
+            case R.id.action_enableTTS:
+                if (item.isChecked()) {
+//                    disableTTS();
+                    item.setChecked(false);
+                } else {
+//                    enableTTS();
+                    item.setChecked(true);
+                }
+//                sharedPreferences.edit().putBoolean(IS_TTS_ENABLED, item.isChecked()).apply();
+                return true;
+            case R.id.action_setting_activity:
+                Intent si = new Intent(this, SettingsActivity.class);
+                startActivityForResult(si, REQUEST_SETTINGS);
+                return true;
+            case R.id.action_register_beacon:
+                Intent ri = new Intent(this, RegisterBeacons.class);
+                startActivityForResult(ri, BEACON_ADDED);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
         //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
 
-        return super.onOptionsItemSelected(item);
+//        return super.onOptionsItemSelected(item);
     }
 
     private String getPreference() {

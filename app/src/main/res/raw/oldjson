@@ -1,0 +1,84 @@
+{
+    "data": [
+        {
+            "DC450777CDEB": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Kubitza and Pohl",
+				"description" : "Room 01.033 - Thomas Kubitza and Norman Pohl"
+            }
+        },
+		{
+            "C0C6E86FA10C": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "printer room",
+				"description" : "Room 01.036A - Room with printer, laser cutter and 3D printer"
+            }
+        },
+		{
+            "D989CF04F205": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "restrooms",
+				"description" : "Room 01.034 - First door right is for males, second door right for females"
+            }
+        },
+		{
+            "C295938FE3B4": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Hardware lab",
+				"description" : "Room 01.035 - Room with tools for electronic and mechanical tasks"
+            }
+        },
+		{
+            "CF94C2B55BD8": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Anja Mebus",
+				"description" : "Room 01.021 - Secretary VIS and IWS, Anja Mebus"
+            }
+        },
+		{
+            "EEB67E1D35B2": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Albrecht Schmidt",
+				"description" : "Room 01.023 - Prof. Dr. Albrecht Schmidt"
+            }
+        },
+		{
+            "DD38A1965239": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Greis and Lischke",
+				"description" : "Room 01.025 - Miriam Greis and Lars Lischke"
+            }
+        },
+		{
+            "D457ED9310EC": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Niels Henze",
+				"description" : "Room 01.027 - Jun. Prof. Niels Henze"
+            }
+        },
+		{
+            "E74FE5DAC78D": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Wolf and Abdelrahman",
+				"description" : "Room 01.029 - Katrin Wolf and Yomna Abdelrahman"
+            }
+        },
+		{
+            "EB3125C54628": {
+                "category": "Indoor",
+                "subcategory": "Rooms",
+                "label": "Office Avila and Pfleging",
+				"description" : "Room 01.031 - Mauro Avila and Bastian Pfleging"
+            }
+        }
+    ]
+}

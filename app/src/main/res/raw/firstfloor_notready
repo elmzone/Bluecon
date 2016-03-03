@@ -1,0 +1,124 @@
+{
+    "data": [
+        {
+            "DD38A1965239": {
+				"type":"Blidget",
+				"id":"DD38A1965239",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "Office Greis and Lischke",
+				"roomId":"1.025",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.025 - Miriam Greis and Lars Lischke",
+				"neighborhood": [
+					{"1.018":"next room to the left across the hall"},
+					{"1.027":"next room to the right on the left side of the corridor"},
+					{"1.028":"across the corridor"}
+				]
+			}
+        },
+        {
+            "D457ED9310EC": {
+				"type":"Blidget",
+				"id":"D457ED9310EC",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "Office Niels Henze",
+				"roomId":"1.027",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.027 - Jun. Prof. Niels Henze",
+				"neighborhood": [
+					{"1.025":"next room to the left on the right side of the corridor"},
+					{"1.029":"next room to the right on the left side of the corridor"}
+				]
+			}
+        },
+        {
+            "E74FE5DAC78D": {
+				"type":"Blidget",
+				"id":"E74FE5DAC78D",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "Office Wolf and Abdelrahman",
+				"roomId":"1.029",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.029 - Katrin Wolf and Yomna Abdelrahman",
+				"neighborhood": [
+					{"1.027":"next room to the left on the right side of the corridor"},
+					{"1.031":"next room to the right on the left side of the corridor"}
+				]
+			}
+        },
+        {
+            "EB3125C54628": {
+				"type":"Blidget",
+				"id":"EB3125C54628",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "Office Avila and Pfleging",
+				"roomId":"1.031",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.031 - Mauro Avila and Bastian Pfleging",
+				"neighborhood": [
+					{"1.029":"next room to the left on the right side of the corridor"},
+					{"1.033":"next room to the right on the left side of the corridor"}
+				]
+			}
+        },
+        {
+            "DC450777CDEB": {
+				"type":"Blidget",
+				"id":"DC450777CDEB",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "Office Kubitza and Pohl",
+				"roomId":"1.033",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.033 - Thomas Kubitza and Norman Pohl",
+				"neighborhood": [
+					{"1.035":"next room to the right on the left side of the corridor"},
+					{"1.031":"next room to the left on the right side of the corridor"},
+					{"1.034":"across the corridor"}
+				]
+			}
+        },
+        {
+            "D989CF04F205": {
+				"type":"Blidget",
+				"id":"D989CF04F205",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "restrooms",
+				"roomId":"1.034",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.034 - First door right is for males, second door right for females",
+				"neighborhood": [
+					{"1.031":"across the corridor left"},
+					{"1.033":"across the corridor right"}
+				]
+			}
+        },
+        {
+            "C295938FE3B4": {
+				"type":"Blidget",
+				"id":"C295938FE3B4",
+				"status":"STATUS_UNSPECIFIED",
+                "placeId": "???",
+				"roomId":"1.035",
+				"latitude":null,
+				"longitude":null,
+				"expectedStability":"STABILITY_UNSPECIFIED",
+				"description" : "Room 01.035 - ???",
+				"neighborhood": [
+					{"1.033":"next room to the left on the right side of the corridor"}
+				]
+			}
+        }
+    ]
+}

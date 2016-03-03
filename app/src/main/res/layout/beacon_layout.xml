@@ -48,7 +48,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="40dp" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/expandArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

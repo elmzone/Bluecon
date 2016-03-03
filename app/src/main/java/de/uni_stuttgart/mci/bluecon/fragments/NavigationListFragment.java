@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.R;
+import de.uni_stuttgart.mci.bluecon.util.DiagBeaconChoose;
+import de.uni_stuttgart.mci.bluecon.util.IResultListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +31,9 @@ public class NavigationListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Button bt_from;
+    private Button bt_to;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,6 +73,29 @@ public class NavigationListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.navigation_list_fragment, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().findViewById(R.id.bt_from).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DiagBeaconChoose().setResultListener(new IResultListener<BeaconsInfo>() {
+                    @Override
+                    public void onResult(BeaconsInfo result) {
+                        result.getClass();
+                    }
+                }).show(getActivity().getSupportFragmentManager(), "dialog");
+            }
+        });
+
+        getActivity().findViewById(R.id.bt_to).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

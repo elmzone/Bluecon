@@ -93,7 +93,7 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
         bundle.putString("mac", beaconsInfo.macAddress);
         bundle.putInt("position", position);
         viewMap.put(beaconsInfo.macAddress, beaconsViewHolder);
-        contextFragment.getLoaderManager().initLoader(loaderID, bundle, new BeaconDataLoaderCallbacks());
+//        contextFragment.getLoaderManager().initLoader(loaderID, bundle, new BeaconDataLoaderCallbacks());
         loaderID++;
 
         if (position == expandedPosition) {
@@ -225,7 +225,7 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
                     e.printStackTrace();
                 }
 
-                jsonLoader.download(testURL, true, contextFragment.getActivity());
+//                jsonLoader.download(testURL, true, contextFragment.getActivity());
             }
         }
 

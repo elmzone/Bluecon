@@ -11,10 +11,27 @@
     android:background="@color/light_blue"
     tools:context=".fragments.NavigationListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Button
+        android:background="@drawable/button"
+        android:id="@+id/bt_from"
+        style="@style/button"
+        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_gravity="left"
+        android:text="@string/txt_bt_from" />
 
+
+    <Button
+        android:background="@drawable/button"
+        android:id="@+id/bt_to"
+        style="@style/button"
+        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_gravity="left"
+        android:text="@string/txt_bt_to" />
+</LinearLayout>
 </FrameLayout>
