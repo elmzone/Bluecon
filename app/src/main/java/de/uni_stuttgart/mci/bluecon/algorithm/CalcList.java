@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
 
 /**
  * Created by florian on 23.10.15.

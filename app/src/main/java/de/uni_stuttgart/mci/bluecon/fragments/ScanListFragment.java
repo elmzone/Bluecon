@@ -24,7 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,13 +31,13 @@ import java.util.Collections;
 import java.util.List;
 
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
-import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
-import de.uni_stuttgart.mci.bluecon.BeaconsViewHolder;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
 import de.uni_stuttgart.mci.bluecon.BlueconService;
 import de.uni_stuttgart.mci.bluecon.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.MainActivity;
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.SettingsActivity;
 import de.uni_stuttgart.mci.bluecon.scan.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.util.ITtsProvider;
 import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
@@ -48,15 +47,14 @@ import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 
 public class ScanListFragment
-        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconsAdapter.OnListHeadChange, BeaconHolder.BeaconListener, TtsWrapper.ITtsUser {
+        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconsAdapter.OnListHeadChange, BeaconHolder.IBeaconListener, TtsWrapper.ITtsUser {
 
     //private static String TAG = "ScanListFragment";
 
     private RecyclerView mRecyclerView;
     private Adapter<BeaconsViewHolder> mAdapter;
-    private List<BeaconsInfo> resultList;
+//    private List<BeaconsInfo> resultList;
     private SwipeRefreshLayout swipeLayout;
-    private Button startServiceButton;
     private boolean startButtonToggle = true;
 
     private String currentLocation = null;
@@ -86,7 +84,7 @@ public class ScanListFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)getActivity()).registerBlCallback(this);
+        ((MainActivity) getActivity()).registerBlCallback(this);
 
 
     }
@@ -102,7 +100,6 @@ public class ScanListFragment
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.scan_recycler_view);
         registerForContextMenu(mRecyclerView);
-        startServiceButton = (Button) rootView.findViewById(R.id.service_start);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         calcList = CalcList.getInstance();
 
@@ -144,30 +141,9 @@ public class ScanListFragment
         });
 
 
-        startServiceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (startButtonToggle) {
-                    Log.i(TAG, "Start Button clicked");
-                    tts.queueRead("begin scanning");
-                    vibrator.vibrate(VibratorBuilder.LONG_LONG);
-                    startServiceButton.setText(R.string.stop_service);
-                    startBlService();
-                    startButtonToggle = false;
-                } else {
-                    Log.i(TAG, "stop button clicked");
-                    vibrator.vibrate(VibratorBuilder.SHORT_SHORT);
-                    tts.queueRead("stop scanning");
-                    startServiceButton.setText(R.string.start_service);
-                    stopBlService();
-                    startButtonToggle = true;
-                }
-            }
-        });
+//        resultList = new ArrayList<BeaconsInfo>();
 
-        resultList = new ArrayList<BeaconsInfo>();
-
-        mAdapter = new BeaconsAdapter(resultList, this, BeaconDBHelper.getInstance(getActivity()));
+        mAdapter = new BeaconsAdapter(new ArrayList<BeaconLocation>(), this, BeaconDBHelper.getInstance(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
         mHandler = new Handler();
@@ -264,30 +240,30 @@ public class ScanListFragment
         }
     }
 
-
-    private void setStartButtonEnable(boolean isEnable) {
-        //TODO remove from code
-        // startServiceButton.setEnabled(isEnable);
-        //stopServiceButton.setEnabled(!isEnable);
-    }
+//
+//    private void setStartButtonEnable(boolean isEnable) {
+//        //TODO remove from code
+//        // startServiceButton.setEnabled(isEnable);
+//        //stopServiceButton.setEnabled(!isEnable);
+//    }
 
     private void updateList() {
         Log.i(TAG, "get List" + BeaconHolder.beacons());
         @SuppressWarnings("unchecked")
-        List<BeaconsInfo> beaconsInfo = BeaconHolder.beacons();
-        List<BeaconsInfo> newList = calcList.calcList(beaconsInfo);
-
-        Collections.sort(newList);
-        resultList.clear();
-        if (!newList.isEmpty()) {
-            if (sharedPreferences.getBoolean("prefGuideSwitch", true)) {
-
-            }
-            if (sharedPreferences.getBoolean("prefVibrationSwitch", true)) {
-
-            }
-        }
-        resultList.addAll(newList);
+        List<BeaconLocation> beaconsInfo = BeaconHolder.beacons();
+//        List<BeaconsInfo> newList = calcList.calcList(beaconsInfo);
+//
+//        Collections.sort(newList);
+////        resultList.clear();
+//        if (!newList.isEmpty()) {
+//            if (sharedPreferences.getBoolean("prefGuideSwitch", true)) {
+//
+//            }
+//            if (sharedPreferences.getBoolean("prefVibrationSwitch", true)) {
+//
+//            }
+//        }
+//        resultList.addAll(newList);
 
         mAdapter.notifyDataSetChanged();
     }
@@ -353,32 +329,10 @@ public class ScanListFragment
     @Override
     public void onResume() {
         super.onResume();
+        BeaconHolder.inst().registerBeaconListener(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         tts = TtsWrapper.inst().registerUser(this);
-        if (!isRunning(getActivity())) {
-            setStartButtonEnable(true);
-        } else {
-            setStartButtonEnable(false);
-            if (BlueconService.isRunning) {
-                updateUI.run();
-            } else {
-                startBlService();
-                //  Toast.makeText(getActivity(), "service is still running, bind again", Toast.LENGTH_SHORT).show();
-            }
-        }
         Log.e(TAG, "onResume: ");
-    }
-
-    private void startBlService() {
-        Intent intent = new Intent(getActivity(), BlueconService.class);
-        //   getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
-        getActivity().startService(intent);
-        BeaconHolder.inst().registerBeaconListener(this);
-    }
-
-    private void stopBlService() {
-        getActivity().stopService(new Intent(getActivity(), BlueconService.class));
-        BeaconHolder.inst().deregisterBeaconListener(this);
     }
 
     @Override
@@ -389,7 +343,7 @@ public class ScanListFragment
         }
         TtsWrapper.inst().deregisterUser(this);
         BeaconHolder.inst().deregisterBeaconListener(this);
-        ((MainActivity)getActivity()).deregisterBlCallback(this);
+        ((MainActivity) getActivity()).deregisterBlCallback(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 

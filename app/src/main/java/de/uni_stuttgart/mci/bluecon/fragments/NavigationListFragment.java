@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.util.DiagBeaconChoose;
 import de.uni_stuttgart.mci.bluecon.util.IResultListener;

@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import de.uni_stuttgart.mci.bluecon.BeaconsViewHolder;
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 import de.uni_stuttgart.mci.bluecon.R;
 
 /**
@@ -55,8 +55,8 @@ public class SearchListAdapter extends RecyclerView.Adapter <BeaconsViewHolder>{
         if(beaconInfo.description !=null)
             viewHolder.vDescription.setText(beaconInfo.description);
         if(beaconInfo.category != null)
-            viewHolder.vCategory.setText(beaconInfo.category);
+            viewHolder.vRoomId.setText(beaconInfo.category);
         if(beaconInfo.subcategory != null)
-            viewHolder.vSubcategory.setText(beaconInfo.subcategory);
+            viewHolder.vPlaceId.setText(beaconInfo.subcategory);
     }
 }

@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -18,11 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,23 +42,21 @@ import com.google.android.gms.nearby.messages.PublishOptions;
 import com.google.android.gms.nearby.messages.Strategy;
 import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
-import com.google.api.services.proximitybeacon.v1beta1.Proximitybeacon;
-import com.google.api.services.proximitybeacon.v1beta1.ProximitybeaconRequestInitializer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import de.uni_stuttgart.mci.bluecon.fragments.ActBasePerms;
-import de.uni_stuttgart.mci.bluecon.fragments.NavigationListFragment;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.act.ActBasePerms;
 import de.uni_stuttgart.mci.bluecon.fragments.RegisterBeacons;
-import de.uni_stuttgart.mci.bluecon.util.BlueconPageAdapter;
+import de.uni_stuttgart.mci.bluecon.fragments.BlueconPageAdapter;
 import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
 
 // API-OAuth:  739731480344-19rs3rqn9ncp4ebk035vph1fm9utgard.apps.googleusercontent.com
 
-public class MainActivity extends ActBasePerms implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, BeaconHolder.BeaconListener {
+public class MainActivity extends ActBasePerms implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static String TAG = "main Activity";
 
     //Code Constants
@@ -174,6 +168,7 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         super.onResume();
 
     }
+
     @Override
     protected void onBlAdaptStarted() {
         checkPermLocation();
@@ -183,18 +178,19 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
     protected void startBlServiceConn() {
 
     }
+
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Runnable focus = new Runnable() {
-            @Override
-            public void run() {
-                View currentFocus = getCurrentFocus();
-                if (currentFocus != null) currentFocus.clearFocus();
-                findViewById(R.id.service_start).sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-            }
-        };
-        Executors.newSingleThreadScheduledExecutor().schedule(focus, 1, TimeUnit.SECONDS);
+//        Runnable focus = new Runnable() {
+//            @Override
+//            public void run() {
+//                View currentFocus = getCurrentFocus();
+//                if (currentFocus != null) currentFocus.clearFocus();
+//                findViewById(R.id.service_start).sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+//            }
+//        };
+//        Executors.newSingleThreadScheduledExecutor().schedule(focus, 1, TimeUnit.SECONDS);
         if (menu != null) {
             if (BlueconService.isRunning) {
                 menu.findItem(R.id.start_scan_service).setVisible(false);
@@ -217,9 +213,10 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         final Thread thread = new Thread(new Runnable() {
             public void run() {
                 for (int i = 0; i < numSamples; ++i) {
-                    if (hard == 0) sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / freqOfTone));
+                    if (hard == 0)
+                        sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / freqOfTone));
                     else {
-                        if ((i/(sampleRate/freqOfTone)%2)==1) sample[i] = 1;
+                        if ((i / (sampleRate / freqOfTone) % 2) == 1) sample[i] = 1;
                         else sample[i] = -1;
                     }
                 }
@@ -251,7 +248,7 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         thread.start();
 
 
-}
+    }
 
     private void checkBLE(Context context) {
         if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -299,12 +296,10 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         Intent intent = new Intent(this, BlueconService.class);
         //   getActivity().bindService(intent, mServiceConnection, Service.BIND_AUTO_CREATE);
         startService(intent);
-        BeaconHolder.inst().registerBeaconListener(this);
     }
 
     private void stopBlService() {
         stopService(new Intent(this, BlueconService.class));
-        BeaconHolder.inst().deregisterBeaconListener(this);
     }
 
 //    private void startBlService() {
@@ -419,8 +414,6 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
     }
 
 
-
-
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -523,24 +516,4 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.disconnect();
     }
-
-
-    @Override
-    public void onBeaconsChanged(List<BeaconsInfo> changedBeacons) {
-//        updateList();
-    }
-
-    @Override
-    public void onBeaconsAdded() {
-
-//        updateList();
-    }
-
-    @Override
-    public void onBeaconsRemoved(List<BeaconsInfo> removedBeacons) {
-
-//        updateList();
-    }
-
-
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.database.BeaconLocationTable;
 import de.uni_stuttgart.mci.bluecon.database.DatabaseUtil;
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 
 /**
  * Created by florian on 22.01.16.

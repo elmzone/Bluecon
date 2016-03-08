@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import de.uni_stuttgart.mci.bluecon.database.BeaconLocationTable.LocationEntry;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 import de.uni_stuttgart.mci.bluecon.network.DownloadUrlTable;
 
 import java.util.ArrayList;

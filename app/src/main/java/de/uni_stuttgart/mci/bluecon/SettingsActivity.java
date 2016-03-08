@@ -41,6 +41,9 @@ public class SettingsActivity extends PreferenceActivity {
         private ListPreference frequencyPref;
         private EditTextPreference thresholdPref;
         private EditTextPreference linkPref;
+        private EditTextPreference beepDuraPref;
+        private EditTextPreference beepFreqPref;
+
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,18 @@ public class SettingsActivity extends PreferenceActivity {
 
             frequencyPref = (ListPreference) findPreference(getString(R.string.cnst_period));
             frequencyPref.setDefaultValue(1);
-            frequencyPref.setTitle(R.string.pref_frequency_summary + " : " + frequencyPref.getEntry());
+            frequencyPref.setTitle(getString(R.string.pref_frequency_summary) + " : " + frequencyPref.getEntry());
+
+            beepFreqPref = (EditTextPreference) findPreference(getString(R.string.pref_beep_freq_key));
+            beepFreqPref.setDefaultValue(440);
+            beepFreqPref.setTitle(getString(R.string.pref_beep_freq) + " : " + beepFreqPref.getText());
+
+            beepDuraPref = (EditTextPreference) findPreference(getString(R.string.pref_beep_dura_key));
+            beepDuraPref.setDefaultValue(2);
+            beepDuraPref.setTitle(getString(R.string.pref_beep_dura) + " : " + beepDuraPref.getText());
 
             thresholdPref = (EditTextPreference) findPreference("prefThreshold");
-            thresholdPref.setTitle(R.string.pref_frequency_summary + " : " + thresholdPref.getText());
+            thresholdPref.setTitle(getString(R.string.pref_frequency_summary) + " : " + thresholdPref.getText());
 
             linkPref = (EditTextPreference) findPreference(getString(R.string.prefs_link_url));
             createButton();
@@ -74,17 +85,20 @@ public class SettingsActivity extends PreferenceActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals("prefThreshold")) {
-                Log.i(TAG, "preference Threshold!");
+//            if (key.equals("prefThreshold")) {
+//                Log.i(TAG, "preference Threshold!");
+//
+//                thresholdPref.setTitle(getString(R.string.pref_frequency_summary) + " : " + thresholdPref.getText());
+//
+//            }
+//
+//            if (key.equals(getString(R.string.cnst_period))) {
+//                Log.i(TAG, "preference Frequency!");
+//                frequencyPref.setTitle(getString(R.string.pref_frequency_summary) + " : " + frequencyPref.getEntry());
+//            }
 
-                thresholdPref.setTitle(R.string.pref_frequency_summary + " : " + thresholdPref.getText());
-
-            }
-
-            if (key.equals(getString(R.string.cnst_period))) {
-                Log.i(TAG, "preference Frequency!");
-                frequencyPref.setTitle(R.string.pref_frequency_summary + " : " + frequencyPref.getEntry());
-            }
+            getPreferenceScreen().removeAll();
+            addPreferencesFromResource(R.xml.settings);
         }
 
         private void createButton() {

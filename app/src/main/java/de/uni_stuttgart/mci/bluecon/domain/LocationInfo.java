@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.database;
+package de.uni_stuttgart.mci.bluecon.domain;
 
 public class LocationInfo {
     public String macAddress = "macaddress";

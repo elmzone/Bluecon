@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.fragments;
+package de.uni_stuttgart.mci.bluecon.act;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;

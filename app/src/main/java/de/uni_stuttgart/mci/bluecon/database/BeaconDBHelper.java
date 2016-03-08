@@ -70,7 +70,7 @@ public class BeaconDBHelper extends SQLiteOpenHelper {
                 + LocationEntry.COLUMN_NAME_SUBCATEGORY + COMMA_SEP
                 +LocationEntry.COLUMN_NAME_LABEL + COMMA_SEP
                 + LocationEntry.COLUNM_NAME_DESCRIPTION  + ") "
-                + " VALUES ( 'E7D38F1CF82E', 'indoor','desk','hanwen''s desk','my beautiful desk!')");
+                + " VALUES ( 'C595FCCC8D5C', 'indoor','desk','hanwen''s desk','my beautiful desk!')");
     }
 
     // reinitiate on upgrade

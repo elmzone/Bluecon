@@ -3,11 +3,9 @@ package de.uni_stuttgart.mci.bluecon.scan;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -22,24 +20,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
-import de.uni_stuttgart.mci.bluecon.BeaconsViewHolder;
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
-import de.uni_stuttgart.mci.bluecon.algorithm.RangeThreshold;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
 import de.uni_stuttgart.mci.bluecon.network.JSONLoader;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
+import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
 
 public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
 
-    private List<BeaconsInfo> beaconsList;
+    private List<BeaconLocation> beaconsList;
     private static final String TAG = "BeaconsAdapter";
     private static final String NOT_FOUND = "not found";
 
@@ -59,7 +56,7 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
 
     OnListHeadChange mCallback;
 
-    public BeaconsAdapter(List<BeaconsInfo> beaconsMap, Fragment fragment, de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper beaconDBHelper) {
+    public BeaconsAdapter(List<BeaconLocation> beaconsMap, Fragment fragment, de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper beaconDBHelper) {
         this.beaconsList = beaconsMap;
         this.contextFragment = fragment;
         this.beaconDBHelper = beaconDBHelper;
@@ -72,10 +69,10 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
 
     @Override
     public void onBindViewHolder(BeaconsViewHolder beaconsViewHolder, int position) {
-        final BeaconsInfo beaconsInfo = beaconsList.get(position);
+        final BeaconLocation beaconsInfo = beaconsList.get(position);
         Log.d(TAG, "0: beaconsInfo is " + beaconsInfo);
 
-        beaconsViewHolder.vName.setText(beaconsInfo.name);
+        beaconsViewHolder.vName.setText(beaconsInfo.placeId);
         String rangeHint = readRssi(beaconsInfo.RSSI);
         beaconsViewHolder.vRSSI.setText(rangeHint);
         beaconsViewHolder.vRSSI_details.setText(String.valueOf(beaconsInfo.RSSI));
@@ -120,13 +117,20 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
     @Override
     public BeaconsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View v = LayoutInflater.from(context).inflate(R.layout.beacon_layout, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.beacon_layout_with_buttons, parent, false);
         BeaconsViewHolder beaconsViewHolder = new BeaconsViewHolder(v);
         beaconsViewHolder.parent.setOnClickListener(new View.OnClickListener() {
             private final static double EXPAND_RATIO = 3.2;
             private int mOriginalHeight = 0;
             private int mExpandHeight = 0;
             private boolean isInited = false;
+
+//            TODO addapt Expand ratio to actual BeaconView size not static value. Possible code below:
+//            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            View contentview = inflater.inflate(R.layout.YOURLAYOUTNAME, null, false);
+//            contentview.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+//            int width = contentview.getMeasuredWidth();
+//            int height = contentview.getMeasuredHeight();
 
             private SoundPoolPlayer player;
 
@@ -205,25 +209,25 @@ public class BeaconsAdapter extends Adapter<BeaconsViewHolder> {
                 if (data.description != null)
                     mBeaconsViewHolder.vDescription.setText(data.description);
                 if (data.category != null)
-                    mBeaconsViewHolder.vCategory.setText(data.category);
+                    mBeaconsViewHolder.vRoomId.setText(data.category);
                 if (data.subcategory != null)
-                    mBeaconsViewHolder.vSubcategory.setText(data.subcategory);
+                    mBeaconsViewHolder.vPlaceId.setText(data.subcategory);
 
                 Log.i(TAG, "interface is" + mCallback);
                 mCallback.onLabelNameChange(data.label, position);
             } else {
                 Log.d(TAG, "3: the data is null");
-                mBeaconsViewHolder.vCategory.setText(NOT_FOUND);
-                mBeaconsViewHolder.vSubcategory.setText(NOT_FOUND);
+                mBeaconsViewHolder.vRoomId.setText(NOT_FOUND);
+                mBeaconsViewHolder.vPlaceId.setText(NOT_FOUND);
                 mBeaconsViewHolder.vDescription.setText(NOT_FOUND);
                 URL testURL = null;
-                try {
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contextFragment.getActivity());
-                    testURL = new URL(sharedPreferences.getString("prefLink", "http://meschup.hcilab.org/map"));
-                    Log.i(TAG, "Database comes from " + testURL);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contextFragment.getActivity());
+//                    testURL = new URL(sharedPreferences.getString("prefLink", "http://meschup.hcilab.org/map"));
+//                    Log.i(TAG, "Database comes from " + testURL);
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
 
 //                jsonLoader.download(testURL, true, contextFragment.getActivity());
             }

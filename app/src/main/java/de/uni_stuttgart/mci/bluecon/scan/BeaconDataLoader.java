@@ -6,7 +6,7 @@ import android.util.Log;
 
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.database.DatabaseUtil;
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 
 /**
  * Created by florian on 01.12.15.

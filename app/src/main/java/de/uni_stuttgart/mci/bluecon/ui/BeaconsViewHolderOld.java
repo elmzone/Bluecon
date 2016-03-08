@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon;
+package de.uni_stuttgart.mci.bluecon.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -6,10 +6,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import de.uni_stuttgart.mci.bluecon.R;
+
 /**
  * Created by florian on 01.12.15.
  */
-public class BeaconsViewHolder extends RecyclerView.ViewHolder {
+public class BeaconsViewHolderOld extends RecyclerView.ViewHolder {
 
     public View parent;
     public TextView vName;
@@ -24,16 +26,16 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = "BeaconViewHolder";
 
-    public  BeaconsViewHolder (View view) {
+    public BeaconsViewHolderOld(View view) {
         super(view);
 
         parent = view;
         vName = (TextView) view.findViewById(R.id.beacon_item_name);
         vRSSI = (TextView) view.findViewById(R.id.beacon_item_RSSI);
         vRSSI_details = (TextView) view.findViewById(R.id.beacon_item_RSSI_details);
-        vCategory = (TextView) view.findViewById(R.id.beacon_item_category);
+//        vRoomId = (TextView) view.findViewById(R.id.beacon_item_category);
         vDescription = (TextView) view.findViewById(R.id.beacon_item_description);
-        vSubcategory = (TextView) view.findViewById(R.id.beacon_item_subcategory);
+//        vPlaceId = (TextView) view.findViewById(R.id.beacon_item_subcategory);
         vExpandArea = (LinearLayout) view.findViewById(R.id.expandArea);
 
         btnBeep = (Button) view.findViewById(R.id.beacon_beep);

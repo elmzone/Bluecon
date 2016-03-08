@@ -8,7 +8,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
@@ -32,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
+import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.util.BlGattBeeper;
 import de.uni_stuttgart.mci.bluecon.util.BrdcstStop;
 
@@ -190,16 +189,16 @@ public class BlueconService extends Service {
             resultsMap.clear();
             startScan();
 //			Stops scanning after a pre-defined scan period.
-            scanHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    Log.d(TAG, "now scan will stop");
-                    stopScan();
-                    mapToList(resultsMap, BeaconHolder.beacons());
-                    Log.d(TAG, "now the list is" + BeaconHolder.beacons());
-                }
-            }, scanPeriod);
+//            scanHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mScanning = false;
+//                    Log.d(TAG, "now scan will stop");
+//                    stopScan();
+//                    mapToList(resultsMap, BeaconHolder.beacons());
+//                    Log.d(TAG, "now the list is" + BeaconHolder.beacons());
+//                }
+//            }, scanPeriod);
         } else {
             if (mScanning) {
                 mScanning = false;
@@ -389,12 +388,13 @@ public class BlueconService extends Service {
     private class ScanListener extends ScanCallback {
 
         public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
-            if (resultsMap.containsKey(result.getDevice().getAddress())) {
-
-            } else {
-                addBeaconToMap(result, resultsMap);
-                BeaconHolder.inst().addBeacons(mapToList(resultsMap));
-            }
+            BeaconHolder.inst().handleNewBeacon(result);
+// if (resultsMap.containsKey(result.getDevice().getAddress())) {
+//
+//            } else {
+//                addBeaconToMap(result, resultsMap);
+//                BeaconHolder.inst().addBeacons(mapToList(resultsMap));
+//            }
         }
 
         public void onBatchScanResults(java.util.List<android.bluetooth.le.ScanResult> results) {
@@ -404,12 +404,10 @@ public class BlueconService extends Service {
             for (int i = 0; i < results.size(); i++) {
                 ScanResult result = results.get(i);
 
-                if (!resultsMap.containsKey(result.getDevice().getAddress())) {
-                    Log.d(TAG, "add item" + result + "to list");
-                    addBeaconToMap(result, resultsMap);
-                    BeaconHolder.inst().addBeacons(mapToList(resultsMap));
+                Log.d(TAG, "add item" + result + "to list");
+                BeaconHolder.inst().handleNewBeacon(result);
                 }
-            }
+
         }
 
         public void onScanFailed(int errorCode) {

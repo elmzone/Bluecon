@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
-import de.uni_stuttgart.mci.bluecon.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
+import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.R;
 
 /**
@@ -28,9 +29,9 @@ import de.uni_stuttgart.mci.bluecon.R;
  */
 public class DiagBeaconChoose extends DialogFragment {
     private ListView beaconlist;
-    private IResultListener<BeaconsInfo> resultListener;
+    private IResultListener<BeaconLocation> resultListener;
 
-    public DiagBeaconChoose setResultListener(IResultListener<BeaconsInfo> IResultListener) {
+    public DiagBeaconChoose setResultListener(IResultListener<BeaconLocation> IResultListener) {
         this.resultListener = IResultListener;
         return this;
     }
@@ -50,15 +51,15 @@ public class DiagBeaconChoose extends DialogFragment {
         builder.setTitle(R.string.txt_dia_choose_beacon);
         beaconlist = (ListView) v.findViewById(R.id.list_beacon_choose);
 
-        ArrayAdapter<BeaconsInfo> adapter = new AdapterBeacons(getActivity(), R.id.beacon_item_name, new ArrayList<>(BeaconHolder.beacons()));
+        ArrayAdapter<BeaconLocation> adapter = new AdapterBeacons(getActivity(), R.id.beacon_item_name, new ArrayList<>(BeaconHolder.beacons()));
 
         beaconlist.setAdapter(adapter);
 
         beaconlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BeaconsInfo beaconsInfo = (BeaconsInfo) parent.getItemAtPosition(position);
-                resultListener.onResult(beaconsInfo);
+                BeaconLocation beaconLocation = (BeaconLocation) parent.getItemAtPosition(position);
+                resultListener.onResult(beaconLocation);
                 dismiss();
             }
         });
@@ -67,15 +68,15 @@ public class DiagBeaconChoose extends DialogFragment {
     }
 
 
-    private class AdapterBeacons extends ArrayAdapter<BeaconsInfo> {
+    private class AdapterBeacons extends ArrayAdapter<BeaconLocation> {
 
-        public AdapterBeacons(Context context, int resource, List<BeaconsInfo> objects) {
+        public AdapterBeacons(Context context, int resource, List<BeaconLocation> objects) {
             super(context, resource, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            BeaconsInfo beacon = getItem(position);
+            BeaconLocation beacon = getItem(position);
             ViewHolder holder;
             if (convertView == null) {
                 convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.litem_beacon, parent, false);
@@ -87,7 +88,7 @@ public class DiagBeaconChoose extends DialogFragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.name.setText(beacon.name);
+            holder.name.setText(beacon.placeId);
 //            holder.description.setText(beacon.describeContents());
             return convertView;
         }

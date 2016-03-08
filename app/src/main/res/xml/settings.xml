@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <PreferenceCategory android:title="@string/pref_audio">
+
         <EditTextPreference
-            android:title="@string/pref_approaching"
-            android:summary="@string/pref_audio_summary"
             android:defaultValue="@string/pref_approaching_default"
-            android:key="prefAudio">
-        </EditTextPreference>
+            android:key="prefAudio"
+            android:summary="@string/pref_audio_summary"
+            android:title="@string/pref_approaching"></EditTextPreference>
+
+        <EditTextPreference
+            android:defaultValue="440"
+            android:key="@string/pref_beep_freq_key"
+            android:summary="@string/pref_beep_freq_summary"
+            android:title="@string/pref_beep_freq"></EditTextPreference>
+
+        <EditTextPreference
+            android:defaultValue="2"
+            android:key="@string/pref_beep_dura_key"
+            android:summary="@string/pref_beep_dura_summary"
+            android:title= "@string/pref_beep_dura"></EditTextPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_network">
-        <EditTextPreference
-            android:title="@string/pref_link"
-            android:summary="@string/pref_link_summary"
-            android:defaultValue="@string/pref_link_default"
-            android:key="prefLink">
-        </EditTextPreference>
 
-        <Preference android:title="@string/update_button"
+        <EditTextPreference
+            android:defaultValue="@string/pref_link_default"
+            android:key="prefLink"
+            android:summary="@string/pref_link_summary"
+            android:title="@string/pref_link"></EditTextPreference>
+
+        <Preference
             android:key="update_button"
             android:summary="@string/update_button_summary"
-            />
+            android:title="@string/update_button" />
         <!--android:layout="@layout/preference_button_layout"-->
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_scan">
+
         <SwitchPreference
             android:defaultValue="true"
             android:key="prefGuideSwitch"
             android:summary="@string/pref_guide_switch_summary"
-            android:title="@string/pref_guide_switch">
-        </SwitchPreference>
+            android:title="@string/pref_guide_switch"></SwitchPreference>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="prefVibrationSwitch"
             android:summary="@string/pref_vibration_switch_summary"
-            android:title="@string/pref_vibration_switch">
-        </SwitchPreference>
+            android:title="@string/pref_vibration_switch"></SwitchPreference>
 
         <EditTextPreference
             android:title="@string/pref_threshold"
-            android:summary="@string/pref_threshold_summary"
             android:defaultValue="75"
-            android:key="prefThreshold">
-        </EditTextPreference>
+            android:key="prefThreshold"
+            android:summary="@string/pref_threshold_summary"></EditTextPreference>
 
         <ListPreference
-            android:key="prefFrequency"
+            android:title="@string/pref_frequency"
             android:entries="@array/prefFrequency"
             android:entryValues="@array/prefFrequencyValues"
-            android:title="@string/pref_frequency">
-        </ListPreference>
+            android:key="prefFrequency">
+            </ListPreference>
     </PreferenceCategory>
 
 

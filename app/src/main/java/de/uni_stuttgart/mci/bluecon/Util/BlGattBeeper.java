@@ -5,11 +5,16 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import de.uni_stuttgart.mci.bluecon.BlueconApp;
+import de.uni_stuttgart.mci.bluecon.R;
 
 /**
  * Created by flori_000 on 03.02.2016.
@@ -20,34 +25,37 @@ public class BlGattBeeper extends BluetoothGattCallback {
     BluetoothGatt gattServer;
 
 
-    public void beepFor(long time, TimeUnit timeUnit) {
+    public void beepFor(long time, TimeUnit timeUnit, int frequency) {
 
         BluetoothGattService s = gattServer.getService(UUID.fromString("31300000-5347-4233-3074-656764696c42"));
         BluetoothGattCharacteristic c = s.getCharacteristic(UUID.fromString("31300102-5347-4233-3074-656764696c42"));
         Objects.requireNonNull(c);
-            c.setValue(new byte[]{0x21, 01, 02, (byte) 0xB4, 46, (byte) 0xF4, 01, (byte) 0xF4, 01, (byte) 0xF4, 01});
-            if (gattServer.writeCharacteristic(c)) {
-                Log.i(TAG, "onServicesDiscovered: Command Characteristic");
+        int freq = (16000000 / (frequency * 2));
+        int first = freq >> 8;
+        int second = freq - first;
+
+
+//        c.setValue(new byte[]{0x21, 01, 01, (byte) 0xB4, 46, (byte) 0xF4, 01, (byte) 0xF4, 01, (byte) 0xF4, 01});
+        c.setValue(new byte[]{0x21, 01, 01, (byte) second, (byte) first, (byte) 0xF4, 01, (byte) 0xF4, 01, (byte) 0xF4, 01});
+        if (gattServer.writeCharacteristic(c)) {
+            Log.i(TAG, "onServicesDiscovered: Command Characteristic");
+        }
+        ScheduleUtil.scheduleWork(new Runnable() {
+            public BluetoothGattCharacteristic c;
+
+            public Runnable init(BluetoothGattCharacteristic c) {
+                this.c = c;
+                return this;
             }
-            ScheduleUtil.scheduleWork(new Runnable() {
-                public BluetoothGattCharacteristic c;
 
-                public Runnable init(BluetoothGattCharacteristic c) {
-                    this.c = c;
-                    return this;
+            @Override
+            public void run() {
+                this.c.setValue(new byte[]{0x21, 01, 03, (byte) 0xB4, 46, 00, 00, 00, 00, 00, 00});
+                if (gattServer.writeCharacteristic(c)) {
+                    Log.i(TAG, "onServicesDiscovered: Command Characteristic");
                 }
-
-                @Override
-                public void run() {
-                    this.c.setValue(new byte[]{0x21, 01, 02, (byte) 0xB4, 46, 00, 00, 00, 00, 00, 00});
-                    if (gattServer.writeCharacteristic(c)) {
-                        Log.i(TAG, "onServicesDiscovered: Command Characteristic");
-                    }
-                }
-            }.init(c),time, timeUnit);
-
-
-
+            }
+        }.init(c), time, timeUnit);
 
 
     }
@@ -106,7 +114,10 @@ public class BlGattBeeper extends BluetoothGattCallback {
         super.onCharacteristicWrite(gatt, characteristic, status);
         gattServer = gatt;
         if (characteristic.getUuid().equals(UUID.fromString("31300101-5347-4233-3074-656764696c42"))) {
-            beepFor(2, TimeUnit.SECONDS);
+            SharedPreferences pm = PreferenceManager.getDefaultSharedPreferences(BlueconApp.inst());
+            int dura = Integer.parseInt(pm.getString(BlueconApp.inst().getString(R.string.pref_beep_dura_key), "2"));
+            int frequ = Integer.parseInt(pm.getString(BlueconApp.inst().getString(R.string.pref_beep_freq_key),"880"));
+            beepFor(dura, TimeUnit.SECONDS, frequ);
 //            BluetoothGattService s = gatt.getService(UUID.fromString("31300000-5347-4233-3074-656764696c42"));
 //            if (s != null) {
 //                BluetoothGattCharacteristic c = s.getCharacteristic(UUID.fromString("31300102-5347-4233-3074-656764696c42"));
@@ -114,9 +125,9 @@ public class BlGattBeeper extends BluetoothGattCallback {
 //                if (gatt.writeCharacteristic(c)) {
 //                    Log.i(TAG, "onServicesDiscovered: Command Characteristic");
 //                }
-            }
+        }
 
-}
+    }
 
     @Override
     public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {

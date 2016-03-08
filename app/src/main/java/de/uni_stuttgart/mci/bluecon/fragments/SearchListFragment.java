@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.search.BeaconSearchLoader;
 import de.uni_stuttgart.mci.bluecon.search.SearchListAdapter;

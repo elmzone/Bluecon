@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.util;
+package de.uni_stuttgart.mci.bluecon.fragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

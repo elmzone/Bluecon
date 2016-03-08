@@ -13,7 +13,8 @@ import java.util.List;
 
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.database.DatabaseUtil;
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.util.ParserUtilOld;
 
 /**
  * Created by florian on 02.12.15.
@@ -91,7 +92,7 @@ public class JSONLoader {
 
                 // Convert the InputStream into a string
                 if(inputStream != null) {
-                    List<LocationInfo> locationInfos = ParserUtil.parseLocation(inputStream);
+                    List<LocationInfo> locationInfos = ParserUtilOld.parseLocation(inputStream);
                     for (LocationInfo locationInfo : locationInfos) {
                         long rowNum = DatabaseUtil.insertData(beaconDBHelper, locationInfo);
                         Log.d(TAG, "insert a new row, row number is" + rowNum);

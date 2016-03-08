@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.network;
+package de.uni_stuttgart.mci.bluecon.util;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -10,12 +10,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uni_stuttgart.mci.bluecon.database.LocationInfo;
+import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 
 /**
  * Created by florian on 03.12.15.
  */
-public class ParserUtil {
+public class ParserUtilOld {
 
     private final static String rootObjectName = "data";
     private final static String TAG = "jsonParserUtil";

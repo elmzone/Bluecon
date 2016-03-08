@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.algorithm;
+package de.uni_stuttgart.mci.bluecon.domain;
 
 /**
  * Created by florian on 01.12.15.

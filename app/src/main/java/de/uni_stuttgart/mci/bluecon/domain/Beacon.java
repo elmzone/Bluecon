@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package de.uni_stuttgart.mci.bluecon;
+package de.uni_stuttgart.mci.bluecon.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.util.Base64;
 
 //import com.google.android.gms.maps.model.LatLng;
