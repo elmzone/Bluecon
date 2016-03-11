@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
@@ -122,16 +124,22 @@ public class NavigationListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (start != null && target != null) {
-                    new CalculateShortestPath().execute(start, target);
+                    try {
+                        resultList = new CalculateShortestPath().execute(start, target).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
 
     }
-// Tiefensuche eine Ebene nach der anderen ausgehend vom Startknoten wird durchsucht
+
+    // Tiefensuche eine Ebene nach der anderen ausgehend vom Startknoten wird durchsucht
     private class CalculateShortestPath extends AsyncTask<BeaconLocation, Void, List<BeaconLocation>> {
         List<BeaconLocation> allBeacons = new ArrayList<BeaconLocation>();
-
 
 
         @Override
@@ -139,7 +147,7 @@ public class NavigationListFragment extends Fragment {
             start = params[0];
             target = params[1];
             allBeacons = BeaconHolder.beaconLocations();
-            Map<String,BeaconLocation> allBeaconsMap = new HashMap<>();
+            Map<String, BeaconLocation> allBeaconsMap = new HashMap<>();
             for (BeaconLocation aB : allBeacons) {
                 allBeaconsMap.put(aB.roomId, aB);
             }
@@ -154,11 +162,11 @@ public class NavigationListFragment extends Fragment {
             oneLevel.add(startObj);
             List<SearchObject> next = new ArrayList<>();
             boolean stop = false;
-            while(!stop) {
+            while (!stop) {
                 for (SearchObject ol : oneLevel) {
-                    Set neighbors = ol.active.neighborhood.keySet();
+                    Set<String> neighbors = ol.active.neighborhood.keySet();
                     for (Object n : neighbors) {
-                        if (!ol.pre.roomId.equals(n)){
+                        if (!ol.pre.roomId.equals(n)) {
                             SearchObject nextObj = new SearchObject();
                             nextObj.active = allBeaconsMap.get(n);
                             nextObj.pre = ol.active;
@@ -168,7 +176,7 @@ public class NavigationListFragment extends Fragment {
                             }
                             nextObj.path.add(nextObj.active);
                             next.add(nextObj);
-                            Log.d("NaviFrag", "added" + nextObj.active.roomId);
+//                            Log.d("NaviFrag", "added" + nextObj.active.roomId);
                         }
                         if (target.roomId.equals(n)) {
                             stop = true;
@@ -184,7 +192,7 @@ public class NavigationListFragment extends Fragment {
                 }
                 next.clear();
             }
-            return oneLevel.get(oneLevel.size()-1).path;
+            return oneLevel.get(oneLevel.size() - 1).path;
 
 
         }
@@ -192,17 +200,14 @@ public class NavigationListFragment extends Fragment {
         @Override
         protected void onPostExecute(List<BeaconLocation> list) {
             NavigationListFragment.this.fromText.setText("feddisch!");
-//            for (BeaconLocation r : resultList) {
-//
-//                Log.d("NavFrag", r.roomId);
-//            }
+            return;
         }
 
-       private class SearchObject{
-           public BeaconLocation active;
-           public BeaconLocation pre;
-           public List<BeaconLocation> path;
-       }
+        private class SearchObject {
+            public BeaconLocation active;
+            public BeaconLocation pre;
+            public List<BeaconLocation> path;
+        }
     }
 
 
