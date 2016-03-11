@@ -351,7 +351,8 @@ public class ScanListFragment
     @Override
     public void onBeaconChanged(BeaconLocation changedBeacon) {
         BeaconsViewHolder viewHolder = (BeaconsViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mAdapter.getBeaconsList().indexOf(changedBeacon));
-        viewHolder.vRSSI_details.setText(String.valueOf(changedBeacon.RSSI));
+        if (viewHolder.vRSSI_details != null)
+            viewHolder.vRSSI_details.setText(String.valueOf(changedBeacon.RSSI));
 //        mAdapter.notifyItemChanged(mAdapter.getBeaconsList().indexOf(changedBeacon));
     }
 

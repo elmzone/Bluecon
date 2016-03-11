@@ -136,20 +136,25 @@ public class NavigationListFragment extends Fragment {
 
         @Override
         protected List<BeaconLocation> doInBackground(BeaconLocation[] params) {
+            start = params[0];
+            target = params[1];
             allBeacons = BeaconHolder.beaconLocations();
             Map<String,BeaconLocation> allBeaconsMap = new HashMap<>();
             for (BeaconLocation aB : allBeacons) {
                 allBeaconsMap.put(aB.roomId, aB);
             }
 
+
             SearchObject startObj = new SearchObject();
             startObj.active = start;
-            startObj.path.add(start);
+            startObj.pre = start;
+            startObj.path = new ArrayList<>();
+            startObj.path.add(startObj.active);
             List<SearchObject> oneLevel = new ArrayList<>();
             oneLevel.add(startObj);
             List<SearchObject> next = new ArrayList<>();
-
-            while(true) {
+            boolean stop = false;
+            while(!stop) {
                 for (SearchObject ol : oneLevel) {
                     Set neighbors = ol.active.neighborhood.keySet();
                     for (Object n : neighbors) {
@@ -157,16 +162,29 @@ public class NavigationListFragment extends Fragment {
                             SearchObject nextObj = new SearchObject();
                             nextObj.active = allBeaconsMap.get(n);
                             nextObj.pre = ol.active;
+                            nextObj.path = new ArrayList<>();
+                            for (BeaconLocation p : ol.path) {
+                                nextObj.path.add(p);
+                            }
                             nextObj.path.add(nextObj.active);
                             next.add(nextObj);
+                            Log.d("NaviFrag", "added" + nextObj.active.roomId);
                         }
-                        if (target.roomId.equals(n))
+                        if (target.roomId.equals(n)) {
+                            stop = true;
                             break;
+                        }
                     }
-
+                    if (stop)
+                        break;
                 }
-                oneLevel = next;
+                oneLevel.clear();
+                for (SearchObject n : next) {
+                    oneLevel.add(n);
+                }
+                next.clear();
             }
+            return oneLevel.get(oneLevel.size()-1).path;
 
 
         }
@@ -174,10 +192,10 @@ public class NavigationListFragment extends Fragment {
         @Override
         protected void onPostExecute(List<BeaconLocation> list) {
             NavigationListFragment.this.fromText.setText("feddisch!");
-            for (BeaconLocation r : resultList) {
-
-                Log.d("NavFrag", r.roomId);
-            }
+//            for (BeaconLocation r : resultList) {
+//
+//                Log.d("NavFrag", r.roomId);
+//            }
         }
 
        private class SearchObject{
