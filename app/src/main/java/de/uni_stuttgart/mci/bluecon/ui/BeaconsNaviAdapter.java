@@ -59,15 +59,15 @@ public class BeaconsNaviAdapter extends Adapter<BeaconsViewHolder> {
 
         vh.vName.setText(beaconLocation.placeId);
         String rangeHint = readRssi(beaconLocation.RSSI);
-//        vh.vRSSI.setText(rangeHint);
-//        vh.vRSSI_details.setText(String.valueOf(beaconLocation.RSSI));
-        vh.vPlaceId.setText(beaconLocation.type);
-        vh.vRoomId.setText(beaconLocation.roomId);
+        vh.vRSSI.setText(rangeHint);
+        vh.vRSSI_details.setText(String.valueOf(beaconLocation.RSSI));
+        vh.vPlaceId.setText("");
+        vh.vRoomId.setText("Room: " + beaconLocation.roomId);
         vh.vDescription.setText(beaconLocation.description);
         if (beaconLocation.nextBeacon.equals(BeaconLocation.NO_NEXT_BEACON)) {
             vh.vToNext.setText("You've reached your Target.");
         } else {
-            vh.vToNext.setText("Way to Room " + beaconLocation.nextBeacon + " : " + beaconLocation.neighborhood.get(beaconLocation.nextBeacon));
+            vh.vToNext.setText("Way to Room " + beaconLocation.nextBeacon + " : " + beaconLocation.neighborhood.get(beaconLocation.nextBeacon).wayToIt);
         }
 
         vh.itemView.setOnClickListener(new View.OnClickListener() {

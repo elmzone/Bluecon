@@ -99,22 +99,22 @@ public class NavigationListFragment extends Fragment {
         initRecyclerView(mRecyclerView);
 
 
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            //Does nothing :)
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            // Enables Swiping only when at Top of the list
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                boolean enable = false;
-                if (mRecyclerView != null && mRecyclerView.getChildCount() > 0) {
-                    enable = mRecyclerView.getChildAt(0).getTop() == 0;
-                }
-            }
-        });
+//        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//            //Does nothing :)
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            // Enables Swiping only when at Top of the list
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                boolean enable = false;
+//                if (mRecyclerView != null && mRecyclerView.getChildCount() > 0) {
+//                    enable = mRecyclerView.getChildAt(0).getTop() == 0;
+//                }
+//            }
+//        });
 
 
         mAdapter = new BeaconsNaviAdapter(resultList);
@@ -164,11 +164,15 @@ public class NavigationListFragment extends Fragment {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
+                } else {
+
+                    Toast.makeText(getActivity(), "You have to choose a start and an end", Toast.LENGTH_SHORT).show();
                 }
                 for (BeaconLocation rL : resultList) {
-                    if (resultList.indexOf(rL) != (resultList.size()-1)){
-                        rL.nextBeacon = rL.neighborhood.get(resultList.get((resultList.indexOf(rL)+1)).roomId).wayToIt;
+                    if (resultList.indexOf(rL) != (resultList.size() - 1)) {
+                        rL.nextBeacon = resultList.get(resultList.indexOf(rL) + 1).roomId;
                     }
+
                 }
                 mAdapter.getBeaconsList().clear();
                 mAdapter.getBeaconsList().addAll(resultList);
