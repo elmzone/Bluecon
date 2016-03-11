@@ -69,5 +69,15 @@
             android:layout_gravity="left"
             android:background="@drawable/button"
             android:text="@string/txt_bt_calc" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/navi_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/bt_calc"
+            android:scrollbars="vertical">
+
+        </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
+
 </FrameLayout>

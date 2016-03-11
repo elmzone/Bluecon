@@ -21,6 +21,7 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
     public TextView vRoomId;
     public TextView vDescription;
     public TextView vPlaceId;
+    public TextView vToNext;
     public LinearLayout vExpandArea;
     public Button btnBeep;
     public Button btnSonar;
@@ -41,6 +42,7 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
         vDescription = (TextView) view.findViewById(R.id.beacon_item_description);
         vPlaceId = (TextView) view.findViewById(R.id.beacon_item_placeId);
         vExpandArea = (LinearLayout) view.findViewById(R.id.expandArea);
+        vToNext = (TextView) view.findViewById(R.id.beacon_item_way_to_next);
 
         btnBeep = (Button) view.findViewById(R.id.beacon_beep);
         btnSonar = (Button) view.findViewById(R.id.beacon_sonar);

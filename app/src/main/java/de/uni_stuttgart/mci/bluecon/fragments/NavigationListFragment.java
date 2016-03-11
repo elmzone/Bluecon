@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.R;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsNaviAdapter;
 import de.uni_stuttgart.mci.bluecon.util.IResultListener;
 
 public class NavigationListFragment extends Fragment {
@@ -43,7 +48,11 @@ public class NavigationListFragment extends Fragment {
 
     private BeaconLocation start = null;
     private BeaconLocation target = null;
-    private List<BeaconLocation> resultList;
+    private List<BeaconLocation> resultList = new ArrayList<>();
+
+
+    private RecyclerView mRecyclerView;
+    private BeaconsNaviAdapter mAdapter;
 
 
     public NavigationListFragment() {
@@ -86,6 +95,30 @@ public class NavigationListFragment extends Fragment {
         fromText = (TextView) v.findViewById(R.id.beacon_item_from);
         toText = (TextView) v.findViewById(R.id.beacon_item_to);
 
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.navi_recycler_view);
+        initRecyclerView(mRecyclerView);
+
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            //Does nothing :)
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            // Enables Swiping only when at Top of the list
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                boolean enable = false;
+                if (mRecyclerView != null && mRecyclerView.getChildCount() > 0) {
+                    enable = mRecyclerView.getChildAt(0).getTop() == 0;
+                }
+            }
+        });
+
+
+        mAdapter = new BeaconsNaviAdapter(resultList);
+        mRecyclerView.setAdapter(mAdapter);
 
         // Inflate the layout for this fragment
         return v;
@@ -132,12 +165,20 @@ public class NavigationListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                for (BeaconLocation rL : resultList) {
+                    if (resultList.indexOf(rL) != (resultList.size()-1)){
+                        rL.nextBeacon = rL.neighborhood.get(resultList.get((resultList.indexOf(rL)+1)).roomId).wayToIt;
+                    }
+                }
+                mAdapter.getBeaconsList().clear();
+                mAdapter.getBeaconsList().addAll(resultList);
+                mAdapter.notifyDataSetChanged();
             }
         });
 
     }
 
-    // Tiefensuche eine Ebene nach der anderen ausgehend vom Startknoten wird durchsucht
+    // Breitensuche eine Ebene nach der anderen ausgehend vom Startknoten wird durchsucht
     private class CalculateShortestPath extends AsyncTask<BeaconLocation, Void, List<BeaconLocation>> {
         List<BeaconLocation> allBeacons = new ArrayList<BeaconLocation>();
 
@@ -199,7 +240,8 @@ public class NavigationListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<BeaconLocation> list) {
-            NavigationListFragment.this.fromText.setText("feddisch!");
+
+            Toast.makeText(getActivity(), "Route calculation succeeded", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -210,6 +252,14 @@ public class NavigationListFragment extends Fragment {
         }
     }
 
+    private void initRecyclerView(RecyclerView recyclerView) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayoutManager.VERTICAL);
+    }
 
     @Override
     public void onAttach(Context context) {
