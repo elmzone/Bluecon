@@ -1,10 +1,10 @@
-package de.uni_stuttgart.mci.bluecon.util;
+package de.uni_stuttgart.mci.bluecon.bl;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import de.uni_stuttgart.mci.bluecon.BlueconService;
+import de.uni_stuttgart.mci.bluecon.bl.BlueconService;
 
 /**
  * Created by florian on 20.01.16.

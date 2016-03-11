@@ -4,34 +4,70 @@
     android:id="@+id/swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_blue"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/light_blue"
     tools:context=".fragments.NavigationListFragment">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <Button
-        android:background="@drawable/button"
-        android:id="@+id/bt_from"
-        style="@style/button"
-        android:layout_height="50dp"
-        android:layout_width="150dp"
-        android:layout_gravity="left"
-        android:text="@string/txt_bt_from" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_from"
+            style="@style/button"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left"
+            android:background="@drawable/button"
+            android:text="@string/txt_bt_from" />
+
+        <TextView
+            android:id="@+id/beacon_item_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bt_from"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/bt_from"
+            android:text="from Beacon"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
 
 
-    <Button
-        android:background="@drawable/button"
-        android:id="@+id/bt_to"
-        style="@style/button"
-        android:layout_height="50dp"
-        android:layout_width="150dp"
-        android:layout_gravity="left"
-        android:text="@string/txt_bt_to" />
-</LinearLayout>
+        <Button
+            android:id="@+id/bt_to"
+            style="@style/button"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/bt_from"
+            android:layout_gravity="left"
+            android:background="@drawable/button"
+            android:text="@string/txt_bt_to" />
+
+        <TextView
+            android:id="@+id/beacon_item_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bt_to"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/bt_to"
+            android:text="to Beacon"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_calc"
+            style="@style/button"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/bt_to"
+            android:layout_gravity="left"
+            android:background="@drawable/button"
+            android:text="@string/txt_bt_calc" />
+    </RelativeLayout>
 </FrameLayout>

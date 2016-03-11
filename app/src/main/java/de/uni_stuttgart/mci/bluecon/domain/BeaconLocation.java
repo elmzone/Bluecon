@@ -9,6 +9,7 @@ import java.util.Map;
 public class BeaconLocation  implements Comparable<BeaconLocation>{
     public String macAddress = "macaddress";
     public int RSSI;
+    public String UUID = "UUID";
     public String type = "type";
     public String id = "id";
     public String status = "status";

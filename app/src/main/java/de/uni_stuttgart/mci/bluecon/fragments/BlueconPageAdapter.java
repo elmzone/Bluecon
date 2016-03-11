@@ -47,7 +47,7 @@ public class BlueconPageAdapter extends FragmentPagerAdapter {
             case 1:
                 return "Search";
             case 2:
-                return "NaviFrag";
+                return "Navigation";
             default:
                 return null;
     }

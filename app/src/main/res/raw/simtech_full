@@ -1,9 +1,9 @@
 {
   "data": [
     {
-      "C595FCCC8D5C": {
+      "C5:95:FC:CC:8D:5C": {
         "type": "Blidget",
-        "id": "C595FCCC8D5C",
+        "id": "C5:95:FC:CC:8D:5C",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "Entrance",
         "roomId": "0.002",
@@ -19,7 +19,7 @@
     {
       "111100000060": {
         "type": "Blidget",
-        "id": 111100000060,
+        "id": "111100000060",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "first staircase on the ground floor",
         "roomId": "0.006",
@@ -37,7 +37,7 @@
     {
       "111100000100": {
         "type": "Blidget",
-        "id": 111100000100,
+        "id": "111100000100",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "corridor",
         "roomId": "0.010",
@@ -54,7 +54,7 @@
     {
       "111100000140": {
         "type": "Blidget",
-        "id": 111100000140,
+        "id": "111100000140",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "second hall",
         "roomId": "0.014",
@@ -71,7 +71,7 @@
     {
       "111100000210": {
         "type": "Blidget",
-        "id": 111100000210,
+        "id": "111100000210",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "door to the lab corridor",
         "roomId": "0.021",
@@ -88,7 +88,7 @@
     {
       "111100000231": {
         "type": "Blidget",
-        "id": 111100000231,
+        "id": "111100000231",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "Lab A, second entrance",
         "roomId": "0.023A2",
@@ -106,7 +106,7 @@
     {
       "111100000232": {
         "type": "Blidget",
-        "id": 111100000232,
+        "id": "111100000232",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "Lab A, third entrance",
         "roomId": "0.023A3",
@@ -122,7 +122,7 @@
     {
       "111100000240": {
         "type": "Blidget",
-        "id": 111100000240,
+        "id": "111100000240",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "restrooms",
         "roomId": "0.024",
@@ -140,7 +140,7 @@
     {
       "111100000260": {
         "type": "Blidget",
-        "id": 111100000260,
+        "id": "111100000260",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "second staircase on the ground floor",
         "roomId": "0.026",
@@ -151,14 +151,14 @@
         "neighborhood": [
           "0.023A2:across the corridor",
           "0.024:to the left when you leave the staircase, between the first and the second door to the left",
-          "1.026:upstairs via elevator to your left or the stairs at the end of the room to the left"
+          "1.026:upstairs via elevator to your left beside the elevator"
         ]
       }
     },
     {
       "111100010100": {
         "type": "Blidget",
-        "id": 111100010100,
+        "id": "111100010100",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "First staircase on the first floor",
         "roomId": "1.010",
@@ -176,7 +176,7 @@
     {
       "111100010120": {
         "type": "Blidget",
-        "id": 111100010120,
+        "id": "111100010120",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "first hallway on the first floor",
         "roomId": "1.012",
@@ -193,7 +193,7 @@
     {
       "111100010180": {
         "type": "Blidget",
-        "id": 111100010180,
+        "id": "111100010180",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "meeting room first floor",
         "roomId": "1.018",
@@ -202,21 +202,22 @@
         "expectedStability": "STABILITY_UNSPECIFIED",
         "description": "meeting room with several desks and chairs in changing positions",
         "neighborhood": [
-          "1.1012:through the corridor on the right of the meeting room. Then on the opposite wall of the hall"
+          "1.012:through the corridor on the right of the meeting room. Then on the opposite wall of the hall",
+          "1.025:across the hall first office to the left"
         ]
       }
     },
     {
-      "DD38A1965239": {
+      "DD:38:A1:96:52:39": {
         "type": "Blidget",
-        "id": "DD38A1965239",
+        "id": "DD:38:A1:96:52:39",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "Office Greis and Lischke",
+        "placeId": "Office Greis, Algroudy and Avila",
         "roomId": "1.025",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "Room 01.025 - Miriam Greis and Lars Lischke",
+        "description": "Miriam Greis, Passant El Agroudy and Mauro Avila",
         "neighborhood": [
           "1.018:next room to the left across the hall",
           "1.026:across the corridor",
@@ -227,7 +228,7 @@
     {
       "111100010260": {
         "type": "Blidget",
-        "id": 111100010260,
+        "id": "111100010260",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "Staircase",
         "roomId": "1.026",
@@ -243,16 +244,16 @@
       }
     },
     {
-      "D457ED9310EC": {
+      "D4:57:ED:93:10:EC": {
         "type": "Blidget",
-        "id": "D457ED9310EC",
+        "id": "D4:57:ED:93:10:EC",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "Office Niels Henze",
+        "placeId": "Office Henze and Schwind",
         "roomId": "1.027",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "Room 01.027 - Jun. Prof. Niels Henze",
+        "description": "Jun. Prof. Niels Henze and Valentin Schwind",
         "neighborhood": [
           "1.025:next room to the left on the right side of the corridor",
           "1.029:next room to the right on the left side of the corridor"
@@ -260,16 +261,16 @@
       }
     },
     {
-      "E74FE5DAC78D": {
+      "E7:4F:E5:DA:C7:8D": {
         "type": "Blidget",
-        "id": "E74FE5DAC78D",
+        "id": "E7:4F:E5:DA:C7:8D",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "Office Wolf and Abdelrahman",
+        "placeId": "Office Abdelrahman and Voit",
         "roomId": "1.029",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "Room 01.029 - Katrin Wolf and Yomna Abdelrahman",
+        "description": "Yomna Abdelrahman and Alexandra Voit",
         "neighborhood": [
           "1.027:next room to the left on the right side of the corridor",
           "1.031:next room to the right on the left side of the corridor"
@@ -277,16 +278,16 @@
       }
     },
     {
-      "EB3125C54628": {
+      "EB:31:25:C5:46:28": {
         "type": "Blidget",
-        "id": "EB3125C54628",
+        "id": "EB:31:25:C5:46:28",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "Office Avila and Pfleging",
+        "placeId": "Office Lischke and Mayer",
         "roomId": "1.031",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "Room 01.031 - Mauro Avila and Bastian Pfleging",
+        "description": "Lars Lischke and Sven Mayer",
         "neighborhood": [
           "1.029:next room to the left on the right side of the corridor",
           "1.033:next room to the right on the left side of the corridor",
@@ -295,16 +296,16 @@
       }
     },
     {
-      "DC450777CDEB": {
+      "DC:45:07:77:CD:EB": {
         "type": "Blidget",
-        "id": "DC450777CDEB",
+        "id": "DC:45:07:77:CD:EB",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "Office Kubitza and Pohl",
         "roomId": "1.033",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "Room 01.033 - Thomas Kubitza and Norman Pohl",
+        "description": "Thomas Kubitza and Norman Pohl",
         "neighborhood": [
           "1.031:next room to the left on the right side of the corridor",
           "1.034:across the corridor",
@@ -313,9 +314,9 @@
       }
     },
     {
-      "D989CF04F205": {
+      "D9:89:CF:04:F2:05": {
         "type": "Blidget",
-        "id": "D989CF04F205",
+        "id": "D9:89:CF:04:F2:05",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "restrooms",
         "roomId": "1.034",
@@ -330,16 +331,16 @@
       }
     },
     {
-      "C295938FE3B4": {
+      "C2:95:93:8F:E3:B4": {
         "type": "Blidget",
-        "id": "C295938FE3B4",
+        "id": "C2:95:93:8F:E3:B4",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
+        "placeId": "Office Korn",
         "roomId": "1.035",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "Room 01.035 - ???",
+        "description": "Lab and office of Dr. Oliver Korn",
         "neighborhood": [
           "1.033:next room to the left on the right side of the corridor"
         ]
@@ -348,176 +349,189 @@
     {
       "111100020060": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020060",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "first staircase on the second floor",
+        "roomId": "2.006",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "staircase on the top floor, goes downstairs counterclockwise",
         "neighborhood": [
-          "???:???"
+          "1.010:stairs are going downstairs counterclockwise",
+          "2.012:alongside the left wall through the door"
         ]
       }
     },
     {
       "111100020120": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020120",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "first hallway on the second floor",
+        "roomId": "2.012",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "hallway with lounge suite",
         "neighborhood": [
-          "???:???"
+          "2.010:with your back to the offices through the door on the right",
+          "2.018:through the hall and at the end of the corridor on its right edge"
         ]
       }
     },
     {
       "111100020180": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020180",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "meeting room second floor",
+        "roomId": "2.018",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "meeting room with several desks and chairs in changing position",
         "neighborhood": [
-          "???:???"
+          "2.012:through the corridor on the right of the meeting room. Then on the opposite wall of the hall",
+          "2.025:across the hall first office to the left"
         ]
       }
     },
     {
       "111100020250": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020250",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Office Kröker and Stüwe",
+        "roomId": "2.025",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Ilja Kröker and Tobias Stüwe",
         "neighborhood": [
-          "???:???"
+          "2.018:next room to the left across the hall",
+          "2.026:across the corridor",
+          "2.027:next room to the right on the left side of the corridor"
         ]
       }
     },
     {
       "111100020260": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020260",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Second staircase second floor",
+        "roomId": "2.026",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Staircase and elevator on the top floor. Stairs turn downstairs counterclockwise",
         "neighborhood": [
-          "???:???"
+          "2.025:across the corridor",
+          "1.026:downstairs via elevator to your left or the stairs at the end of the room to the left"
         ]
       }
     },
     {
       "111100020270": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020270",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Office Barth",
+        "roomId": "2.027",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Junior Professor Andrea Barth",
         "neighborhood": [
-          "???:???"
+          "2.025:next room to the left on the right side of the corridor",
+          "2.029:next room to the right on the left side of the corridor"
         ]
       }
     },
     {
       "111100020290": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020290",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Office Dingler and Bader",
+        "roomId": "2.029",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Tilmann Dingler and Patrick Bader",
         "neighborhood": [
-          "???:???"
+          "2.027:next room to the left on the right side of the corridor",
+          "2.031:next room to the right on the left side of the corridor"
         ]
       }
     },
     {
       "111100020310": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020310",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Office Schneegaß, Knierim and Weber",
+        "roomId": "2.031",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Stefan Schneegaß, Pascal Knierim and Dominik Weber",
         "neighborhood": [
-          "???:???"
+          "2.029:next room to the left on the right side of the corridor",
+          "2.033:next room to the right on the left side of the corridor",
+          "2.034:across the corridor on the left"
         ]
       }
     },
     {
       "111100020330": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020330",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Office Geiges and Sinsbeck",
+        "roomId": "2.033",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Dr. Andreas Geiges and Michael Sinsbeck",
         "neighborhood": [
-          "???:???"
+          "2.031:next room to the left on the right side of the corridor",
+          "2.034:across the corridor",
+          "2.035:next room to the right on the left side of the corridor"
         ]
       }
     },
     {
       "111100020340": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020340",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Restrooms",
+        "roomId": "2.034",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Restrooms. First door right is for males, second door right for females",
         "neighborhood": [
-          "???:???"
+          "2.031:across the corridor left",
+          "2.033:across the corridor right"
         ]
       }
     },
     {
       "111100020350": {
         "type": "Blidget",
-        "id": 1111000,
+        "id": "111100020350",
         "status": "STATUS_UNSPECIFIED",
-        "placeId": "???",
-        "roomId": "???",
+        "placeId": "Office Bode and Most",
+        "roomId": "2.035",
         "latitude": null,
         "longitude": null,
         "expectedStability": "STABILITY_UNSPECIFIED",
-        "description": "???",
+        "description": "Felix Bode and Sebastian Most",
         "neighborhood": [
-          "???:???"
+          "2.033:next room to the left on the right side of the corridor"
         ]
       }
     }

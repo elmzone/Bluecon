@@ -15,7 +15,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -26,34 +25,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
+import de.uni_stuttgart.mci.bluecon.R;
+import de.uni_stuttgart.mci.bluecon.act.MainActivity;
+import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
+import de.uni_stuttgart.mci.bluecon.bl.BlueconService;
+import de.uni_stuttgart.mci.bluecon.bl.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
-import de.uni_stuttgart.mci.bluecon.BlueconService;
-import de.uni_stuttgart.mci.bluecon.IBluetoothCallback;
-import de.uni_stuttgart.mci.bluecon.MainActivity;
-import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.scan.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.util.ITtsProvider;
 import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
 import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
 import de.uni_stuttgart.mci.bluecon.util.VibratorBuilder;
-import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
-import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 
 public class ScanListFragment
-        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconsAdapter.OnListHeadChange, BeaconHolder.IBeaconListener, TtsWrapper.ITtsUser {
+        extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconHolder.IBeaconListener, TtsWrapper.ITtsUser {
 
     //private static String TAG = "ScanListFragment";
 
     private RecyclerView mRecyclerView;
-    private Adapter<BeaconsViewHolder> mAdapter;
-//    private List<BeaconsInfo> resultList;
+    private BeaconsAdapter mAdapter;
+    //    private List<BeaconsInfo> resultList;
     private SwipeRefreshLayout swipeLayout;
     private boolean startButtonToggle = true;
 
@@ -94,7 +91,7 @@ public class ScanListFragment
 
         super.onCreate(savedInstanceState);
 
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
 
         View rootView = inflater.inflate(R.layout.scan_fragment_main, container, false);
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
@@ -143,7 +140,7 @@ public class ScanListFragment
 
 //        resultList = new ArrayList<BeaconsInfo>();
 
-        mAdapter = new BeaconsAdapter(new ArrayList<BeaconLocation>(), this, BeaconDBHelper.getInstance(getActivity()));
+        mAdapter = new BeaconsAdapter(BeaconHolder.beacons());
         mRecyclerView.setAdapter(mAdapter);
 
         mHandler = new Handler();
@@ -264,31 +261,9 @@ public class ScanListFragment
 //            }
 //        }
 //        resultList.addAll(newList);
-
+        mAdapter.getBeaconsList().clear();
+        mAdapter.getBeaconsList().addAll(beaconsInfo);
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onLabelNameChange(String labelName, int position) {
-        Log.i(TAG, "label name changed to" + labelName);
-        String audioHint = sharedPreferences.getString("prefAudio", "");
-        if (position == 0 && labelName != null) {
-            if (currentLocation == null || !currentLocation.equals(labelName)) {
-                currentLocation = labelName;
-
-                if ("".equals(audioHint)) {
-                    tts.queueRead(currentLocation);
-                } else {
-                    tts.queueRead(audioHint, currentLocation);
-                }
-                if (sharedPreferences.getBoolean("prefGuideSwitch", true)) {
-                    player.play(R.raw.new_direction);
-                }
-                if (sharedPreferences.getBoolean("prefVibrationSwitch", true)) {
-                    vibrator.vibrate(VibratorBuilder.LONG_SHORT);
-                }
-            }
-        }
     }
 
     Runnable updateUI = new Runnable() {
@@ -374,8 +349,10 @@ public class ScanListFragment
     }
 
     @Override
-    public void onBeaconsChanged(List<BeaconsInfo> changedBeacons) {
-        updateList();
+    public void onBeaconChanged(BeaconLocation changedBeacon) {
+        BeaconsViewHolder viewHolder = (BeaconsViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mAdapter.getBeaconsList().indexOf(changedBeacon));
+        viewHolder.vRSSI_details.setText(String.valueOf(changedBeacon.RSSI));
+//        mAdapter.notifyItemChanged(mAdapter.getBeaconsList().indexOf(changedBeacon));
     }
 
     @Override
@@ -384,8 +361,11 @@ public class ScanListFragment
     }
 
     @Override
-    public void onBeaconsRemoved(List<BeaconsInfo> removedBeacons) {
-        updateList();
+    public void onBeaconRemoved(BeaconLocation removedBeacon) {
+        if (removedBeacon != null) {
+            mAdapter.getBeaconsList().remove(removedBeacon);
+            mAdapter.notifyItemRemoved(mAdapter.getBeaconsList().indexOf(removedBeacon));
+        }
     }
 
     @Override

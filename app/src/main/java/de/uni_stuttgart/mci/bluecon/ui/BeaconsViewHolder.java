@@ -13,6 +13,7 @@ import de.uni_stuttgart.mci.bluecon.R;
  */
 public class BeaconsViewHolder extends RecyclerView.ViewHolder {
 
+    public boolean expanded;
     public View parent;
     public TextView vName;
     public TextView vRSSI;
@@ -24,9 +25,12 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
     public Button btnBeep;
     public Button btnSonar;
 
+    public int heightOriginal = 0;
+    public int heightExpanded = 0;
+
     private static String TAG = "BeaconViewHolder";
 
-    public  BeaconsViewHolder (View view) {
+    public BeaconsViewHolder(View view) {
         super(view);
 
         parent = view;

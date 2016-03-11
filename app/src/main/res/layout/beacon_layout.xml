@@ -21,23 +21,23 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/beacon_item_RSSI_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/beacon_item_name"
-        android:layout_marginLeft="20dp"
-        android:layout_toEndOf="@+id/beacon_item_name"
-        android:text="TextView" />
+    <!--<TextView-->
+        <!--android:id="@+id/beacon_item_RSSI_details"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@+id/beacon_item_name"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_toEndOf="@+id/beacon_item_name"-->
+        <!--android:text="TextView" />-->
 
-    <TextView
-        android:id="@+id/beacon_item_RSSI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/beacon_item_name"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@+id/beacon_item_RSSI_details"
-        android:text="TextView" />
+    <!--<TextView-->
+        <!--android:id="@+id/beacon_item_RSSI"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@+id/beacon_item_name"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_toEndOf="@+id/beacon_item_RSSI_details"-->
+        <!--android:text="TextView" />-->
 
     <ImageView
         android:id="@+id/marginPlaceHolder"

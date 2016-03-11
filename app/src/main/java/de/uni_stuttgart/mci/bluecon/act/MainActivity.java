@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon;
+package de.uni_stuttgart.mci.bluecon.act;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -22,9 +22,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -45,12 +43,11 @@ import com.google.android.gms.nearby.messages.SubscribeOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
-import de.uni_stuttgart.mci.bluecon.act.ActBasePerms;
-import de.uni_stuttgart.mci.bluecon.fragments.RegisterBeacons;
+import de.uni_stuttgart.mci.bluecon.BlueconApp;
+import de.uni_stuttgart.mci.bluecon.R;
+import de.uni_stuttgart.mci.bluecon.bl.BlueconService;
+import de.uni_stuttgart.mci.bluecon.bl.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.fragments.BlueconPageAdapter;
 import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
 
@@ -469,8 +466,6 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
                 startActivityForResult(si, REQUEST_SETTINGS);
                 return true;
             case R.id.action_register_beacon:
-                Intent ri = new Intent(this, RegisterBeacons.class);
-                startActivityForResult(ri, BEACON_ADDED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

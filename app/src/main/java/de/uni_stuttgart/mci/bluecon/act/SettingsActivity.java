@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon;
+package de.uni_stuttgart.mci.bluecon.act;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.network.JSONLoader;
 
 /**

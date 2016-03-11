@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon;
+package de.uni_stuttgart.mci.bluecon.bl;
 
 
 public interface IBluetoothCallback {

@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.search;
+package de.uni_stuttgart.mci.bluecon.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

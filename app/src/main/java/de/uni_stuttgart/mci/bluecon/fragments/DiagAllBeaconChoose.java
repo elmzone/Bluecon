@@ -1,7 +1,11 @@
 package de.uni_stuttgart.mci.bluecon.fragments;
 
+
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +23,10 @@ import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsSearchAdapter;
+import de.uni_stuttgart.mci.bluecon.util.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util.RecyclerItemClickListener;
 
-public class SearchListFragment extends Fragment {
+public class DiagAllBeaconChoose extends DialogFragment{
 
     private RecyclerView mRecyclerView;
     private BeaconsSearchAdapter adapter;
@@ -28,25 +34,40 @@ public class SearchListFragment extends Fragment {
     private Button searchButton;
 
     private static String TAG = "SearchListFragment";
+    private IResultListener<BeaconLocation> resultListener;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);//TODO
 
 //        setHasOptionsMenu(true);//default is false;
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
         //assign DOM element
-        View rootView = inflater.inflate(R.layout.search_fragment_main, container,
+        View rootView = inflater.inflate(R.layout.search_fragment_main, null,
                 false);
+        builder.setView(rootView);
+        builder.setTitle(R.string.txt_dia_choose_beacon);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.search_recycler_view);
         registerForContextMenu(mRecyclerView);
 
         initRecyclerView(mRecyclerView);
 
 
+
         //set the adapter for the list
         adapter = new BeaconsSearchAdapter(new ArrayList<BeaconLocation>());
+        adapter.setResultListener(new IResultListener<BeaconLocation>() {
+            @Override
+            public void onResult(BeaconLocation result) {
+                resultListener.onResult(result);
+                dismiss();
+            }
+        });
         mRecyclerView.setAdapter(adapter);
+
 
 
 //================================= UI listeners =======================================
@@ -61,12 +82,12 @@ public class SearchListFragment extends Fragment {
                 String search = editText.getText().toString().trim();
                 adapter.getBeaconsList().clear();
                 adapter.getBeaconsList().addAll(BeaconHolder.inst().searchForBeacons(search));
-                        adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 //                getLoaderManager().initLoader(loaderID, bundle);
 //                loaderID++;
             }
         });
-        return rootView;
+        return builder.create();
 
 
     }
@@ -90,6 +111,11 @@ public class SearchListFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         ((LinearLayoutManager) mLayoutManager).setOrientation(LinearLayout.VERTICAL);
+    }
+
+    public DiagAllBeaconChoose setResultListener(IResultListener<BeaconLocation> resultListener) {
+        this.resultListener = resultListener;
+        return this;
     }
 
 ////===========================================DataLoader Callback========================================

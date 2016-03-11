@@ -7,7 +7,6 @@ import android.os.ParcelUuid;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +20,12 @@ import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
  */
 public class BeaconHolder {
 
-    private static final String TAG = "BeaconHolder" ;
+    private static final String TAG = "BeaconHolder";
     private static BeaconHolder inst;
 
 
-    private List<BeaconsInfo> currentBeacons = new ArrayList<>();
-    private Map<String,BeaconLocation> currentBeaconsMap = new HashMap<>();
-    private List<IBeaconListener> IBeaconListener = new ArrayList<>();
+    private Map<String, BeaconLocation> currentBeaconsMap = new HashMap<>();
+    private List<IBeaconListener> beaconListener = new ArrayList<>();
     private List<LocationInfo> locationInfo;
     private List<BeaconLocation> beaconLocations = new ArrayList<>();
 
@@ -43,7 +41,7 @@ public class BeaconHolder {
     }
 
     public List<BeaconLocation> getCurrentBeacons() {
-        return new ArrayList<BeaconLocation>( currentBeaconsMap.values());
+        return new ArrayList<BeaconLocation>(currentBeaconsMap.values());
     }
 
     public static List<BeaconLocation> beacons() {
@@ -58,57 +56,19 @@ public class BeaconHolder {
         return inst().beaconLocations;
     }
 
-    public boolean addBeacons(BeaconsInfo... beaconsInfos) {
-        boolean result = Collections.addAll(currentBeacons, beaconsInfos);
-        if (result) {
-            for (IBeaconListener bl : IBeaconListener) {
-                bl.onBeaconsAdded();
-            }
-        }
-        return result;
-    }
-
-    public boolean addBeacons(List<BeaconsInfo> beaconsInfos) {
-        boolean result = currentBeacons.addAll(beaconsInfos);
-
-        if (result) {
-            for (IBeaconListener bl : IBeaconListener) {
-                bl.onBeaconsAdded();
-            }
-        }
-        return result;
-    }
-
 
     public boolean addBeaconLocations(List<BeaconLocation> beaconsLocations) {
         boolean result = beaconLocations.addAll(beaconsLocations);
         return result;
     }
 
-    public void setCurrentBeacons(List<BeaconsInfo> currentBeacons) {
-        this.currentBeacons = currentBeacons;
-        for (IBeaconListener l : IBeaconListener) {
-            l.onBeaconsChanged(currentBeacons);
-        }
-    }
-
-    public void replaceBeacon(BeaconsInfo info) {
-        for (BeaconsInfo beaconsInfo : currentBeacons) {
-            if (beaconsInfo.macAddress == info.macAddress) {
-                beaconsInfo.RSSI = info.RSSI;
-            }
-        }
-        for (IBeaconListener l : IBeaconListener) {
-            l.onBeaconsChanged(null);
-        }
-    }
 
     public void registerBeaconListener(IBeaconListener listener) {
-        this.IBeaconListener.add(listener);
+        this.beaconListener.add(listener);
     }
 
     public void deregisterBeaconListener(IBeaconListener listener) {
-        this.IBeaconListener.remove(listener);
+        this.beaconListener.remove(listener);
     }
 
     public void addLocationInfo(List<LocationInfo> locationInfos) {
@@ -116,44 +76,90 @@ public class BeaconHolder {
     }
 
     public void handleNewBeacon(ScanResult result) {
+
         if (!currentBeaconsMap.containsKey(result.getDevice().getAddress())) {
+            BeaconLocation beaconLocation = new BeaconLocation();
+
             int receiveRSSI = result.getRssi();
             BluetoothDevice receiveBeacon = result.getDevice();
 
             String deviceMAC = receiveBeacon.getAddress();
+//            deviceMAC = deviceMAC.replace(":", "");
             Log.d(TAG, "macAddress from API 21 is" + deviceMAC);
-                ScanRecord receiveRecord = result.getScanRecord();
+            ScanRecord receiveRecord = result.getScanRecord();
 
-                String deviceName = "NULL NAME";
-                String mServiceName = receiveBeacon.getName();
-                if (mServiceName != null) {
-                    deviceName = mServiceName;
+            String deviceName = "NULL NAME";
+            String mServiceName = receiveBeacon.getName();
+            if (mServiceName != null) {
+                deviceName = mServiceName;
+            }
+            List<ParcelUuid> mServiceUUID = receiveRecord.getServiceUuids();
+            String bleUUID = "NULL UUID";
+            if (mServiceUUID != null) {
+                bleUUID = receiveRecord.getServiceUuids().toString();
+            }
+            Log.d("recordInfo", receiveRecord.toString());
+            beaconLocation.placeId = deviceName;
+            beaconLocation.macAddress = deviceMAC;
+
+            for (BeaconLocation b : beaconLocations) {
+                if (compare(b.macAddress, deviceMAC)) {
+                    beaconLocation = b;
+                    break;
                 }
-                List<ParcelUuid> mServiceUUID = receiveRecord.getServiceUuids();
-                String bleUUID = "NULL UUID";
-                if (mServiceUUID != null) {
-                    bleUUID = receiveRecord.getServiceUuids().toString();
-                }
-                Log.d("recordInfo", receiveRecord.toString());
 
-                BeaconLocation beaconLocation = new BeaconLocation();
-                beaconLocation.placeId = deviceName;
-                beaconLocation.RSSI = receiveRSSI;
-                beaconLocation.macAddress = deviceMAC;
-                beaconLocation.description = bleUUID;
+            }
 
-                currentBeaconsMap.put(deviceMAC, beaconLocation);
+            beaconLocation.RSSI = receiveRSSI;
+            beaconLocation.UUID = bleUUID;
 
+            currentBeaconsMap.put(deviceMAC, beaconLocation);
+            for (BeaconHolder.IBeaconListener l : beaconListener) {
+                l.onBeaconsAdded();
+            }
+        } else {
+            currentBeaconsMap.get(result.getDevice().getAddress()).RSSI = result.getRssi();
+            for (BeaconHolder.IBeaconListener l : beaconListener) {
+                l.onBeaconChanged(currentBeaconsMap.get(result.getDevice().getAddress()));
+            }
+        }
+
+    }
+
+    public List<BeaconLocation> searchForBeacons(String text) {
+        ArrayList<BeaconLocation> resultList = new ArrayList<>();
+        text = text.toLowerCase();
+        for (BeaconLocation b : beaconLocations) {
+            if (b.placeId.toLowerCase().contains(text) || b.description.toLowerCase().contains(text) || b.roomId.toLowerCase().contains(text))
+                resultList.add(b);
+        }
+        return resultList;
+    }
+
+    public void removeResult(ScanResult result) {
+        BeaconLocation b = null;
+        if (currentBeaconsMap.containsKey(result.getDevice().getAddress()))
+            b = currentBeaconsMap.remove(result.getDevice().getAddress());
+        for (BeaconHolder.IBeaconListener l : beaconListener) {
+            l.onBeaconRemoved(b);
         }
     }
 
 
     public static interface IBeaconListener {
 
-        void onBeaconsChanged(List<BeaconsInfo> changedBeacons);
+        void onBeaconChanged(BeaconLocation changedBeacon);
 
         void onBeaconsAdded();
 
-        void onBeaconsRemoved(List<BeaconsInfo> removedBeacons);
+        void onBeaconRemoved(BeaconLocation removedBeacon);
+    }
+
+    public String without(String mac) {
+        return mac.replace(":", "");
+    }
+
+    public boolean compare(String a, String b) {
+        return without(a).equals(without(b));
     }
 }

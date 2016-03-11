@@ -25,7 +25,7 @@ public class BlueconApp extends Application {
             public void run() {
                 try {
                     BeaconHolder.inst().addLocationInfo(ParserUtilOld.parseLocation(getResources().openRawResource(R.raw.oldjson)));
-                    BeaconHolder.inst().addBeaconLocations(ParserUtil.parseLocation(getResources().openRawResource(R.raw.firstfloor_notready)));
+                    BeaconHolder.inst().addBeaconLocations(ParserUtil.parseLocation(getResources().openRawResource(R.raw.simtech_full)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

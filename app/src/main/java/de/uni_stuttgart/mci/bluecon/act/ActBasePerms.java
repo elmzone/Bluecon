@@ -15,9 +15,6 @@ import de.uni_stuttgart.mci.bluecon.util.DialogCreator;
 
 //import com.drisoftie.frags.comp.ManagedActivity;
 
-/**
- * @author Alexander Dridiger
- */
 public abstract class ActBasePerms extends AppCompatActivity {
 
     public boolean ok;
