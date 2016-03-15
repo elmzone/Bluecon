@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.Objects;
 
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.R;
@@ -35,13 +34,12 @@ import de.uni_stuttgart.mci.bluecon.algorithm.CalcList;
 import de.uni_stuttgart.mci.bluecon.bl.BlueconService;
 import de.uni_stuttgart.mci.bluecon.bl.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
-import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
-import de.uni_stuttgart.mci.bluecon.util.ITtsProvider;
-import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
-import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
-import de.uni_stuttgart.mci.bluecon.util.VibratorBuilder;
+import de.uni_stuttgart.mci.bluecon.util2.ITtsProvider;
+import de.uni_stuttgart.mci.bluecon.util2.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.util2.TtsWrapper;
+import de.uni_stuttgart.mci.bluecon.util2.VibratorBuilder;
 
 public class ScanListFragment
         extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconHolder.IBeaconListener, TtsWrapper.ITtsUser {
@@ -316,7 +314,7 @@ public class ScanListFragment
         if (BlueconService.isRunning) {
             mHandler.removeCallbacks(updateUI);
         }
-        TtsWrapper.inst().deregisterUser(this);
+//        TtsWrapper.inst().deregisterUser(this);
         BeaconHolder.inst().deregisterBeaconListener(this);
         ((MainActivity) getActivity()).deregisterBlCallback(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);

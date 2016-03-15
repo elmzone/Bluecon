@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.util.DialogCreator;
+import de.uni_stuttgart.mci.bluecon.util2.DialogCreator;
 
 //import com.drisoftie.frags.comp.ManagedActivity;
 

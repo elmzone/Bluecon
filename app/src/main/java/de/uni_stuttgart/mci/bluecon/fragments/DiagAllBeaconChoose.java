@@ -4,9 +4,7 @@ package de.uni_stuttgart.mci.bluecon.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,10 +19,8 @@ import java.util.ArrayList;
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
-import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsSearchAdapter;
-import de.uni_stuttgart.mci.bluecon.util.IResultListener;
-import de.uni_stuttgart.mci.bluecon.util.RecyclerItemClickListener;
+import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
 
 public class DiagAllBeaconChoose extends DialogFragment{
 

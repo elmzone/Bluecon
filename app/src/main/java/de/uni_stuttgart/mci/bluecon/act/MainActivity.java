@@ -50,7 +50,7 @@ import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.bl.BlueconService;
 import de.uni_stuttgart.mci.bluecon.bl.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.fragments.BlueconPageAdapter;
-import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
+import de.uni_stuttgart.mci.bluecon.util2.TtsWrapper;
 
 // API-OAuth:  739731480344-19rs3rqn9ncp4ebk035vph1fm9utgard.apps.googleusercontent.com
 

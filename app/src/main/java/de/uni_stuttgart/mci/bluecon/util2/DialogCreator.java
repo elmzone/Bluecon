@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.util;
+package de.uni_stuttgart.mci.bluecon.util2;
 
 import android.content.Context;
 import android.content.DialogInterface;

@@ -174,9 +174,9 @@
       }
     },
     {
-      "C2:7D:76:EB:04:E7": {
+      "EF:F3:FC:FB:62:B8": {
         "type": "Blidget",
-        "id": "C2:7D:76:EB:04:E7",
+        "id": "EF:F3:FC:FB:62:B8",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "first hallway on the first floor",
         "roomId": "1.012",
@@ -208,9 +208,9 @@
       }
     },
     {
-      "DD:38:A1:96:52:39": {
+      "CE:39:C6:14:AA:FC": {
         "type": "Blidget",
-        "id": "DD:38:A1:96:52:39",
+        "id": "CE:39:C6:14:AA:FC",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "Office Greis, Algroudy and Avila",
         "roomId": "1.025",

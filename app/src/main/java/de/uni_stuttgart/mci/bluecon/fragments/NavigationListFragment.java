@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +13,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
-import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsNaviAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
-import de.uni_stuttgart.mci.bluecon.util.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
 
 public class NavigationListFragment extends Fragment implements BeaconHolder.IBeaconListener {
     // TODO: Rename parameter arguments, choose names that match
@@ -160,6 +155,7 @@ public class NavigationListFragment extends Fragment implements BeaconHolder.IBe
             @Override
             public void onClick(View v) {
                 if (start != null && target != null) {
+                    BeaconHolder.inst().resetRSSI();
                     new CalculateShortestPath().execute(start, target);
                 } else {
 
@@ -179,25 +175,31 @@ public class NavigationListFragment extends Fragment implements BeaconHolder.IBe
 
     @Override
     public void onBeaconChanged(BeaconLocation changedBeacon) {
-
         BeaconsViewHolder viewHolder = (BeaconsViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mAdapter.getBeaconsList().indexOf(changedBeacon));
         if (viewHolder != null && viewHolder.vRSSI != null) {
+            if (changedBeacon.RSSI < RangeThreshold.NEAR) {
+                viewHolder.vRSSI.setText(R.string.txt_very_close);
+            } else if (changedBeacon.RSSI < RangeThreshold.MIDDLE) {
+                viewHolder.vRSSI.setText(R.string.txt_near);
+            } else if (changedBeacon.RSSI < RangeThreshold.FAR) {
+                viewHolder.vRSSI.setText(R.string.txt_in_range);
+            } else {
+                viewHolder.vRSSI.setText(R.string.txt_out_of_range);
+            }
 //            viewHolder.vRSSI_details.setText(String.valueOf(changedBeacon.RSSI));
 
-            if (changedBeacon.preRSSI < RangeThreshold.NEAR && changedBeacon.RSSI >= RangeThreshold.NEAR) {
-                viewHolder.vRSSI.setText("very close");
-                changedBeacon.preRSSI = changedBeacon.RSSI;
-                Toast.makeText(getActivity(), changedBeacon.placeId + " is very close", Toast.LENGTH_SHORT).show();
-            } else if (changedBeacon.preRSSI < RangeThreshold.MIDDLE && changedBeacon.RSSI >= RangeThreshold.MIDDLE) {
-                viewHolder.vRSSI.setText("near");
-                changedBeacon.preRSSI = changedBeacon.RSSI;
-                Toast.makeText(getActivity(), changedBeacon.placeId + " is near", Toast.LENGTH_SHORT).show();
-            } else if (changedBeacon.preRSSI < RangeThreshold.FAR && changedBeacon.RSSI >= RangeThreshold.FAR) {
-                viewHolder.vRSSI.setText("in range");
-                changedBeacon.preRSSI = changedBeacon.RSSI;
-                Toast.makeText(getActivity(), changedBeacon.placeId + " is in range", Toast.LENGTH_SHORT).show();
-            }
         }
+        if (changedBeacon.preRSSI < RangeThreshold.NEAR && changedBeacon.RSSI >= RangeThreshold.NEAR) {
+            changedBeacon.preRSSI = changedBeacon.RSSI;
+            Toast.makeText(getActivity(), changedBeacon.placeId + this.getString(R.string.txt_is_very_close), Toast.LENGTH_SHORT).show();
+        } else if (changedBeacon.preRSSI < RangeThreshold.MIDDLE && changedBeacon.RSSI >= RangeThreshold.MIDDLE) {
+            changedBeacon.preRSSI = changedBeacon.RSSI;
+            Toast.makeText(getActivity(), changedBeacon.placeId + this.getString(R.string.txt_is_near), Toast.LENGTH_SHORT).show();
+        } else if (changedBeacon.preRSSI < RangeThreshold.FAR && changedBeacon.RSSI >= RangeThreshold.FAR) {
+            changedBeacon.preRSSI = changedBeacon.RSSI;
+            Toast.makeText(getActivity(), changedBeacon.placeId + this.getString(R.string.txt_is_in_range), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

@@ -1,8 +1,6 @@
 package de.uni_stuttgart.mci.bluecon.ui;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +11,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
-import de.uni_stuttgart.mci.bluecon.search.BeaconSearchLoader;
-import de.uni_stuttgart.mci.bluecon.util.IResultListener;
-import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util2.SoundPoolPlayer;
 
 public class BeaconsSearchAdapter extends Adapter<BeaconsViewHolder> {
 

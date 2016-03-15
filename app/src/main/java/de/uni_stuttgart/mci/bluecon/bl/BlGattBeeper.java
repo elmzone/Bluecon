@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.uni_stuttgart.mci.bluecon.BlueconApp;
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.util.ScheduleUtil;
+import de.uni_stuttgart.mci.bluecon.util2.ScheduleUtil;
 
 /**
  * Created by flori_000 on 03.02.2016.

@@ -14,7 +14,7 @@ import java.util.List;
 import de.uni_stuttgart.mci.bluecon.database.BeaconDBHelper;
 import de.uni_stuttgart.mci.bluecon.database.DatabaseUtil;
 import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
-import de.uni_stuttgart.mci.bluecon.util.ParserUtilOld;
+import de.uni_stuttgart.mci.bluecon.util2.ParserUtilOld;
 
 /**
  * Created by florian on 02.12.15.

@@ -15,8 +15,8 @@ import java.util.List;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
-import de.uni_stuttgart.mci.bluecon.util.IResultListener;
-import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util2.SoundPoolPlayer;
 
 public class BeaconsNaviAdapter extends Adapter<BeaconsViewHolder> {
 
