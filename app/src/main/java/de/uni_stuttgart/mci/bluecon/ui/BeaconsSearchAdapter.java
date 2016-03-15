@@ -94,13 +94,13 @@ public class BeaconsSearchAdapter extends Adapter<BeaconsViewHolder> {
     }
 
     private String readRssi(int rssi) {
-        rssi = Math.abs(rssi);
+//        rssi = Math.abs(rssi);
         String hint = "out of range";
-        if (rssi < RangeThreshold.NEAR) {
+        if (rssi > RangeThreshold.NEAR) {
             hint = "very close";
-        } else if (rssi < RangeThreshold.MIDDLE) {
+        } else if (rssi > RangeThreshold.MIDDLE) {
             hint = "near";
-        } else if (rssi < RangeThreshold.FAR) {
+        } else if (rssi > RangeThreshold.FAR) {
             hint = "in range";
         }
         return hint;

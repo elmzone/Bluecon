@@ -367,6 +367,7 @@ public class ScanListFragment
             mAdapter.getBeaconsList().remove(removedBeacon);
             mAdapter.notifyItemRemoved(mAdapter.getBeaconsList().indexOf(removedBeacon));
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

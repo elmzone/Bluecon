@@ -17,9 +17,9 @@
       }
     },
     {
-      "111100000060": {
+      "DC:31:05:7C:0F:63": {
         "type": "Blidget",
-        "id": "111100000060",
+        "id": "DC:31:05:7C:0F:63",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "first staircase on the ground floor",
         "roomId": "0.006",
@@ -35,9 +35,9 @@
       }
     },
     {
-      "111100000100": {
+      "F0:DE:30:FB:C2:E0": {
         "type": "Blidget",
-        "id": "111100000100",
+        "id": "F0:DE:30:FB:C2:E0",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "corridor",
         "roomId": "0.010",
@@ -52,9 +52,9 @@
       }
     },
     {
-      "111100000140": {
+      "C8:FB:D8:E7:97:4B": {
         "type": "Blidget",
-        "id": "111100000140",
+        "id": "C8:FB:D8:E7:97:4B",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "second hall",
         "roomId": "0.014",
@@ -69,9 +69,9 @@
       }
     },
     {
-      "111100000210": {
+      "EA:41:FD:EE:F1:B3": {
         "type": "Blidget",
-        "id": "111100000210",
+        "id": "EA:41:FD:EE:F1:B3",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "door to the lab corridor",
         "roomId": "0.021",
@@ -120,9 +120,9 @@
       }
     },
     {
-      "111100000240": {
+      "CD:D9:96:89:13:53": {
         "type": "Blidget",
-        "id": "111100000240",
+        "id": "CD:D9:96:89:13:53",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "restrooms",
         "roomId": "0.024",
@@ -156,9 +156,9 @@
       }
     },
     {
-      "111100010100": {
+      "C8:DC:2B:51:8D:2F": {
         "type": "Blidget",
-        "id": "111100010100",
+        "id": "C8:DC:2B:51:8D:2F",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "First staircase on the first floor",
         "roomId": "1.010",
@@ -174,9 +174,9 @@
       }
     },
     {
-      "111100010120": {
+      "C2:7D:76:EB:04:E7": {
         "type": "Blidget",
-        "id": "111100010120",
+        "id": "C2:7D:76:EB:04:E7",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "first hallway on the first floor",
         "roomId": "1.012",
@@ -191,9 +191,9 @@
       }
     },
     {
-      "111100010180": {
+      "FF:14:3E:AB:B4:4A": {
         "type": "Blidget",
-        "id": "111100010180",
+        "id": "FF:14:3E:AB:B4:4A",
         "status": "STATUS_UNSPECIFIED",
         "placeId": "meeting room first floor",
         "roomId": "1.018",

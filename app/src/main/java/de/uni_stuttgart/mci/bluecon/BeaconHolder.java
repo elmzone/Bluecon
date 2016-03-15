@@ -44,6 +44,10 @@ public class BeaconHolder {
         return new ArrayList<BeaconLocation>(currentBeaconsMap.values());
     }
 
+    public void clearCurrentBeacons() {
+        currentBeaconsMap.clear();
+    }
+
     public static List<BeaconLocation> beacons() {
         return inst().getCurrentBeacons();
     }
@@ -118,7 +122,8 @@ public class BeaconHolder {
                 l.onBeaconsAdded();
             }
         } else {
-            currentBeaconsMap.get(result.getDevice().getAddress()).RSSI = result.getRssi();
+            BeaconLocation b = currentBeaconsMap.get(result.getDevice().getAddress());
+            b.RSSI = result.getRssi();
             for (BeaconHolder.IBeaconListener l : beaconListener) {
                 l.onBeaconChanged(currentBeaconsMap.get(result.getDevice().getAddress()));
             }

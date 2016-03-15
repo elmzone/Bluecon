@@ -21,14 +21,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/beacon_item_RSSI_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/beacon_item_name"
-        android:layout_marginLeft="20dp"
-        android:layout_toEndOf="@+id/beacon_item_name"
-        android:text="TextView" />
+    <!--<TextView-->
+        <!--android:id="@+id/beacon_item_RSSI_details"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@+id/beacon_item_name"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_toEndOf="@+id/beacon_item_name"-->
+        <!--android:text="TextView" />-->
 
     <TextView
         android:id="@+id/beacon_item_RSSI"
@@ -36,27 +36,26 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/beacon_item_name"
         android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@+id/beacon_item_RSSI_details"
+        android:layout_toEndOf="@+id/beacon_item_name"
         android:text="TextView" />
 
-    <ImageView
-        android:id="@+id/marginPlaceHolder"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="40dp" />
+    <!--<ImageView-->
+        <!--android:id="@+id/marginPlaceHolder"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="10dp"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginTop="40dp" />-->
 
     <LinearLayout
         android:id="@+id/expandArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/marginPlaceHolder"
-        android:layout_marginStart="20dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/beacon_item_name"
+        android:layout_alignParentEnd="true">
 
 
         <TableRow
@@ -84,30 +83,21 @@
             style="@style/myText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginTop="2dp" />
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp">
 
-            <Button
-                android:id="@+id/beacon_sonar"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@drawable/button"
-                android:text="@string/sonar_button" />
+            <!--<Button-->
+                <!--android:id="@+id/beacon_sonar"-->
+                <!--style="@style/button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:background="@drawable/button"-->
+                <!--android:text="@string/sonar_button" />-->
 
-            <Button
-                android:id="@+id/beacon_beep"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@drawable/button"
-                android:focusable="true"
-                android:text="@string/beep_button" />
 
         </TableRow>
 
@@ -116,9 +106,16 @@
             style="@style/myText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginTop="2dp" />
 
+        <Button
+            android:id="@+id/beacon_beep"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/button"
+            android:focusable="true"
+            android:text="@string/beep_button" />
     </LinearLayout>
 
 

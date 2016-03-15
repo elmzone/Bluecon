@@ -1,6 +1,8 @@
 package de.uni_stuttgart.mci.bluecon.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,37 +56,45 @@ public class BeaconsNaviAdapter extends Adapter<BeaconsViewHolder> {
 
     @Override
     public void onBindViewHolder(BeaconsViewHolder vh, int position) {
-        BeaconLocation beaconLocation = beaconsList.get(position);
+        final BeaconLocation beaconLocation = beaconsList.get(position);
         Log.d(TAG, "0: beaconLocation is " + beaconLocation);
 
         vh.vName.setText(beaconLocation.placeId);
         String rangeHint = readRssi(beaconLocation.RSSI);
         vh.vRSSI.setText(rangeHint);
-        vh.vRSSI_details.setText(String.valueOf(beaconLocation.RSSI));
+//        vh.vRSSI_details.setText(String.valueOf(beaconLocation.RSSI));
         vh.vPlaceId.setText("");
-        vh.vRoomId.setText("Room: " + beaconLocation.roomId);
+        vh.vRoomId.setText(context.getString(R.string.txt_navi_room) + beaconLocation.roomId);
         vh.vDescription.setText(beaconLocation.description);
         if (beaconLocation.nextBeacon.equals(BeaconLocation.NO_NEXT_BEACON)) {
-            vh.vToNext.setText("You've reached your Target.");
+            vh.vToNext.setText(R.string.txt_navi_target_reached);
         } else {
-            vh.vToNext.setText("Way to Room " + beaconLocation.nextBeacon + " : " + beaconLocation.neighborhood.get(beaconLocation.nextBeacon).wayToIt);
+            vh.vToNext.setText(context.getString(R.string.txt_navi_way_to_room) + beaconLocation.nextBeacon + " : " + beaconLocation.neighborhood.get(beaconLocation.nextBeacon).wayToIt);
         }
 
-        vh.itemView.setOnClickListener(new View.OnClickListener() {
+        vh.btnBeep.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                              LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(new Intent(v.getContext().getString(R.string.intent_gatt_open)).putExtra(v.getContext().getString(R.string.bndl_mac), beaconLocation.macAddress));
 
-            public BeaconLocation b;
-
-            public View.OnClickListener init(BeaconLocation beaconLocation) {
-//                this.b = beaconLocation;
-                return this;
-            }
-
-
-            @Override
-            public void onClick(View v) {
-//                listener.onResult(b);
-            }
-        }.init(beaconLocation));
+                                          }
+                                      }
+        );
+//        vh.itemView.setOnClickListener(new View.OnClickListener() {
+//
+//            public BeaconLocation b;
+//
+//            public View.OnClickListener init(BeaconLocation beaconLocation) {
+////                this.b = beaconLocation;
+//                return this;
+//            }
+//
+//
+//            @Override
+//            public void onClick(View v) {
+////                listener.onResult(b);
+//            }
+//        }.init(beaconLocation));
 
 
         ActionExpand a = (ActionExpand) vh.parent.getTag();
@@ -97,13 +107,13 @@ public class BeaconsNaviAdapter extends Adapter<BeaconsViewHolder> {
     }
 
     private String readRssi(int rssi) {
-        rssi = Math.abs(rssi);
+//        rssi = Math.abs(rssi);
         String hint = "out of range";
-        if (rssi < RangeThreshold.NEAR) {
+        if (rssi > RangeThreshold.NEAR) {
             hint = "very close";
-        } else if (rssi < RangeThreshold.MIDDLE) {
+        } else if (rssi > RangeThreshold.MIDDLE) {
             hint = "near";
-        } else if (rssi < RangeThreshold.FAR) {
+        } else if (rssi > RangeThreshold.FAR) {
             hint = "in range";
         }
         return hint;

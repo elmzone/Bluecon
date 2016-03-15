@@ -6,19 +6,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BeaconLocation  implements Comparable<BeaconLocation>{
+public class BeaconLocation implements Comparable<BeaconLocation> {
     public static final String NO_NEXT_BEACON = "noNext";
     public String macAddress = "macaddress";
-    public int RSSI;
+    public int RSSI = -200;
+    public int preRSSI = -200;
     public String UUID = "UUID";
     public String type = "type";
     public String id = "id";
     public String status = "status";
     public String placeId = "placeId";
-    public String roomId = "roomId";   public String latitude = "latitude";  public String longitude = "longitude";
+    public String roomId = "roomId";
+    public String latitude = "latitude";
+    public String longitude = "longitude";
     public String expectedStability = "expectedStability";
     public String description = "description";
-    public Map<String, Neighbor> neighborhood =new HashMap<>();
+    public Map<String, Neighbor> neighborhood = new HashMap<>();
     public String nextBeacon = NO_NEXT_BEACON;
 
     public int compareTo(@NonNull BeaconLocation another) {
@@ -26,11 +29,9 @@ public class BeaconLocation  implements Comparable<BeaconLocation>{
         int anotherRSSI = another.RSSI;
         if (thisRSSI < anotherRSSI) {
             return 1;
-        }
-        else if (thisRSSI > anotherRSSI) {
+        } else if (thisRSSI > anotherRSSI) {
             return -1;
-        }
-        else  {
+        } else {
             return 0;
         }
     }

@@ -86,6 +86,11 @@
     <string name="pref_beep_freq_key">prefBeepFreq</string>
     <string name="pref_beep_dura_key">prefBeepDura</string>
     <string name="txt_bt_calc">Calculate</string>
+    <string name="txt_navi_way_to_room">"Way to Room "</string>
+    <string name="txt_navi_target_reached">You\'ve reached your Target.</string>
+    <string name="txt_navi_room">"Room: "</string>
+    <string name="txt_navi_error_no_two_selected">You have to choose a start and an end</string>
+    <string name="txt_navi_toast_calc_succ">Route calculation succeeded</string>
     <item name="activity" type="integer">123</item>
     <item name="service" type="integer">213</item>
     <item name="broadcast_receiver" type="integer">312</item>

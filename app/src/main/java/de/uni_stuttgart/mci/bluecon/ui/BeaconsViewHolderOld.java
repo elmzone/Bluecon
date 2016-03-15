@@ -39,6 +39,6 @@ public class BeaconsViewHolderOld extends RecyclerView.ViewHolder {
         vExpandArea = (LinearLayout) view.findViewById(R.id.expandArea);
 
         btnBeep = (Button) view.findViewById(R.id.beacon_beep);
-        btnSonar = (Button) view.findViewById(R.id.beacon_sonar);
+//        btnSonar = (Button) view.findViewById(R.id.beacon_sonar);
     }
 }

@@ -26,11 +26,13 @@ import java.util.concurrent.TimeUnit;
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.R;
+import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsNaviAdapter;
+import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
 import de.uni_stuttgart.mci.bluecon.util.IResultListener;
 
-public class NavigationListFragment extends Fragment {
+public class NavigationListFragment extends Fragment implements BeaconHolder.IBeaconListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -127,6 +129,7 @@ public class NavigationListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        BeaconHolder.inst().registerBeaconListener(this);
         bt_from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,32 +160,58 @@ public class NavigationListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (start != null && target != null) {
-                    try {
-                        resultList = new CalculateShortestPath().execute(start, target).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    new CalculateShortestPath().execute(start, target);
                 } else {
 
-                    Toast.makeText(getActivity(), "You have to choose a start and an end", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.txt_navi_error_no_two_selected, Toast.LENGTH_SHORT).show();
                 }
-                for (BeaconLocation rL : resultList) {
-                    if (resultList.indexOf(rL) != (resultList.size() - 1)) {
-                        rL.nextBeacon = resultList.get(resultList.indexOf(rL) + 1).roomId;
-                    }
 
-                }
-                mAdapter.getBeaconsList().clear();
-                mAdapter.getBeaconsList().addAll(resultList);
-                mAdapter.notifyDataSetChanged();
             }
         });
 
     }
 
-    // Breitensuche eine Ebene nach der anderen ausgehend vom Startknoten wird durchsucht
+    @Override
+    public void onPause() {
+        super.onPause();
+        BeaconHolder.inst().deregisterBeaconListener(this);
+    }
+
+    @Override
+    public void onBeaconChanged(BeaconLocation changedBeacon) {
+
+        BeaconsViewHolder viewHolder = (BeaconsViewHolder) mRecyclerView.findViewHolderForAdapterPosition(mAdapter.getBeaconsList().indexOf(changedBeacon));
+        if (viewHolder != null && viewHolder.vRSSI != null) {
+//            viewHolder.vRSSI_details.setText(String.valueOf(changedBeacon.RSSI));
+
+            if (changedBeacon.preRSSI < RangeThreshold.NEAR && changedBeacon.RSSI >= RangeThreshold.NEAR) {
+                viewHolder.vRSSI.setText("very close");
+                changedBeacon.preRSSI = changedBeacon.RSSI;
+                Toast.makeText(getActivity(), changedBeacon.placeId + " is very close", Toast.LENGTH_SHORT).show();
+            } else if (changedBeacon.preRSSI < RangeThreshold.MIDDLE && changedBeacon.RSSI >= RangeThreshold.MIDDLE) {
+                viewHolder.vRSSI.setText("near");
+                changedBeacon.preRSSI = changedBeacon.RSSI;
+                Toast.makeText(getActivity(), changedBeacon.placeId + " is near", Toast.LENGTH_SHORT).show();
+            } else if (changedBeacon.preRSSI < RangeThreshold.FAR && changedBeacon.RSSI >= RangeThreshold.FAR) {
+                viewHolder.vRSSI.setText("in range");
+                changedBeacon.preRSSI = changedBeacon.RSSI;
+                Toast.makeText(getActivity(), changedBeacon.placeId + " is in range", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onBeaconsAdded() {
+
+    }
+
+    @Override
+    public void onBeaconRemoved(BeaconLocation removedBeacon) {
+
+    }
+
+    // BFS: One Level of the Search tree after the other will be searched fully.
+    // future work: for bigger Databases Dijkstra or Floyd Warshall to calculate all shortest paths first
     private class CalculateShortestPath extends AsyncTask<BeaconLocation, Void, List<BeaconLocation>> {
         List<BeaconLocation> allBeacons = new ArrayList<BeaconLocation>();
 
@@ -244,8 +273,18 @@ public class NavigationListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<BeaconLocation> list) {
+            resultList = list;
+            for (BeaconLocation rL : resultList) {
+                if (resultList.indexOf(rL) != (resultList.size() - 1)) {
+                    rL.nextBeacon = resultList.get(resultList.indexOf(rL) + 1).roomId;
+                }
+                rL.RSSI = -200;
+            }
+            mAdapter.getBeaconsList().clear();
+            mAdapter.getBeaconsList().addAll(resultList);
+            mAdapter.notifyDataSetChanged();
 
-            Toast.makeText(getActivity(), "Route calculation succeeded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.txt_navi_toast_calc_succ, Toast.LENGTH_SHORT).show();
             return;
         }
 

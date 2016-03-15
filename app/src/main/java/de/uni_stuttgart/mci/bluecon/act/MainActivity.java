@@ -44,6 +44,7 @@ import com.google.android.gms.nearby.messages.SubscribeOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.BlueconApp;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.bl.BlueconService;
@@ -127,10 +128,6 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-        if (savedInstanceState == null) {
-            blAdapt = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
-        }
     }
 
     @Override
@@ -440,6 +437,7 @@ public class MainActivity extends ActBasePerms implements GoogleApiClient.Connec
         int id = item.getItemId();
         switch (id) {
             case R.id.start_scan_service:
+                BeaconHolder.inst().clearCurrentBeacons();
                 startBlService();
                 item.setVisible(false);
                 menu.findItem(R.id.stop_scan_service).setVisible(true);

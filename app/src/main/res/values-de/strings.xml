@@ -1,2 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Bluecon</string>
+
+    <string name="hello_world">Hallo Welt!</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="ble_not_supported">Oh! BLE wird nicht unterstützt!</string>
+    <string name="ble_is_supported">Hi! BLE wird unterstützt!</string>
+    <string name="ble_is_enabled">Hi! Bluetooth ist an!</string>
+    <string name="bluetooth_is_supported">Hi! Bluetooth wird unterstützt!</string>
+    <string name="start_service">Beginne zu scannen</string>
+    <string name="stop_service">Höre auf zu scannen</string>
+    <string name="enableTTS">TTS einschalten</string>
+    <string name="disableTTS">TTS ausschalten</string>
+    <string name="button_pressed">test button wurde gedrückt!</string>
+    <string name="pref_audio">Audio</string>
+    <string name="pref_approaching">Audio Benachrichtigung</string>
+    <string name="pref_audio_summary">Wenn sie sich einem Beacon nähern wird folgende Nachricht gesprochen \"Ihr Text\" + beacon Name</string>
+    <string name="pref_scan">Scan</string>
+    <string name="pref_approaching_default"></string>
+    <string name="pref_guide_switch_summary">Audio Signal um den nächsten Beacon anzuzeigen</string>
+    <string name="pref_guide_switch">Audio Signal Schalter</string>
+    <string name="pref_threshold">RSSI threshold</string>
+    <string name="pref_threshold_summary">75 means \"-75db\", und so weiter</string>
+    <string name="pref_frequency_summary">Scan Frequenz</string>
+    <string name="pref_frequency">Scan Frequenz</string>
+    <string name="pref_network">NETZWERK</string>
+    <string name="pref_link">Download Quellee</string>
+    <string name="pref_link_summary">Beacons Datenbank Quell-URL</string>
+    <string name="pref_link_default">http://meschup.hcilab.org/map/</string>
+    <string name="network_not_avaliable">Sorry, bitte prüfen Sie die Netzwerkeinstellungen. Die Datenbank kann nicht geladen werden</string>
+    <string name="update_button">Datenbank jetzt updaten</string>
+    <string name="update_button_summary">Hier klicken um die Beacon informationen herunterzuladen</string>
+    <string name="url_not_avaliable">Die URL ist nicht korrekt. Bitte überprüfen</string>
+    <string name="url_avaliable">Download fertig.</string>
+    <string name="pref_vibration_switch_summary">Vibratoin verwenden um nahe Beacons anzuzeigen</string>
+    <string name="pref_vibration_switch">Vibrations Schalter</string>
+    <string name="search_mode"><![CDATA[=>]]></string>
+    <string name="search_button">Suchen</string>
+    <string name="description">Beschreibung</string>
+    <string name="beep_button">Beep</string>
+    <string name="sonar_button">Sonar</string>
+
+    <!--=================== Settings ===================-->
+    <string name="Settings_Activity_Name">Einstellungen</string>
+    <string name="cnst_period">prefFrequency</string>
+    <string name="intent_gatt_open">OpenGatt</string>
+    <string name="bndl_mac">mac</string>
+    <string name="prefs_link_url">prefLink</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_scan">Scanne nach Beacons</string>
+    <string name="settings_menu_register_new_beacon">Registriere neuen Beacon</string>
+
+    <!-- ========== -->
+    <!-- BL Strings -->
+    <!-- ========== -->
+    <eat-comment />
+
+    <string name="txt_bl_needed_then_stop">Diese App benötigt Bluetooth!</string>
+    <string name="txt_bl_descr_needed_then_stop">Bitte installieren Sie diese App auf einem Gerät mit Bluetooth.</string>
+    <string name="txt_bl_requ_turn_on">Diese App benötigt aktiviertes Bluetooth!</string>
+    <string name="txt_bl_descr_requ_turn_on">Bitte schalten Sie Bluetooth ein oder beenden Sie die App.</string>
+    <string name="txt_bl_adv_needed">Diese App benötigt Bluetooth advertising!</string>
+    <string name="txt_bl_descr_adv_needed">Bitte installieren Sie diese App auf einem Gerät mit Bluetooth advertising Funktion oder schließen Sie die App.</string>
+    <string name="txt_bl_loc_req_turn_on">Diese App benötigt Standortbestimmung</string>
+    <string name="txt_bl_descr_loc_requ_turn_on">Bitte gewähren Sie Zugriff um Bluetooth Low Energy Geräte zu finden oder schließen Sie die App.</string>
+    <string name="txt_bl_descr_loc_turn_on_last">Bitte genehmigen Sie die Standortbestimmung, damit diese App Bluetooth Low Energy Geräte finden kann.</string>
+
+    <!-- =============== -->
+    <!-- General Strings -->
+    <!-- =============== -->
+    <eat-comment />
+
+    <string name="txt_ok">OK</string>
+    <string name="txt_close">Schließen</string>
+    <string name="txt_bt_from">Von</string>
+    <string name="txt_bt_to">Zu</string>
+    <string name="txt_bt_sort">Sortieren nach</string>
+    <string name="txt_dia_choose_beacon">Wählen Sie einen Beacon</string>
+    <string name="pref_beep_freq_summary">Frequenz, mit der der Beacon antwortet</string>
+    <string name="pref_beep_freq">Beep Frequenz</string>
+    <string name="pref_beep_dura_summary">Dauer, für die der Beacon antwortet (Sekunden)</string>
+    <string name="pref_beep_dura">Beep Dauer</string>
+    <string name="pref_beep_freq_key">prefBeepFreq</string>
+    <string name="pref_beep_dura_key">prefBeepDura</string>
+    <string name="txt_bt_calc">Berechnen</string>
+    <string name="txt_navi_way_to_room">"Weg zu Raum "</string>
+    <string name="txt_navi_target_reached">Sie haben ihr Ziel erreicht.</string>
+    <string name="txt_navi_room">"Raum: "</string>
+    <string name="txt_navi_error_no_two_selected">Sie müssen einen Start und Endpunkt wählen.</string>
+    <string name="txt_navi_toast_calc_succ">Routenberechnung erfolgreich</string>
+    <item name="activity" type="integer">123</item>
+    <item name="service" type="integer">213</item>
+    <item name="broadcast_receiver" type="integer">312</item>
+</resources>

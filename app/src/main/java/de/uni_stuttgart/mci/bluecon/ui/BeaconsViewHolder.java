@@ -45,6 +45,6 @@ public class BeaconsViewHolder extends RecyclerView.ViewHolder {
         vToNext = (TextView) view.findViewById(R.id.beacon_item_way_to_next);
 
         btnBeep = (Button) view.findViewById(R.id.beacon_beep);
-        btnSonar = (Button) view.findViewById(R.id.beacon_sonar);
+//        btnSonar = (Button) view.findViewById(R.id.beacon_sonar);
     }
 }

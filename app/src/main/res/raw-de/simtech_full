@@ -1,0 +1,539 @@
+{
+  "data": [
+    {
+      "C5:95:FC:CC:8D:5C": {
+        "type": "Blidget",
+        "id": "C5:95:FC:CC:8D:5C",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Eingang",
+        "roomId": "0.002",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Eingang zum SIMTECH-Gebäude",
+        "neighborhood": [
+          "0.006:rechts nachdem Sie das Gebäde betreten haben"
+        ]
+      }
+    },
+    {
+      "111100000060": {
+        "type": "Blidget",
+        "id": "111100000060",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Vorderes Treppenhaus im Erdgeschoss",
+        "roomId": "0.006",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "linker Hand geht es nach oben, rechter Hand durch den Flur",
+        "neighborhood": [
+          "0.002:durch die Halle entlang der linken Wand",
+          "0.010:rechts halten durch den Flur",
+          "1.010:links halten, die Treppe hinauf"
+        ]
+      }
+    },
+    {
+      "111100000100": {
+        "type": "Blidget",
+        "id": "111100000100",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Flur",
+        "roomId": "0.010",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Flur vom Eingang zu den Laboren",
+        "neighborhood": [
+          "0.006:entlang der rechten Wand durch den Flur",
+          "0.014:entlang der linken Wand durch den Flur bis zur Ecke"
+        ]
+      }
+    },
+    {
+      "111100000140": {
+        "type": "Blidget",
+        "id": "111100000140",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Zweiter Saal",
+        "roomId": "0.014",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Ecke des zweiten Saals im Erdgeschoss",
+        "neighborhood": [
+          "0.010:entlang der rechten Wand durch den Flur",
+          "0.021:durch den Saal über der Tür zum Labor-Flur"
+        ]
+      }
+    },
+    {
+      "111100000210": {
+        "type": "Blidget",
+        "id": "111100000210",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Tür zum Labor-Flur",
+        "roomId": "0.021",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "über der Tür zum Labor Flur",
+        "neighborhood": [
+          "0.014:durch den Saal, auf der rechten Seite des Eingangs zum Flur",
+          "0.024:durch die Tür auf der rechten Seite zwischen der zweiten und dritten Tür"
+        ]
+      }
+    },
+    {
+      "111100000231": {
+        "type": "Blidget",
+        "id": "111100000231",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Labor A, zweiter Eingang",
+        "roomId": "0.023A2",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Labor A, Arbeitsplatz für Studenten und HiWis",
+        "neighborhood": [
+          "0.023A3:nächste Tür auf der linken Seite, weg vom Eingang",
+          "0.024:auf der anderen Seite des Flurs in Richtung Saal zwischen der zweiten und dritten Tür",
+          "0.026:auf der anderen Seite des Flurs"
+        ]
+      }
+    },
+    {
+      "111100000232": {
+        "type": "Blidget",
+        "id": "111100000232",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Labor A, dritter Eingang",
+        "roomId": "0.023A3",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Labor A, seperater Raum. Tests mit großen Displays",
+        "neighborhood": [
+          "0.023A2:in Richtung Eingang entlang der rechten Wand nächste Tür"
+        ]
+      }
+    },
+    {
+      "111100000240": {
+        "type": "Blidget",
+        "id": "111100000240",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Toiletten",
+        "roomId": "0.024",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "linke Tür Männer, rechte Tür Damen",
+        "neighborhood": [
+          "0.021:rechterhand über der Tür zum Saal am Ende des Flurs",
+          "0.023A2:auf der anderen Seite des Flurs nach rechts zweite Tür",
+          "0.026:linkerhand zweite Tür rechts"
+        ]
+      }
+    },
+    {
+      "111100000260": {
+        "type": "Blidget",
+        "id": "111100000260",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "hinteres Treppenhaus im Erdgeschoss",
+        "roomId": "0.026",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Treppe und Fahrstuhl. Fahrstuhl ist die Schiebetür links, daneben führt die Treppe hinauf, daneben eine Vorratsnische und der Notausgang",
+        "neighborhood": [
+          "0.023A2:durch die rechte Tür auf der anderen Seite des Flurs",
+          "0.024:durch die rechte Tür, dann links. Zwischen der ersten und zweiten Tür auf der linken Seite",
+          "1.026:nach oben via Fahrstuhl oder der Treppe daneben"
+        ]
+      }
+    },
+    {
+      "111100010100": {
+        "type": "Blidget",
+        "id": "111100010100",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Vorderes Treppenhaus im ersten Stock",
+        "roomId": "1.010",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "das Treppenhaus geht im Uhrzeigersinn aufwärts",
+        "neighborhood": [
+          "0.006:die Treppe hinunter entlang der rechten Wand",
+          "1.012:entlang der linken Wand durch die Tür",
+          "2.006:die Treppe hinauf auf der linken Seite des Geländers"
+        ]
+      }
+    },
+    {
+      "111100010120": {
+        "type": "Blidget",
+        "id": "111100010120",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Vorderer Aufenthaltsraum im ersten Stock",
+        "roomId": "1.012",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Aufenthaltsraum mit Couchgarnitur",
+        "neighborhood": [
+          "1.010:durch die Tür links des Beacons",
+          "1.018:durch den Aufenthaltsraum und den Flur. Am Ende des Flurs an der rechten Ecke"
+        ]
+      }
+    },
+    {
+      "111100010180": {
+        "type": "Blidget",
+        "id": "111100010180",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Konferenzraum erster Stock",
+        "roomId": "1.018",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Konferenzraum mit Tischen und Stühlen in unterschiedlicher Konfiguration",
+        "neighborhood": [
+          "1.012:durch den Flur neben dem Konferenzraum. Dann auf der anderen Seite des Aufenthaltsraums",
+          "1.025:durch den mittleren Aufenthaltsraum links der Küche, am Eingang des Flurs links"
+        ]
+      }
+    },
+    {
+      "DD:38:A1:96:52:39": {
+        "type": "Blidget",
+        "id": "DD:38:A1:96:52:39",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Greis, Algroudy und Avila",
+        "roomId": "1.025",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Miriam Greis, Passant El Agroudy und Mauro Avila",
+        "neighborhood": [
+          "1.018:nächster Raum auf der linken Seite, durch den mittleren Aufenthaltsraum",
+          "1.026:auf der anderen Seite ds Flurs",
+          "1.027:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "111100010260": {
+        "type": "Blidget",
+        "id": "111100010260",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "hinteres Treppenhaus erster Stock",
+        "roomId": "1.026",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Treppenhaus und Fahrstuhl. Fahrstuhl ist die Schiebetür links, daneben führt die Treppe auf und ab, im Uhrzeigersinn aufwärts",
+        "neighborhood": [
+          "1.025:durch die Tür, auf der anderen Seite des Flurs",
+          "0.026:ein Stock tiefer via Fahrstuhl oder den Treppen am Ende des Raums links",
+          "2.026:ein Stock höher via Fahrstuhl oder der Treppe daneben"
+        ]
+      }
+    },
+    {
+      "D4:57:ED:93:10:EC": {
+        "type": "Blidget",
+        "id": "D4:57:ED:93:10:EC",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Henze und Schwind",
+        "roomId": "1.027",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Jun. Prof. Niels Henze und Valentin Schwind",
+        "neighborhood": [
+          "1.025:nächster Raum linkerhand",
+          "1.029:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "E7:4F:E5:DA:C7:8D": {
+        "type": "Blidget",
+        "id": "E7:4F:E5:DA:C7:8D",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Abdelrahman und Voit",
+        "roomId": "1.029",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Yomna Abdelrahman und Alexandra Voit",
+        "neighborhood": [
+          "1.027:nächster Raum linkerhand",
+          "1.031:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "EB:31:25:C5:46:28": {
+        "type": "Blidget",
+        "id": "EB:31:25:C5:46:28",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Lischke und Mayer",
+        "roomId": "1.031",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Lars Lischke und Sven Mayer",
+        "neighborhood": [
+          "1.029:nächster Raum linkerhand",
+          "1.033:nächster Raum rechterhand",
+          "1.034:auf der anderen Seite des Flurs links"
+        ]
+      }
+    },
+    {
+      "DC:45:07:77:CD:EB": {
+        "type": "Blidget",
+        "id": "DC:45:07:77:CD:EB",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Kubitza und Pohl",
+        "roomId": "1.033",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Thomas Kubitza und Norman Pohl",
+        "neighborhood": [
+          "1.031:nächster Raum linkerhand",
+          "1.034:auf der anderen Seite des Flurs",
+          "1.035:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "D9:89:CF:04:F2:05": {
+        "type": "Blidget",
+        "id": "D9:89:CF:04:F2:05",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Toiletten",
+        "roomId": "1.034",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Erste Tür rechts für Männer, zweite Tür rechts für Damen",
+        "neighborhood": [
+          "1.031:auf der anderen Seite des Flurs links",
+          "1.033:auf der anderen Seite des Flurs rechts"
+        ]
+      }
+    },
+    {
+      "C2:95:93:8F:E3:B4": {
+        "type": "Blidget",
+        "id": "C2:95:93:8F:E3:B4",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Korn",
+        "roomId": "1.035",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Lab und Büro von Dr. Oliver Korn",
+        "neighborhood": [
+          "1.033:nächster Raum linkerhand"
+        ]
+      }
+    },
+    {
+      "111100020060": {
+        "type": "Blidget",
+        "id": "111100020060",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "vorderes Treppenhaus zweiter Stock",
+        "roomId": "2.006",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Treppenhaus im obersten Stock. Führt gegen den Uhrzeigersinn abwärts",
+        "neighborhood": [
+          "1.010:im Uhrzeigersinn treppab",
+          "2.012:entlang der linken Wand durch die Tür"
+        ]
+      }
+    },
+    {
+      "111100020120": {
+        "type": "Blidget",
+        "id": "111100020120",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Vorderer Aufenthaltsraum zweiter Stock",
+        "roomId": "2.012",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Aufenthaltsraum mit Couchgarnitur",
+        "neighborhood": [
+          "2.010:durch die Tür linnks ds Beacons",
+          "2.018:durch den Aufenthaltsraum und den Flur auf der linken Seite. Am Ende des Flurs an der rechten Ecke"
+        ]
+      }
+    },
+    {
+      "111100020180": {
+        "type": "Blidget",
+        "id": "111100020180",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Konferenzraum zweiter Stock",
+        "roomId": "2.018",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Konferenzraum mit Tischen und Stühlen in unterschiedlicher Konfiguration",
+        "neighborhood": [
+          "2.012:durch den Flur rechts neben dem Konferenzraum. Dann auf der gegenüberliegenden Wand des Aufenthaltsraums",
+          "2.025:durch den Aufenthaltsraum, nach der Küche erstes Büro auf der linken Seite"
+        ]
+      }
+    },
+    {
+      "111100020250": {
+        "type": "Blidget",
+        "id": "111100020250",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Kröker und Stüwe",
+        "roomId": "2.025",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Ilja Kröker und Tobias Stüwe",
+        "neighborhood": [
+          "2.018:nächster Raum auf der linken Seite auf der gegenüberliegenden Seite des Raumes",
+          "2.026:auf der anderen Seite des Flurs",
+          "2.027:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "111100020260": {
+        "type": "Blidget",
+        "id": "111100020260",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Hinteres Treppenhaus zweiter Stock",
+        "roomId": "2.026",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Treppenhaus und Fahrstuhl im obersten Stockwerk. Treppen führen gegen den Uhrzeigersinn hinunter",
+        "neighborhood": [
+          "2.025:durch die Tür auf der anderen Seite des Flurs",
+          "1.026:ein Stock tiefer via Fahrstuhl oder den Treppen am Ende des Raums links"
+        ]
+      }
+    },
+    {
+      "111100020270": {
+        "type": "Blidget",
+        "id": "111100020270",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Barth",
+        "roomId": "2.027",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Junior Professor Andrea Barth",
+        "neighborhood": [
+          "2.025:nächster Raum linkerhand",
+          "2.029:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "111100020290": {
+        "type": "Blidget",
+        "id": "111100020290",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Dingler und Bader",
+        "roomId": "2.029",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Tilmann Dingler und Patrick Bader",
+        "neighborhood": [
+          "2.027:nächster Raum linkerhand",
+          "2.031:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "111100020310": {
+        "type": "Blidget",
+        "id": "111100020310",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Schneegaß, Knierim und Weber",
+        "roomId": "2.031",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Stefan Schneegaß, Pascal Knierim und Dominik Weber",
+        "neighborhood": [
+          "2.029:nächster Raum linkerhand",
+          "2.033:nächster Raum rechterhand",
+          "2.034:auf der anderen Seite des Raums links"
+        ]
+      }
+    },
+    {
+      "111100020330": {
+        "type": "Blidget",
+        "id": "111100020330",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Geiges und Sinsbeck",
+        "roomId": "2.033",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Dr. Andreas Geiges und Michael Sinsbeck",
+        "neighborhood": [
+          "2.031:nächster Raum linkerhand",
+          "2.034:auf der anderen Seite des Flurs",
+          "2.035:nächster Raum rechterhand"
+        ]
+      }
+    },
+    {
+      "111100020340": {
+        "type": "Blidget",
+        "id": "111100020340",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Toiletten",
+        "roomId": "2.034",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Erste Tür rechts für Männer, zweite Tür rechts für Damen",
+        "neighborhood": [
+          "2.031:auf der anderen Seite des Flurs links",
+          "2.033:auf der anderen Seite des Flurs rechts"
+        ]
+      }
+    },
+    {
+      "111100020350": {
+        "type": "Blidget",
+        "id": "111100020350",
+        "status": "STATUS_UNSPECIFIED",
+        "placeId": "Büro Bode und Most",
+        "roomId": "2.035",
+        "latitude": null,
+        "longitude": null,
+        "expectedStability": "STABILITY_UNSPECIFIED",
+        "description": "Felix Bode und Sebastian Most",
+        "neighborhood": [
+          "2.033:nächster Raum linkerhand"
+        ]
+      }
+    }
+  ]
+}

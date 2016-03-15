@@ -58,7 +58,7 @@ public class DiagAllBeaconChoose extends DialogFragment{
 
 
         //set the adapter for the list
-        adapter = new BeaconsSearchAdapter(new ArrayList<BeaconLocation>());
+        adapter = new BeaconsSearchAdapter(new ArrayList<BeaconLocation>(BeaconHolder.beaconLocations()));
         adapter.setResultListener(new IResultListener<BeaconLocation>() {
             @Override
             public void onResult(BeaconLocation result) {
