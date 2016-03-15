@@ -91,6 +91,13 @@
     <string name="txt_navi_room">"Room: "</string>
     <string name="txt_navi_error_no_two_selected">You have to choose a start and an end</string>
     <string name="txt_navi_toast_calc_succ">Route calculation succeeded</string>
+    <string name="txt_very_close">very close</string>
+    <string name="txt_near">near</string>
+    <string name="txt_in_range">in range</string>
+    <string name="txt_out_of_range">out of range</string>
+    <string name="txt_is_very_close">" is very close"</string>
+    <string name="txt_is_near">" is near"</string>
+    <string name="txt_is_in_range">" is in range"</string>
     <item name="activity" type="integer">123</item>
     <item name="service" type="integer">213</item>
     <item name="broadcast_receiver" type="integer">312</item>

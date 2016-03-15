@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
-import de.uni_stuttgart.mci.bluecon.domain.BeaconsInfo;
 import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 
 /**
@@ -147,6 +146,13 @@ public class BeaconHolder {
             b = currentBeaconsMap.remove(result.getDevice().getAddress());
         for (BeaconHolder.IBeaconListener l : beaconListener) {
             l.onBeaconRemoved(b);
+        }
+    }
+
+    public void resetRSSI() {
+        for (BeaconLocation bL : beaconLocations) {
+            bL.preRSSI=-200;
+            bL.RSSI=-200;
         }
     }
 
