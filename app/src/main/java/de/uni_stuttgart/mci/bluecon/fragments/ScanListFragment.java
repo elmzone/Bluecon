@@ -36,10 +36,10 @@ import de.uni_stuttgart.mci.bluecon.bl.IBluetoothCallback;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
-import de.uni_stuttgart.mci.bluecon.util2.ITtsProvider;
-import de.uni_stuttgart.mci.bluecon.util2.SoundPoolPlayer;
-import de.uni_stuttgart.mci.bluecon.util2.TtsWrapper;
-import de.uni_stuttgart.mci.bluecon.util2.VibratorBuilder;
+import de.uni_stuttgart.mci.bluecon.util.ITtsProvider;
+import de.uni_stuttgart.mci.bluecon.util.SoundPoolPlayer;
+import de.uni_stuttgart.mci.bluecon.util.TtsWrapper;
+import de.uni_stuttgart.mci.bluecon.util.VibratorBuilder;
 
 public class ScanListFragment
         extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, IBluetoothCallback, BeaconHolder.IBeaconListener, TtsWrapper.ITtsUser {

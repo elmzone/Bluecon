@@ -25,7 +25,7 @@ import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.domain.RangeThreshold;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsNaviAdapter;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsViewHolder;
-import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util.IResultListener;
 
 public class NavigationListFragment extends Fragment implements BeaconHolder.IBeaconListener {
     // TODO: Rename parameter arguments, choose names that match

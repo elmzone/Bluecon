@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.util2;
+package de.uni_stuttgart.mci.bluecon.util;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

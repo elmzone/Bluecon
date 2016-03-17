@@ -4,8 +4,8 @@ import android.app.Application;
 
 import java.io.IOException;
 
-import de.uni_stuttgart.mci.bluecon.util2.ParserUtil;
-import de.uni_stuttgart.mci.bluecon.util2.ParserUtilOld;
+import de.uni_stuttgart.mci.bluecon.util.ParserUtil;
+import de.uni_stuttgart.mci.bluecon.util.ParserUtilOld;
 
 /**
  * Created by flori_000 on 26.01.2016.

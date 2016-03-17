@@ -22,7 +22,7 @@ import java.util.List;
 import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.R;
-import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util.IResultListener;
 
 /**
  * Created by flori_000 on 02.03.2016.

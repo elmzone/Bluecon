@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.util2;
+package de.uni_stuttgart.mci.bluecon.util;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
-import de.uni_stuttgart.mci.bluecon.domain.LocationInfo;
 import de.uni_stuttgart.mci.bluecon.domain.Neighbor;
 
 /**

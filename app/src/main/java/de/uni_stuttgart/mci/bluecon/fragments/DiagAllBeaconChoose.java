@@ -20,7 +20,7 @@ import de.uni_stuttgart.mci.bluecon.BeaconHolder;
 import de.uni_stuttgart.mci.bluecon.R;
 import de.uni_stuttgart.mci.bluecon.domain.BeaconLocation;
 import de.uni_stuttgart.mci.bluecon.ui.BeaconsSearchAdapter;
-import de.uni_stuttgart.mci.bluecon.util2.IResultListener;
+import de.uni_stuttgart.mci.bluecon.util.IResultListener;
 
 public class DiagAllBeaconChoose extends DialogFragment{
 

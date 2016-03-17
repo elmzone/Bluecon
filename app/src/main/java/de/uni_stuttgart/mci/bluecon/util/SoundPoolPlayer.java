@@ -1,4 +1,4 @@
-package de.uni_stuttgart.mci.bluecon.util2;
+package de.uni_stuttgart.mci.bluecon.util;
 
 import android.content.Context;
 import android.media.AudioAttributes;
