@@ -107,15 +107,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp" />
-
-        <Button
-            android:id="@+id/beacon_beep"
-            style="@style/button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/button"
-            android:focusable="true"
-            android:text="@string/beep_button" />
     </LinearLayout>
 
 
